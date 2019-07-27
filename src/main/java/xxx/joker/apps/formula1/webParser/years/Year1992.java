@@ -133,11 +133,6 @@ public class Year1992 extends AWikiParser2018 {
             }
         }
 
-//        List<F1Entrant> elist = model.getEntrants(year);
-//        System.out.println(elist.size()+"");
-//        System.out.println(RepoUtil.formatEntities(elist));
-//        System.exit(1);
-
     }
 
     @Override

@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xxx.joker.apps.formula1.common.F1Const;
 import xxx.joker.apps.formula1.model.entities.*;
+import xxx.joker.libs.core.debug.JkDebug;
 import xxx.joker.libs.core.lambdas.JkStreams;
 import xxx.joker.libs.repository.JkRepoFile;
 import xxx.joker.libs.repository.entities.RepoResource;
@@ -13,20 +14,22 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 
-public class F1ModelNewImpl extends JkRepoFile implements F1ModelNew {
+public class F1ModelImpl extends JkRepoFile implements F1Model {
 
-    private static final Logger LOG = LoggerFactory.getLogger(F1ModelNewImpl.class);
-    private static F1ModelNew instance;
+    private static final Logger LOG = LoggerFactory.getLogger(F1ModelImpl.class);
+    private static F1Model instance;
 
 //    private Map<Integer, F1Season> seasonMap = new HashMap<>();
 
-    private F1ModelNewImpl() {
+    private F1ModelImpl() {
         super(F1Const.REPO_FOLDER, F1Const.DB_NAME, "xxx.joker.apps.formula1.model.entities");
     }
 
-    public static synchronized F1ModelNew getInstance() {
+    public static synchronized F1Model getInstance() {
         if(instance == null) {
-            instance = new F1ModelNewImpl();
+            JkDebug.startTimer("createModel");
+            instance = new F1ModelImpl();
+            JkDebug.stopTimer("createModel");
 //            instance = ModelHandler.createHandler();
         }
         return instance;

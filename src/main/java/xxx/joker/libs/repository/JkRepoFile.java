@@ -3,6 +3,7 @@ package xxx.joker.libs.repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xxx.joker.libs.core.datetime.JkTimer;
+import xxx.joker.libs.core.debug.JkDebug;
 import xxx.joker.libs.core.lambdas.JkStreams;
 import xxx.joker.libs.repository.config.RepoConfig;
 import xxx.joker.libs.repository.config.RepoCtx;
@@ -42,11 +43,13 @@ public abstract class JkRepoFile implements JkRepo {
         LOG.info("Init repo [folder={}, dbName={}, encr={}", ctx.getRepoFolder(), ctx.getDbName(), ctx.getEncrPwd());
         eclasses.forEach(ec -> LOG.info("Repo entity class: {}", ec));
 
+        JkDebug.startTimer("dao");
         this.daoHandler = new DaoHandler(ctx);
         List<RepoEntity> lines = daoHandler.loadDataFromFiles();
+        JkDebug.stopAndStartTimer("dao", "jpa");
         this.jpaHandler = new JpaHandler(ctx, lines);
+        JkDebug.stopTimer("jpa");
         this.resourceHandler = new ResourceHandler(ctx, jpaHandler);
-
     }
 
 

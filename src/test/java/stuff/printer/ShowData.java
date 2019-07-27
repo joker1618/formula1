@@ -4,7 +4,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import webparser.CommonTest;
-import xxx.joker.apps.formula1.model.F1ModelNewImpl;
 import xxx.joker.apps.formula1.model.entities.F1Country;
 import xxx.joker.apps.formula1.model.entities.F1Entrant;
 import xxx.joker.apps.formula1.model.entities.F1GranPrix;
@@ -13,7 +12,6 @@ import xxx.joker.apps.formula1.webParser.WikiParser;
 import xxx.joker.libs.core.format.JkOutput;
 import xxx.joker.libs.core.lambdas.JkStreams;
 import xxx.joker.libs.core.utils.JkStrings;
-import xxx.joker.libs.core.utils.JkStruct;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -32,6 +30,17 @@ public class ShowData extends CommonTest {
     public static void beforeClazz() {
 //        defYear = 2015;
 //        defYear = JkStruct.getLastElem(F1ModelNewImpl.getInstance().getAvailableYears());
+    }
+
+    @Test
+    public void printAvailableYears() {
+        List<Integer> years = model.getAvailableYears();
+        if(years.isEmpty()) {
+            display("No years available");
+        } else {
+            int totNum = years.size();
+            display("Available years from {} to {}  ({})", years.get(0), years.get(totNum -1), totNum);
+        }
     }
 
     @Test

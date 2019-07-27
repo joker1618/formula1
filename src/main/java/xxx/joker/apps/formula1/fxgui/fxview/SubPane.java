@@ -5,14 +5,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xxx.joker.apps.formula1.fxgui.fxmodel.F1GuiModel;
 import xxx.joker.apps.formula1.fxgui.fxmodel.F1GuiModelImpl;
-import xxx.joker.apps.formula1.model.F1ModelNew;
-import xxx.joker.apps.formula1.model.F1ModelNewImpl;
+import xxx.joker.apps.formula1.model.F1Model;
+import xxx.joker.apps.formula1.model.F1ModelImpl;
 
 public abstract class SubPane extends BorderPane {
 
     private static final Logger LOG = LoggerFactory.getLogger(SubPane.class);
 
-    protected F1ModelNew model = F1ModelNewImpl.getInstance();
+    protected F1Model model = F1ModelImpl.getInstance();
     protected F1GuiModel guiModel = F1GuiModelImpl.getInstance();
 
     protected SubPane() {

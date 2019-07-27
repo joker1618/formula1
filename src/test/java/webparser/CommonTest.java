@@ -1,11 +1,10 @@
 package webparser;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
-import xxx.joker.apps.formula1.model.F1ModelNew;
-import xxx.joker.apps.formula1.model.F1ModelNewImpl;
+import xxx.joker.apps.formula1.model.F1Model;
+import xxx.joker.apps.formula1.model.F1ModelImpl;
 import xxx.joker.libs.core.datetime.JkDateTime;
 import xxx.joker.libs.core.debug.JkDebug;
 import xxx.joker.libs.core.format.JkOutput;
@@ -24,7 +23,7 @@ import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 public abstract class CommonTest {
 
-    protected F1ModelNew model = F1ModelNewImpl.getInstance();
+    protected F1Model model = F1ModelImpl.getInstance();
     protected TMPCsvParser csvParser = TMPCsvParser.get();
 
     @BeforeClass

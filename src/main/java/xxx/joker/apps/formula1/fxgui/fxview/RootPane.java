@@ -24,8 +24,8 @@ import xxx.joker.apps.formula1.fxgui.fxview.panes.yearPane.YearEntrantsPane;
 import xxx.joker.apps.formula1.fxgui.fxview.panes.yearPane.YearGpPane;
 import xxx.joker.apps.formula1.fxgui.fxview.panes.yearPane.YearResultsPane;
 import xxx.joker.apps.formula1.fxgui.fxview.panes.yearPane.YearSummaryPane;
-import xxx.joker.apps.formula1.model.F1ModelNew;
-import xxx.joker.apps.formula1.model.F1ModelNewImpl;
+import xxx.joker.apps.formula1.model.F1Model;
+import xxx.joker.apps.formula1.model.F1ModelImpl;
 import xxx.joker.apps.formula1.model.entities.F1GranPrix;
 import xxx.joker.libs.core.cache.JkCache;
 import xxx.joker.libs.core.javafx.JfxUtil;
@@ -36,7 +36,7 @@ public class RootPane extends BorderPane {
 
     private static final Logger LOG = LoggerFactory.getLogger(RootPane.class);
 
-    private F1ModelNew model = F1ModelNewImpl.getInstance();
+    private F1Model model = F1ModelImpl.getInstance();
     protected F1GuiModel guiModel = F1GuiModelImpl.getInstance();
 
     private JkCache<PaneType, SubPane> cachePanes = new JkCache<>();

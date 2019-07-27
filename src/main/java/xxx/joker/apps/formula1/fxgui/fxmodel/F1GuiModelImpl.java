@@ -3,8 +3,8 @@ package xxx.joker.apps.formula1.fxgui.fxmodel;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
-import xxx.joker.apps.formula1.model.F1ModelNew;
-import xxx.joker.apps.formula1.model.F1ModelNewImpl;
+import xxx.joker.apps.formula1.model.F1Model;
+import xxx.joker.apps.formula1.model.F1ModelImpl;
 import xxx.joker.apps.formula1.model.entities.*;
 import xxx.joker.libs.core.cache.JkCache;
 import xxx.joker.libs.core.files.JkFiles;
@@ -18,7 +18,7 @@ public class F1GuiModelImpl implements F1GuiModel {
 
     private static final F1GuiModel instance = new F1GuiModelImpl();
 
-    private F1ModelNew model = F1ModelNewImpl.getInstance();
+    private F1Model model = F1ModelImpl.getInstance();
 
     private JkCache<String, FxCountry> cacheNation = new JkCache<>();
     private JkCache<Integer, SeasonView> cacheYears = new JkCache<>();

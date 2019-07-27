@@ -2,6 +2,7 @@ package xxx.joker.libs.repository.jpa;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import xxx.joker.libs.core.debug.JkDebug;
 import xxx.joker.libs.core.exception.JkRuntimeException;
 import xxx.joker.libs.core.lambdas.JkStreams;
 import xxx.joker.libs.core.utils.JkConvert;
@@ -46,6 +47,7 @@ public class JpaHandler {
         this.dataById = new TreeMap<>();
 
         // Get references relationships
+        JkDebug.startTimer("ref");
         this.entityRefMap = new HashMap<>();
         ctx.getClazzWraps().keySet().forEach(sourceClass -> {
             Map<ClazzWrap, List<FieldWrap>> cwRefMap = JkStreams.toMapSingle(ctx.getClazzWraps().values(), cw -> cw, cw -> cw.getFieldWraps(sourceClass));
@@ -53,13 +55,16 @@ public class JpaHandler {
             toRemove.forEach(cwRefMap::remove);
             entityRefMap.put(sourceClass, cwRefMap);
         });
+        JkDebug.stopTimer("ref");
 
         // Create property 'ID sequence'
         initDataSets(entities);
     }
 
     public void initDataSets(List<RepoEntity> entities) {
+        JkDebug.startTimer("check");
         checkIdAndPk(entities);
+        JkDebug.stopTimer("check");
 
         synchronized (idSeqValue) {
             clearAll();
@@ -67,6 +72,7 @@ public class JpaHandler {
             if(!entities.isEmpty()) {
                 // add entities to dataSet proxies
                 // convert List and Set fields in collection proxies
+                JkDebug.startTimer("init ds");
                 Map<Class<?>, List<RepoEntity>> emap = JkStreams.toMap(entities, RepoEntity::getClass);
                 emap.forEach((k, vlist) -> {
                     proxies.get(k).getEntities().addAll(vlist);
@@ -77,6 +83,7 @@ public class JpaHandler {
                         createProxyColls(clazzWrap, v);
                     });
                 });
+                JkDebug.stopTimer("init ds");
 //                for (RepoEntity re : emap.get(RepoUri.class)) {
 //                    RepoUri ru = (RepoUri) re;
 //                    Path absPath = ctx.getRepoFolder().resolve(ru.getPath());

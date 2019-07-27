@@ -9,7 +9,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Set;
 
-public interface F1ModelNew extends JkRepo {
+public interface F1Model extends JkRepo {
 
     RepoResource getDriverCover(F1Driver driver);
     RepoResource saveDriverCover(Path imgPath, F1Driver driver);

@@ -169,7 +169,7 @@ public class Year1992 extends AWikiParser2018 {
     protected Map<String, Double> getExpectedDriverPoints(String html) {
         Map<String, Double> map = new HashMap<>();
 
-        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"World_Drivers'_Championship_standings\">"
+        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"1992_Drivers'_Championship_final_standings\">"
                 , "<table>", "<table class=\"wikitable\"");
         JkTag tbody = tableEntrants.getChild("tbody");
 
@@ -190,13 +190,13 @@ public class Year1992 extends AWikiParser2018 {
     protected Map<String, Double> getExpectedTeamPoints(String html) {
         Map<String, Double> map = new HashMap<>();
 
-        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"World_Constructors'_Championship_standings\">", "<table class=\"wikitable\"");
+        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"1992_Constructors'_Championship_final_standings\">");
         JkTag tbody = tableEntrants.getChild("tbody");
 
         for (JkTag tr : tbody.getChildren("tr")) {
             if(tr.getChildren("th").size() == 1 && tr.getChildren().get(0).getTagName().equals("th")) {
                 JkTag teamTag = tr.getChild(1).walkFirstChild("a", "span a");
-                F1Team team = retrieveTeam(teamTag.getText(), false);
+                F1Team team = retrieveTeam(teamTag.getText().replace("BMS Dallara", "Dallara"), false);
                 String spoints = JkStruct.getLastElem(tr.getChildren()).getChild("b").getText();
                 spoints = spoints.replaceAll(".*\\(|\\).*", "");
                 map.put(team.getTeamName(), Double.parseDouble(spoints));

@@ -172,7 +172,7 @@ public class Year1993 extends AWikiParser2018 {
     protected Map<String, Double> getExpectedDriverPoints(String html) {
         Map<String, Double> map = new HashMap<>();
 
-        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"World_Drivers'_Championship_standings\">"
+        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Drivers\">Drivers</span>"
                 , "<table>", "<table class=\"wikitable\"");
         JkTag tbody = tableEntrants.getChild("tbody");
 
@@ -193,7 +193,7 @@ public class Year1993 extends AWikiParser2018 {
     protected Map<String, Double> getExpectedTeamPoints(String html) {
         Map<String, Double> map = new HashMap<>();
 
-        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"World_Constructors'_Championship_standings\">", "<table class=\"wikitable\"");
+        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Constructors\">", "<table class=\"wikitable\"");
         JkTag tbody = tableEntrants.getChild("tbody");
 
         for (JkTag tr : tbody.getChildren("tr")) {

@@ -1,0 +1,14 @@
+.root {
+    -darkBlue: #000033;
+    -lightBlue: #ccffff;
+    -fx-font-family: "Calibri";
+    -fx-font-size: 18;
+}
+
+
+
+.centralPane {
+    -fx-padding: 20;
+    -fx-spacing: 40;
+    -fx-background-color: #f2f2d9;
+}

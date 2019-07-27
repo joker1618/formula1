@@ -1,0 +1,40 @@
+
+.tableBox {
+    -fx-padding: 20;
+    -fx-border-color: -darkBlue;
+    -fx-border-width: 0 1 1 1;
+}
+
+.caption {
+    -fx-alignment: CENTER;
+    -fx-padding: 20;
+    -fx-border-color: -darkBlue;
+    -fx-border-width: 1;
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 22;
+    -fx-text-fill: -darkBlue;
+    -fx-font-weight: BOLD;
+}
+
+.table-view .table-row-cell {
+    -fx-pref-height: 35;
+}
+.table-view .table-row-cell:even {
+    -fx-background-color: -lightBlue;
+}
+
+.table-view .table-cell {
+    -fx-alignment: CENTER-LEFT;
+}
+.table-view .table-cell.centered {
+    -fx-alignment: CENTER;
+}
+
+.table-view .table-row-cell:filled:selected .table-cell,
+.table-view:row-selection .table-row-cell:filled:hover .table-cell,
+.table-view:row-selection .table-row-cell:filled:selected:hover .table-cell,
+.table-view:row-selection .table-row-cell:filled:selected:focused:hover .table-cell,
+.table-view:row-selection .table-row-cell:filled:selected:focused  .table-cell {
+    -fx-text-fill: WHITE;
+    -fx-background-color: -darkBlue;
+}

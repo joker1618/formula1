@@ -1,0 +1,17 @@
+.rootBox > .hbox {
+    -fx-padding: 20;
+    -fx-border-color: -darkBlue;
+    -fx-alignment: TOP-CENTER;
+}
+
+.boxCaption {
+    -fx-border-width: 2;
+    -fx-font-family: "Times New Roman";
+    -fx-font-size: 22;
+    -fx-text-fill: -darkBlue;
+    -fx-font-weight: BOLD;
+}
+
+.boxTable {
+    -fx-border-width: 0 2 2 2;
+}

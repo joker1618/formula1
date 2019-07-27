@@ -1,0 +1,10 @@
+target
+.idea/
+*.iml
+
+**/test/resources/zip/out*
+java-repo/src/test/resources/db
+XXX_formula1*
+
+scenicView.properties
+

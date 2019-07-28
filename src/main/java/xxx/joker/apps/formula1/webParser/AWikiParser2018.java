@@ -147,23 +147,29 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
     }
 
     public static String fixNation(String nation) {
+        if(nation.contains("Rio de Janeiro"))  return "Brazil";
         if(nation.contains("Ireland"))  return "Ireland";
         if(nation.contains("Monte Carlo"))  return "Monaco";
-        if(StringUtils.containsAny(nation, "Indiana", "Arizona"))  return "United States";
-        if(nation.contains("Texas"))  return "United States";
+        if(nation.contains("Indiana") || nation.contains("Arizona"))  return "United States";
+        if(nation.contains("Texas") || nation.contains("Michigan"))  return "United States";
+        if(nation.contains("Germany"))  return "Germany";
         if(nation.contains("China"))  return "China";
         if(nation.contains("Canada"))  return "Canada";
         if(nation.contains("Lombardy"))  return "Italy";
-        if(StringUtils.containsAny(nation, "England", "Great Britain"))  return "United Kingdom";
+        if(nation.contains("England") || nation.contains("Great Britain"))  return "United Kingdom";
         if(nation.contains("Wallonia"))  return "Belgium";
         if(nation.contains("Sepang"))  return "Malaysia";
-        if(nation.contains("Melbourne"))  return "Australia";
+        if(nation.contains("Mexico City")) return "Mexico";
+        if(nation.contains("Melbourne")) return "Australia";
+        if(nation.contains("South Australia")) return "Australia";
         return nation;
     }
     private String fixCity(String city) {
         if(city.contains("Mogyoród") || city.contains("Budapest"))  return "Mogyoród";
+        if(city.contains("Jacarepaguá"))  return "Rio de Janeiro";
         if(city.contains("Magny-Cours"))  return "Magny-Cours";
         if(city.contains("Melbourne"))  return "Melbourne";
+        if(city.contains("Estoril"))     return "Estoril";
         if(city.contains("Austin"))     return "Austin";
         if(city.contains("Imola"))     return "Imola";
         if(city.contains("Monza"))     return "Monza";
@@ -172,6 +178,7 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
         if(city.contains("Suzuka"))  return "Suzuka";
         if(city.contains("Sepang"))  return "Sepang";
         if(city.contains("Mexico City"))  return "Mexico City";
+        if(city.contains("Magdalena Mixhuca"))  return "Mexico City";
         if(city.contains("Abu Dhabi"))  return "Abu Dhabi";
         if(city.contains("Circuit de Monaco") || city.contains("Monte Carlo") || city.contains("Monte-Carlo"))  return "Monte Carlo";
         if(city.contains("Montmel") || city.contains("Valencia"))  return "Barcelona";
@@ -184,6 +191,7 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
         if(city.contains("South Jeolla"))  return "Yeongam";
         if(city.contains("Uttar Pradesh"))  return "Uttar Pradesh";
         if(city.contains("Albert Park"))  return "Melbourne";
+        if(city.contains("Adelaide"))  return "Adelaide";
         return city;
     }
 
@@ -228,6 +236,9 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
         }
         if(dn.startsWith("Carlos Sainz")) {
             return "Carlos Sainz Jr.";
+        }
+        if(dn.equals("Adrián Campos")) {
+            return "Adrian Campos";
         }
         return dn;
     }
@@ -369,6 +380,9 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
                         } else if(list.get(0).equals("Circuit de Monaco")) {
                             nation = "Monaco";
                             city = "Monte Carlo";
+                        } else if(list.get(0).equals("Autódromo do Estoril")) {
+                            nation = "Portugal";
+                            city = "Autódromo do Estoril";
                         } else if(list.get(0).equals("Silverstone Circuit")) {
                             nation = "United Kingdom";
                             city = "Silverstone";

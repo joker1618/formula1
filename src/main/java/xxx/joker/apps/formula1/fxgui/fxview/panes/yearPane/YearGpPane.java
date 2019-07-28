@@ -24,7 +24,7 @@ public class YearGpPane extends SubPane {
         TableBoxCaption<F1Race> rtable = createTableRace();
         HBox hbox = new HBox(qtable, rtable);
         hbox.getStyleClass().addAll("centered");
-        hbox.setStyle("-fx-spacing: 150");
+        hbox.setStyle("-fx-spacing: 50");
         setCenter(hbox);
     }
 

@@ -8,7 +8,7 @@ import static xxx.joker.libs.core.utils.JkStrings.strf;
 class DaoFK implements JkFormattable<DaoFK> {
 //public class DaoFK {
 
-    private static final String SEP = "-";
+    private static final String SEP = "|";
 
     private long fromID;
     private long depID;
@@ -35,15 +35,15 @@ class DaoFK implements JkFormattable<DaoFK> {
 
     @Override
     public String format() {
-        return strf("{}{}{}{}{}", fromID, SEP, depID, SEP, fieldName);
+        return strf("{}{}{}{}{}", fromID, SEP, fieldName, SEP, depID);
     }
 
     @Override
     public DaoFK parse(String s) {
         String[] split = JkStrings.splitArr(s, SEP);
         fromID = Long.parseLong(split[0]);
-        depID = Long.parseLong(split[1]);
-        fieldName = split[2];
+        fieldName = split[1];
+        depID = Long.parseLong(split[2]);
         return this;
     }
 }

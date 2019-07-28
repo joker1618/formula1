@@ -101,10 +101,12 @@ public class F1Race extends RepoEntity {
     public enum F1RaceOutcome {
         EXCLUDED("EX"),
         NOT_QUALIFIED("DNQ"),
+        OTHER("DNPQ"),
         NOT_CLASSIFIABLE("NC"),
         DISQUALIFIED("DSQ"),
         RETIRED("RET"),
         NOT_STARTED("DNS"),
+        WITHDRAW("WD"),
         FINISHED
         ;
 

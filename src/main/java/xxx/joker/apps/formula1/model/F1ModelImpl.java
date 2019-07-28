@@ -88,10 +88,10 @@ public class F1ModelImpl extends JkRepoFile implements F1Model {
         return get(F1Country.class, c -> c.getName().equalsIgnoreCase(countryName));
     }
 
-//    @Override
-//    public Set<F1Country> getCountries() {
-//        return getDataSet(F1Country.class);
-//    }
+    @Override
+    public Set<F1Country> getCountries() {
+        return getDataSet(F1Country.class);
+    }
 
     @Override
     public F1Team getTeam(String teamName) {

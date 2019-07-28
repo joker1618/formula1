@@ -8,7 +8,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.junit.Before;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
-import xxx.joker.apps.formula1.model.F1ModelChecker;
 import xxx.joker.apps.formula1.model.entities.*;
 import xxx.joker.apps.formula1.webParser.AWebParser;
 import xxx.joker.apps.formula1.webParser.WikiParser;
@@ -37,6 +36,15 @@ public class CheckRepo extends AWebParser {
     }
     
     @Test
+    public void doRangeYearChecks() {
+        int start = 1990;
+        int end = 1994;
+        for(int y = end; y >= start; y--) {
+            doYearChecks(y);
+        }
+    }
+
+    @Test
     public void doAllYearChecks() {
         checkTeams();
         checkDrivers();
@@ -47,10 +55,10 @@ public class CheckRepo extends AWebParser {
     @Test
     public void doYearChecks() {
 //        int year = JkStruct.getLastElem(model.getAvailableYears());
-        int year = 1992;
-        checkTeams();
-        checkDrivers();
-        checkCircuits();
+        int year = 1989;
+//        checkTeams();
+//        checkDrivers();
+//        checkCircuits();
         doYearChecks(year);
     }
 
@@ -154,33 +162,33 @@ public class CheckRepo extends AWebParser {
             } else {
                 expectedRounds = numRounds;
             }
-            if(expectedRounds != wrounds || !checkQualTimes(winner)) {
-                display("Invalid winner qualify times {}", winner);
-            }
-            JkStreams.filter(qlist, q -> !checkQualTimes(q)).forEach(q -> display("Invalid qualify times {}", q));
+//            if((expectedRounds != wrounds || !checkQualTimes(winner)) && !gp.getPrimaryKey().equals("gp:2015-15")) {
+//                display("Invalid winner qualify times {}", winner);
+//            }
+//            JkStreams.filter(qlist, q -> !checkQualTimes(q)).forEach(q -> display("Invalid qualify times {}", q));
         });
     }
-    private boolean checkQualTimes(F1Qualify qual) {
-        int min = 1000 * 60;
-        int max = 1000 * 60 * 3;
-
-        if(qual.getGpPK().matches("^gp-2005-0[123]")) {
-            max += 1000 * 60;
-        }
-
-        boolean foundNull = false;
-        for (JkDuration time : qual.getTimes()) {
-            if(time != null && (time.toMillis() < min || time.toMillis() > max)) {
-                return false;
-            }
-            if(foundNull && time != null) {
-                return false;
-            } else if(time == null) {
-                foundNull = true;
-            }
-        }
-        return true;
-    }
+//    private boolean checkQualTimes(F1Qualify qual) {
+//        int min = 1000 * 60;
+//        int max = 1000 * 60 * 3;
+//
+//        if(qual.getGpPK().matches("^gp-2005-0[123]")) {
+//            max += 1000 * 60;
+//        }
+//
+//        boolean foundNull = false;
+//        for (JkDuration time : qual.getTimes()) {
+//            if(time != null && (time.toMillis() < min || time.toMillis() > max)) {
+//                return false;
+//            }
+//            if(foundNull && time != null) {
+//                return false;
+//            } else if(time == null) {
+//                foundNull = true;
+//            }
+//        }
+//        return true;
+//    }
 
     private void checkRaces(int year) {
         List<F1Race> rList = JkStreams.flatMap(model.getGranPrixs(year), F1GranPrix::getRaces);
@@ -193,9 +201,9 @@ public class CheckRepo extends AWebParser {
             List<F1Race> races = gp.getRaces();
             F1Race winnerRace = races.get(0);
             JkDuration wtime = winnerRace.getTime();
-            if(wtime == null || !checkRaceTime(winnerRace)) {
-                display("Wrong winner time {}", winnerRace);
-            }
+//            if(wtime == null || !checkRaceTime(winnerRace)) {
+//                display("Wrong winner time {}", winnerRace);
+//            }
             Integer numLaps = winnerRace.getLaps();
             if(numLaps == null || numLaps <= 0) {
                 display("Invalid winner num laps {}", winnerRace);
@@ -204,16 +212,16 @@ public class CheckRepo extends AWebParser {
                 if(r.getTime() != null && r.getLaps() < numLaps) {
                     display("Invalid race laps {}", r);
                 }
-                if(r.getTime() != null && !checkRaceTime(r)) {
-                    display("Invalid race time range {}", r);
-                }
+//                if(r.getTime() != null && !checkRaceTime(r)) {
+//                    display("Invalid race time range {}", r);
+//                }
             });
         });
     }
     private boolean checkRaceTime(F1Race race) {
         int min = 1000 * 60 * 60;
         int max = 1000 * 60 * 60 * 3;
-        if(race.getGpPK().equals("gp-2016-20")) {
+        if(StringUtils.equalsAny(race.getGpPK(), "gp-2016-20", "gp:2016-19")) {
             max += 1000 * 60 * 3;
         } else if(race.getGpPK().equals("gp-2011-07")) {
             max += 1000 * 60 * 60;

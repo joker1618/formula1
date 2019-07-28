@@ -79,9 +79,49 @@ public abstract class JkRepoFile implements JkRepo {
     }
 
     @Override
+    public <T extends RepoEntity> T getById(long id) {
+        return (T) jpaHandler.getDataById().get(id);
+    }
+
+    @Override
     public <T extends RepoEntity> boolean add(T toAdd) {
         Set<T> ds = (Set<T>) getDataSet(toAdd.getClass());
         return ds.add(toAdd);
+    }
+
+    @Override
+    public <T extends RepoEntity> boolean addAll(Collection<T> coll) {
+        boolean res = false;
+        for (T elem : coll) {
+            res |= add(elem);
+        }
+        return res;
+    }
+
+    @Override
+    public <T extends RepoEntity> T removeID(long entityID) {
+        T e = getById(entityID);
+        if(e != null) {
+            return remove(e);
+        }
+        return null;
+    }
+
+    @Override
+    public <T extends RepoEntity> T remove(T toRemove) {
+        if(getDataSet(toRemove.getClass()).remove(toRemove)) {
+            return toRemove;
+        }
+        return null;
+    }
+
+    @Override
+    public <T extends RepoEntity> boolean removeAll(Collection<T> coll) {
+        boolean res = false;
+        for (T elem : coll) {
+            res |= getDataSet(elem.getClass()).remove(elem);
+        }
+        return res;
     }
 
     @Override

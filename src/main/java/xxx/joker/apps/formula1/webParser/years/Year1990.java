@@ -13,11 +13,11 @@ import xxx.joker.libs.core.utils.JkStruct;
 
 import java.util.*;
 
-public class Year1991 extends AWikiParser2018 {
+public class Year1990 extends AWikiParser2018 {
 
 
-    public Year1991() {
-        super(1991);
+    public Year1990() {
+        super(1990);
     }
 
     @Override
@@ -169,7 +169,7 @@ public class Year1991 extends AWikiParser2018 {
     protected Map<String, Double> getExpectedDriverPoints(String html) {
         Map<String, Double> map = new HashMap<>();
 
-        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"1991_Drivers'_Championship_final_standings\">"
+        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"1990_Drivers'_Championship_final_standings\">"
                 , "<table>", "<table class=\"wikitable\"");
         JkTag tbody = tableEntrants.getChild("tbody");
 
@@ -178,6 +178,7 @@ public class Year1991 extends AWikiParser2018 {
                 JkTag dTag = tr.getChild(1).walkFirstChild("a", "span a");
                 F1Driver driver = retrieveDriver(dTag.getText(), false);
                 String spoints = JkStruct.getLastElem(tr.getChildren()).getChild("b").getText();
+                spoints = spoints.replaceAll("\\(.*\\)", "").trim();
                 double points = Double.parseDouble(spoints);
                 map.put(driver.getFullName(), points);
             }
@@ -190,7 +191,7 @@ public class Year1991 extends AWikiParser2018 {
     protected Map<String, Double> getExpectedTeamPoints(String html) {
         Map<String, Double> map = new HashMap<>();
 
-        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"1991_Constructors'_Championship_final_standings\">");
+        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"1990_Constructors'_Championship_final_standings\">");
         JkTag tbody = tableEntrants.getChild("tbody");
 
         for (JkTag tr : tbody.getChildren("tr")) {

@@ -5,6 +5,7 @@ import xxx.joker.libs.repository.design.RepoEntity;
 import xxx.joker.libs.repository.entities.RepoResource;
 
 import java.nio.file.Path;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,14 +19,16 @@ public interface JkRepo {
 //    <K, T extends RepoEntity> Map<K,T> getMap(Class<T> entityClazz, Function<T, K> keyMapper, Predicate<T>... filters);
 //
     <T extends RepoEntity> T get(Class<T> entityClazz, Predicate<T>... filters);
-//    <T extends RepoEntity> T getById(long id);
+    <T extends RepoEntity> T getById(long id);
     <T extends RepoEntity> T getByPk(T entity);
 //    <T extends RepoEntity> T getByPkOrAdd(T entity);
 
     <T extends RepoEntity> boolean add(T toAdd);
-//    <T extends RepoEntity> T removeID(long entityID);
-//    <T extends RepoEntity> T remove(T toRemove);
-//
+    <T extends RepoEntity> boolean addAll(Collection<T> coll);
+    <T extends RepoEntity> T removeID(long entityID);
+    <T extends RepoEntity> T remove(T toRemove);
+    <T extends RepoEntity> boolean removeAll(Collection<T> coll);
+
 //    void clearAll();
 //
 //    void rollback();

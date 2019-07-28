@@ -35,7 +35,6 @@ public class FlagsDownloader extends AWebParser {
                 String iconUrl = getImageUrl(img);
                 String code = tr.getChild(4).findFirstTag("span", "class=monospaced").getText();
 
-
                 F1Country country = model.getCountry(countryName);
                 if(country != null)  continue;
 

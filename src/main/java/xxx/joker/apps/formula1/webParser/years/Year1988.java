@@ -13,11 +13,11 @@ import xxx.joker.libs.core.utils.JkStruct;
 
 import java.util.*;
 
-public class Year1991 extends AWikiParser2018 {
+public class Year1988 extends AWikiParser2018 {
 
 
-    public Year1991() {
-        super(1991);
+    public Year1988() {
+        super(1988);
     }
 
     @Override
@@ -62,7 +62,8 @@ public class Year1991 extends AWikiParser2018 {
                 previous = e;
 
             } else if(tdList.size() == tr.getChildren().size() && tdList.size() == 3) {
-                int carNum = Integer.valueOf(tr.getChild(0).getText());
+                int carNum = JkConvert.toInt(tr.getChild(0).getText(), -1);
+                if(year==1988 && "entrant:1988-Dallara-Alex Caffi-36".equals(previous.getPrimaryKey()) && carNum == -1 && model.getEntrants(1988).size()==36) continue;
 
                 JkTag spanTag;
                 JkTag aTag;
@@ -142,7 +143,7 @@ public class Year1991 extends AWikiParser2018 {
 
     @Override
     protected List<String> getGpUrls(String html) {
-        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Season_review\">", "<table class=\"wikitable");
+        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Grands_Prix\">", "<table class=\"wikitable");
         JkTag tbody = tableEntrants.getChild("tbody");
 
         List<JkTag> thList = tbody.getChild(0).getChildren();
@@ -169,7 +170,7 @@ public class Year1991 extends AWikiParser2018 {
     protected Map<String, Double> getExpectedDriverPoints(String html) {
         Map<String, Double> map = new HashMap<>();
 
-        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"1991_Drivers'_Championship_final_standings\">"
+        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"World_Drivers'_Championship_–_final_standings\">"
                 , "<table>", "<table class=\"wikitable\"");
         JkTag tbody = tableEntrants.getChild("tbody");
 
@@ -178,6 +179,7 @@ public class Year1991 extends AWikiParser2018 {
                 JkTag dTag = tr.getChild(1).walkFirstChild("a", "span a");
                 F1Driver driver = retrieveDriver(dTag.getText(), false);
                 String spoints = JkStruct.getLastElem(tr.getChildren()).getChild("b").getText();
+                spoints = spoints.replaceAll("\\(.*", "").trim();
                 double points = Double.parseDouble(spoints);
                 map.put(driver.getFullName(), points);
             }
@@ -190,7 +192,7 @@ public class Year1991 extends AWikiParser2018 {
     protected Map<String, Double> getExpectedTeamPoints(String html) {
         Map<String, Double> map = new HashMap<>();
 
-        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"1991_Constructors'_Championship_final_standings\">");
+        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"World_Constructors'_Championship_final_standings\">");
         JkTag tbody = tableEntrants.getChild("tbody");
 
         for (JkTag tr : tbody.getChildren("tr")) {
@@ -198,7 +200,7 @@ public class Year1991 extends AWikiParser2018 {
                 JkTag teamTag = tr.getChild(1).walkFirstChild("a", "span a");
                 F1Team team = retrieveTeam(teamTag.getText(), false);
                 String spoints = JkStruct.getLastElem(tr.getChildren()).getChild("b").getText();
-                spoints = spoints.replaceAll(".*\\(|\\).*", "");
+                spoints = spoints.replaceAll("\\(.*\\)", "").trim();
                 map.put(team.getTeamName(), Double.parseDouble(spoints));
             }
         }
@@ -236,13 +238,13 @@ public class Year1991 extends AWikiParser2018 {
                 gp.getQualifies().add(q);
 
                 int carNo = Integer.parseInt(tr.getChild(posMap.get("No")).getText().replace("‡", ""));
-                F1Driver d = retrieveDriver(tr.getChild(posMap.get("Driver")).walkFirstChild("a", "b a").getText(), false);
+                String dname = tr.getChild(posMap.get("Driver")).walkFirstChild("a", "b a").getText();
+                F1Driver d = retrieveDriver(dname, false);
                 Integer index = posMap.containsKey("Constructor") ? posMap.get("Constructor") : posMap.get("Team");
                 JkTag ttag = tr.getChild(index).walkFirstChild("a", "span a", "b a");
                 F1Team team = retrieveTeam(ttag.getText().replaceAll("-$", ""), false);
-                if(q.getPrimaryKey().equals("qualify:[gp:1991-02]-22")) {
-                    carNo = 16;
-                }
+                if(year==1988 && "Bernd Schneider".equals(d.getFullName())) carNo = 10;
+
                 q.setEntrant(getEntrant(year, d, carNo, team));
                 if(q.getEntrant() == null) {
                     if(team.getTeamName().contains("Larrousse")) {
@@ -250,6 +252,7 @@ public class Year1991 extends AWikiParser2018 {
                         q.setEntrant(getEntrant(year, d, carNo, team));
                     }
                     if(q.getEntrant() == null) {
+                        LOG.error("Entrant[name={}]", dname);
                         throw new JkRuntimeException("Null entrant for {}", q.getPrimaryKey());
                     }
                 }
@@ -307,10 +310,11 @@ public class Year1991 extends AWikiParser2018 {
 
     @Override
     protected void parseRace(String html, F1GranPrix gp) {
-        JkTag tableRace = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Race_2\">", "<table class=\"wikitable\"");
-        if(tableRace == null) {
-            tableRace = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Race\">", "<table class=\"wikitable");
-        }
+        JkTag tableRace = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Race_3\">Race</span>", "<table class=\"wikitable");
+//        if(tableRace == null) tableRace = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Race\">", "<table class=\"wikitable");
+        if(tableRace == null) tableRace = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Race_2\">Race</span>", "<table class=\"wikitable");
+        if(tableRace == null) tableRace = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Race\">Race</span>", "<table class=\"wikitable");
+
         JkTag tbody = tableRace.getChild("tbody");
 
         List<JkTag> thList = tbody.getChild(0).getChildren();
@@ -346,7 +350,9 @@ public class Year1991 extends AWikiParser2018 {
 
                     r.setLaps(JkConvert.toInt(tr.getChild(posMap.get("Laps")).getText(), 0));
 
-                    r.setTime(parseDuration(tr.getChild(posMap.get("Time/Retired")).getText()));
+                    Integer index = posMap.get("Time/Retired");
+                    if(index == null) index = posMap.get("Time/retired");
+                    r.setTime(parseDuration(tr.getChild(index).getText()));
                     if (gp.getRaces().size() > 1 && r.getTime() != null) {
                         F1Race firstRace = gp.getRaces().get(0);
                         JkDuration ft = firstRace.getTime().plus(r.getTime());
@@ -363,6 +369,7 @@ public class Year1991 extends AWikiParser2018 {
             }
         }
 
+        LOG.info("Gp {}: num races {}", gp, gp.getRaces().size());
     }
 
 }

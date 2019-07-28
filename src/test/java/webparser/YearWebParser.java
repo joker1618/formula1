@@ -1,8 +1,11 @@
 package webparser;
 
 import org.junit.Test;
+import xxx.joker.apps.formula1.model.entities.F1GranPrix;
 import xxx.joker.apps.formula1.webParser.AWebParser;
 import xxx.joker.apps.formula1.webParser.WikiParser;
+
+import java.util.List;
 
 import static xxx.joker.libs.core.utils.JkConsole.display;
 
@@ -19,7 +22,14 @@ public class YearWebParser extends AWebParser {
     }
     @Test
     public void runYear() {
-        runYear(1991);
+        int y = 1988;
+
+        List<F1GranPrix> gpList = model.getGranPrixs(y);
+        model.removeAll(gpList);
+        gpList.forEach(gp -> model.removeAll(gp.getQualifies()));
+        gpList.forEach(gp -> model.removeAll(gp.getRaces()));
+
+        runYear(y);
         model.commit();
     }
 

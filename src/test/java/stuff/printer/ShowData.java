@@ -55,7 +55,7 @@ public class ShowData extends CommonTest {
 
     @Test
     public void printSeason() {
-        int year = 1992;
+        int year = 1988;
         printRepo(model.getEntrants(year));
         List<F1GranPrix> gpList = model.getGranPrixs(year);
         printRepo(gpList);
@@ -116,7 +116,7 @@ public class ShowData extends CommonTest {
 
     @Test
     public void singleCheckPoints() {
-        int year = 2007;
+        int year = 1989;
         checkPoints(defYear == -1 ? year : defYear);
     }
     public void checkPoints(int year) {

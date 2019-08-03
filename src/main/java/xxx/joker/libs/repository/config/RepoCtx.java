@@ -45,10 +45,10 @@ public class RepoCtx {
         return repoFolder;
     }
     public Path getDbFolder() {
-        return repoFolder.resolve("db");
+        return repoFolder.resolve(DB_FOLDER_NAME);
     }
     public Path getResourcesFolder() {
-        return repoFolder.resolve("resources");
+        return repoFolder.resolve(RESOURCES_FOLDER_NAME);
     }
 
     public String getDbName() {

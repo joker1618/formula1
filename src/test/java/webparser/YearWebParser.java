@@ -9,11 +9,11 @@ import java.util.List;
 
 import static xxx.joker.libs.core.utils.JkConsole.display;
 
-public class YearWebParser extends AWebParser {
+public class YearWebParser extends CommonTest {
 
     @Test
     public void runYears() {
-        int start = 1992;
+        int start = 2014;
         int end = 2018;
         for(int y = end; y >= start; y--) {
             runYear(y);
@@ -22,7 +22,7 @@ public class YearWebParser extends AWebParser {
     }
     @Test
     public void runYear() {
-        int y = 1988;
+        int y = 2018;
 
         List<F1GranPrix> gpList = model.getGranPrixs(y);
         model.removeAll(gpList);

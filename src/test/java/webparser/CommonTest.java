@@ -1,5 +1,6 @@
 package webparser;
 
+import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -23,7 +24,7 @@ import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 public abstract class CommonTest {
 
-    protected F1Model model = F1ModelImpl.getInstance();
+    protected F1Model model;
     protected TMPCsvParser csvParser = TMPCsvParser.get();
 
     @BeforeClass
@@ -34,17 +35,24 @@ public abstract class CommonTest {
 
     @Before
     public void before() {
+        model = F1ModelImpl.getInstance();
         // csv configs
         csvParser.addCustomClassFormat(JkDateTime.class, d -> d.format("yyyyMMdd_HHmmss"));
         csvParser.addCustomClassFormat(LocalDateTime.class, d -> JkDateTime.of(d).format("yyyyMMdd_HHmmss"));
         csvParser.addCustomClassFormat(RepoUri.class, u -> strf("uri[{}]", u.getEntityId()));
         csvParser.addCustomInstanceFormat(RepoEntity.class, RepoEntity::strMini);
+        JkDebug.startTimer("unitTest");
     }
 
     @AfterClass
     public static void afterClass() {
         JkDebug.stopTimer("global");
         JkDebug.displayTimes();
+    }
+
+    @After
+    public void after() {
+        JkDebug.stopTimer("unitTest");
     }
 
     public void printAllRepo() {

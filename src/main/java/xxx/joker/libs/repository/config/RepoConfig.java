@@ -16,7 +16,10 @@ import java.util.Set;
 
 public class RepoConfig {
 
-    public static final String PACKAGE_COMMON_ENTTIES = "xxx.joker.libs.repository.entities";
+    public static final String PACKAGE_COMMON_ENTITIES = "xxx.joker.libs.repository.entities";
+
+    public static final String RESOURCES_FOLDER_NAME = "resources";
+    public static final String DB_FOLDER_NAME = "db";
 
     public static final String REPO_SEQ_PROP = "_config.sequence.id.value";
 

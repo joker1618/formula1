@@ -32,42 +32,37 @@ public class FlagsDownloader extends AWebParser {
 
                 String countryName = img.getAttribute("alt");
                 countryName = AWikiParser2018.fixNation(countryName);
+                F1Country country = new F1Country(countryName);
+
+                boolean add = model.add(country);
+                if(!add)    continue;
+
+                LOG.info("Added new country {}", country);
+
                 String iconUrl = getImageUrl(img);
                 String code = tr.getChild(4).findFirstTag("span", "class=monospaced").getText();
-
-                F1Country country = model.getCountry(countryName);
-                if(country != null)  continue;
-
-                country = new F1Country(countryName);
-                model.add(country);
                 country.setCode(code);
 
-//                if(countryName.startsWith("B")) break;
+                Pair<Boolean, Path> dwRes1 = dwTemp.downloadResource(iconUrl);
+                RepoResource iconResource = model.addResource(dwRes1.getValue(), countryName, "icon flag");
+                country.setFlagIcon(iconResource);
 
-                if(country.getFlagIcon() == null) {
-                    Pair<Boolean, Path> dwRes = dwTemp.downloadResource(iconUrl);
-                    RepoResource iconResource = model.addResource(dwRes.getValue(), countryName, "icon flag");
-                    country.setFlagIcon(iconResource);
-                }
+                String nationPageUrl = createWikiUrl(span.getChild("a"));
+                JkTag vcard = JkScanners.parseHtmlTag(dwHtml.getHtml(nationPageUrl), "table", "<table class=\"infobox geography vcard\"");
+                List<JkTag> vcardRows = vcard.walkChildren("tbody tr");
 
-                if(country.getFlagImage() == null) {
-                    String nationPageUrl = createWikiUrl(span.getChild("a"));
-                    JkTag vcard = JkScanners.parseHtmlTag(dwHtml.getHtml(nationPageUrl), "table", "<table class=\"infobox geography vcard\"");
-                    List<JkTag> vcardRows = vcard.walkChildren("tbody tr");
+                for (JkTag row : vcardRows) {
+                    List<JkTag> alist = row.findAllTags("a", "class=image");
+                    if(alist.size() >= 1) {
+                        String flagPageUrl = createWikiUrl(alist.get(0));
+                        JkTag imgTag = JkScanners.parseHtmlTag(dwHtml.getHtml(flagPageUrl), "img", "<div class=\"fullImageLink\"");
+                        String imageUrl = getImageUrl(imgTag);
 
-                    for (JkTag row : vcardRows) {
-                        List<JkTag> alist = row.findAllTags("a", "class=image");
-                        if(alist.size() >= 1) {
-                            String flagPageUrl = createWikiUrl(alist.get(0));
-                            JkTag imgTag = JkScanners.parseHtmlTag(dwHtml.getHtml(flagPageUrl), "img", "<div class=\"fullImageLink\"");
-                            String imageUrl = getImageUrl(imgTag);
+                        Pair<Boolean, Path> dwRes2 = dwTemp.downloadResource(imageUrl);
+                        RepoResource imageURI = model.addResource(dwRes2.getValue(), countryName, "image flag");
+                        country.setFlagImage(imageURI);
 
-                            Pair<Boolean, Path> dwRes = dwTemp.downloadResource(imageUrl);
-                            RepoResource imageURI = model.addResource(dwRes.getValue(), countryName, "image flag");
-                            country.setFlagImage(imageURI);
-
-                            break;
-                        }
+                        break;
                     }
                 }
             }

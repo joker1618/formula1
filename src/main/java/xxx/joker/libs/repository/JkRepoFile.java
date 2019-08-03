@@ -36,7 +36,7 @@ public abstract class JkRepoFile implements JkRepo {
     protected JkRepoFile(String encrPwd, Path repoFolder, String dbName, String... packages) {
         Set<Class<?>> eclasses = new HashSet<>();
         eclasses.addAll(RepoUtil.scanPackages(getClass(), packages));
-        eclasses.addAll(RepoUtil.scanPackages(RepoConfig.class, RepoConfig.PACKAGE_COMMON_ENTTIES));
+        eclasses.addAll(RepoUtil.scanPackages(RepoConfig.class, RepoConfig.PACKAGE_COMMON_ENTITIES));
 
         this.ctx = new RepoCtx(repoFolder, dbName, eclasses, encrPwd);
 

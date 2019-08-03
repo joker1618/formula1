@@ -39,6 +39,7 @@ public class JpaHandler {
     private Map<Long, RepoEntity> dataById;
 
     private Map<Class<?>, Map<ClazzWrap, List<FieldWrap>>> entityRefMap;
+    private List<Class<?>> removeOrderList;
 
     public JpaHandler(RepoCtx ctx, List<RepoEntity> entities) {
         this.ctx = ctx;
@@ -47,7 +48,6 @@ public class JpaHandler {
         this.dataById = new TreeMap<>();
 
         // Get references relationships
-        JkDebug.startTimer("ref");
         this.entityRefMap = new HashMap<>();
         ctx.getClazzWraps().keySet().forEach(sourceClass -> {
             Map<ClazzWrap, List<FieldWrap>> cwRefMap = JkStreams.toMapSingle(ctx.getClazzWraps().values(), cw -> cw, cw -> cw.getFieldWraps(sourceClass));
@@ -55,7 +55,20 @@ public class JpaHandler {
             toRemove.forEach(cwRefMap::remove);
             entityRefMap.put(sourceClass, cwRefMap);
         });
-        JkDebug.stopTimer("ref");
+
+        this.removeOrderList = new ArrayList<>();
+        Map<Class<?>, List<Class<?>>> tmpMap = JkStreams.toMapSingle(entityRefMap.entrySet(), Map.Entry::getKey, en -> JkStreams.map(en.getValue().keySet(), ClazzWrap::getEClazz));
+
+        List<Class<?>> eligibles = JkStreams.filterMap(entityRefMap.entrySet(), en -> en.getValue().isEmpty(), Map.Entry::getKey);
+        removeOrderList.addAll(eligibles);
+        eligibles.forEach(tmpMap::remove);
+
+        while(!tmpMap.isEmpty()) {
+            tmpMap.values().forEach(l -> l.removeIf(removeOrderList::contains));
+            eligibles = JkStreams.filterMap(tmpMap.entrySet(), en -> en.getValue().isEmpty(), Map.Entry::getKey);
+            removeOrderList.addAll(eligibles);
+            eligibles.forEach(tmpMap::remove);
+        }
 
         // Create property 'ID sequence'
         initDataSets(entities);
@@ -74,21 +87,16 @@ public class JpaHandler {
                 // convert List and Set fields in collection proxies
                 JkDebug.startTimer("init ds");
                 Map<Class<?>, List<RepoEntity>> emap = JkStreams.toMap(entities, RepoEntity::getClass);
-                emap.forEach((k, vlist) -> {
-                    proxies.get(k).getEntities().addAll(vlist);
-                    ClazzWrap clazzWrap = ctx.getClazzWraps().get(k);
-                    vlist.forEach(v -> {
+                emap.forEach((ec, elist) -> {
+                    proxies.get(ec).getEntities().addAll(elist);
+                    ClazzWrap clazzWrap = ctx.getClazzWraps().get(ec);
+                    elist.forEach(v -> {
                         dataById.put(v.getEntityId(), v);
                         clazzWrap.initEntityFields(v);
                         createProxyColls(clazzWrap, v);
                     });
                 });
                 JkDebug.stopTimer("init ds");
-//                for (RepoEntity re : emap.get(RepoUri.class)) {
-//                    RepoUri ru = (RepoUri) re;
-//                    Path absPath = ctx.getRepoFolder().resolve(ru.getPath());
-//                    ru.setPath(absPath);
-//                }
 
                 // Set sequence id value using the RepoProperty associated, if exists, else to 'max id + 1'
                 List<RepoProperty> ep = JkStreams.map(emap.get(RepoProperty.class), e -> (RepoProperty)e);
@@ -207,28 +215,27 @@ public class JpaHandler {
         synchronized (idSeqValue) {
             e.setEntityId(idSeqValue.get());
 
-            Set<RepoEntity> ds = proxies.get(e.getClass()).getEntities();
             boolean nullTm = false;
             if (e.getCreationTm() == null) {
                 e.setCreationTm();
                 nullTm = true;
             }
-            // Compare by PK
-            if(ds.contains(e)) {
-                e.setEntityId(null);
-                if(nullTm)  e.setCreationTm(null);
-                return false;
-            }
 
-            if(ds.add(e)) {
+            Set<RepoEntity> ds = proxies.get(e.getClass()).getEntities();
+            boolean add = ds.add(e);
+
+            if(add) {
                 idSeqValue.getAndIncrement();
                 dataById.put(e.getEntityId(), e);
                 updatePropertyIdSeq();
                 LOG.debug("Added new entity: {}", e);
+                return true;
+            } else {
+                e.setEntityId(null);
+                if(nullTm)  e.setCreationTm(null);
+                return false;
             }
         }
-
-        return true;
     }
 
     private boolean removeEntity(RepoEntity e) {

@@ -17,6 +17,7 @@ import xxx.joker.libs.repository.util.RepoUtil;
 
 import java.nio.file.Path;
 import java.util.*;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public abstract class JkRepoFile implements JkRepo {
@@ -69,6 +70,16 @@ public abstract class JkRepoFile implements JkRepo {
     }
 
     @Override
+    public <K, T extends RepoEntity> Map<K, List<T>> getMap(Class<T> entityClazz, Function<T, K> keyMapper, Predicate<T>... filters) {
+        return JkStreams.toMap(getDataSet(entityClazz), keyMapper, v -> v, filters);
+    }
+
+    @Override
+    public <K, T extends RepoEntity> Map<K, T> getMapSingle(Class<T> entityClazz, Function<T, K> keyMapper, Predicate<T>... filters) {
+        return JkStreams.toMapSingle(getDataSet(entityClazz), keyMapper, v -> v, filters);
+    }
+
+    @Override
     public <T extends RepoEntity> T get(Class<T> entityClazz, Predicate<T>... filters) {
         return jpaHandler.get(entityClazz, filters);
     }
@@ -117,11 +128,16 @@ public abstract class JkRepoFile implements JkRepo {
 
     @Override
     public <T extends RepoEntity> boolean removeAll(Collection<T> coll) {
-        boolean res = false;
-        for (T elem : coll) {
-            res |= getDataSet(elem.getClass()).remove(elem);
+        try {
+            ctx.getWriteLock().lock();
+            boolean res = false;
+            for (T elem : coll) {
+                res |= getDataSet(elem.getClass()).remove(elem);
+            }
+            return res;
+        } finally {
+            ctx.getWriteLock().unlock();
         }
-        return res;
     }
 
     @Override

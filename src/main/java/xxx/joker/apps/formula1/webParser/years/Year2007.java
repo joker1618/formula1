@@ -190,7 +190,7 @@ public class Year2007 extends AWikiParser2018 {
                 F1Team team = retrieveTeam(teamTag.getText(), false);
                 JkTag last = JkStruct.getLastElem(tr.getChildren());
                 String spoints = last.getTagName().equals("th") ? last.getText() : last.getChild("b").getText();
-                spoints = spoints.replaceAll(".*\\(|\\).*", "");
+                spoints = spoints.replaceAll("\\(.*", "").trim();
                 map.put(team.getTeamName(), Double.parseDouble(spoints));
             }
         }

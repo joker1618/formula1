@@ -6,7 +6,8 @@ import java.util.List;
 public class SeasonView {
 
     private int year;
-    private List<ResultView> driverResViews = new ArrayList<>();
+    private List<ResultView> driverResults = new ArrayList<>();
+    private List<ResultView> teamResults = new ArrayList<>();
 
 
     public SeasonView(int year) {
@@ -21,11 +22,19 @@ public class SeasonView {
         this.year = year;
     }
 
-    public List<ResultView> getDriverResViews() {
-        return driverResViews;
+    public List<ResultView> getDriverResults() {
+        return driverResults;
     }
 
-    public void setDriverResViews(List<ResultView> driverResViews) {
-        this.driverResViews = driverResViews;
+    public void setDriverResults(List<ResultView> driverResults) {
+        this.driverResults = driverResults;
+    }
+
+    public List<ResultView> getTeamResults() {
+        return teamResults;
+    }
+
+    public void setTeamResults(List<ResultView> teamResults) {
+        this.teamResults = teamResults;
     }
 }

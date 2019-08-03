@@ -334,7 +334,7 @@ public class Year1986 extends AWikiParser2018 {
 
                     r.setStartGrid(JkConvert.toInt(tr.getChild(posMap.get("Grid")).getText(), -1));
                     r.setEntrant(q.getEntrant());
-                    int qpos = r.getStartGrid() != null ? r.getStartGrid() : gp.getQualifies().indexOf(q);
+                    int qpos = r.getStartGrid() != null ? r.getStartGrid() : gp.getQualifies().indexOf(q)+1;
                     q.setFinalGrid(qpos);
 
                     r.setLaps(JkConvert.toInt(tr.getChild(posMap.get("Laps")).getText(), 0));
@@ -358,6 +358,12 @@ public class Year1986 extends AWikiParser2018 {
                 }
             }
         }
+
+        qualifyMap.values().forEach(q -> {
+            if(q.getFinalGrid() == null) {
+                q.setFinalGrid(gp.getQualifies().indexOf(q)+1);
+            }
+        });
 
         LOG.info("Gp {}: num races {}", gp, gp.getRaces().size());
     }

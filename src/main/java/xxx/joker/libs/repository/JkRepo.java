@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public interface JkRepo {
@@ -16,8 +17,9 @@ public interface JkRepo {
     <T extends RepoEntity> Map<Class<T>, Set<T>> getDataSets();
     <T extends RepoEntity> Set<T> getDataSet(Class<T> entityClazz);
     <T extends RepoEntity> List<T> getList(Class<T> entityClazz, Predicate<T>... filters);
-//    <K, T extends RepoEntity> Map<K,T> getMap(Class<T> entityClazz, Function<T, K> keyMapper, Predicate<T>... filters);
-//
+    <K, T extends RepoEntity> Map<K,List<T>> getMap(Class<T> entityClazz, Function<T, K> keyMapper, Predicate<T>... filters);
+    <K, T extends RepoEntity> Map<K,T> getMapSingle(Class<T> entityClazz, Function<T, K> keyMapper, Predicate<T>... filters);
+
     <T extends RepoEntity> T get(Class<T> entityClazz, Predicate<T>... filters);
     <T extends RepoEntity> T getById(long id);
     <T extends RepoEntity> T getByPk(T entity);
@@ -27,7 +29,7 @@ public interface JkRepo {
     <T extends RepoEntity> boolean addAll(Collection<T> coll);
     <T extends RepoEntity> T removeID(long entityID);
     <T extends RepoEntity> T remove(T toRemove);
-    <T extends RepoEntity> boolean removeAll(Collection<T> coll);
+    <T extends RepoEntity> boolean  removeAll(Collection<T> coll);
 
     void clearAll();
 

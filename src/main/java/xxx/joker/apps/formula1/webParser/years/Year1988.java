@@ -369,6 +369,12 @@ public class Year1988 extends AWikiParser2018 {
             }
         }
 
+        qualifyMap.values().forEach(q -> {
+            if(q.getFinalGrid() == null) {
+                q.setFinalGrid(gp.getQualifies().indexOf(q)+1);
+            }
+        });
+
         LOG.info("Gp {}: num races {}", gp, gp.getRaces().size());
     }
 

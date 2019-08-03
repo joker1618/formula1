@@ -9,6 +9,7 @@ public interface F1GuiModel {
     FxCountry getNation(String nationName);
     SeasonView getSeasonView(int year);
 
+    int getSelectedYear();
     void setSelectedYear(int year);
     void addChangeActionYear(Consumer<Integer> action);
 

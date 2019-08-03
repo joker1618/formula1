@@ -11,6 +11,7 @@ import xxx.joker.libs.repository.config.RepoCtx;
 import xxx.joker.libs.repository.design.RepoEntity;
 import xxx.joker.libs.repository.entities.RepoProperty;
 import xxx.joker.libs.repository.entities.RepoUri;
+import xxx.joker.libs.repository.exceptions.RepoError;
 import xxx.joker.libs.repository.wrapper.ClazzWrap;
 import xxx.joker.libs.repository.wrapper.FieldWrap;
 
@@ -54,6 +55,17 @@ public class JpaHandler {
             toRemove.forEach(cwRefMap::remove);
             entityRefMap.put(sourceClass, cwRefMap);
         });
+
+        // Check circular dependencies
+        for (Class<?> aClass : entityRefMap.keySet()) {
+            ClazzWrap cw = ctx.getClazzWraps().get(aClass);
+            for (ClazzWrap cw2 : entityRefMap.get(aClass).keySet()) {
+                List<FieldWrap> fwList = cw.getFieldWraps(cw2.getEClazz());
+                if(!fwList.isEmpty()) {
+                    throw new RepoError("Circular dependency. {} -> {}", aClass.getSimpleName(), JkStreams.map(fwList, fw -> fw.getFieldType().getSimpleName()));
+                }
+            }
+        }
 
         // Create property 'ID sequence'
         initDataSets(entities);
@@ -335,7 +347,7 @@ public class JpaHandler {
                 }
 
                 if ("clear".equals(methodName)) {
-                    entities.forEach(e -> removeEntity(e));
+                    JkConvert.toList(entities).forEach(e -> removeEntity(e));
                     return null;
                 }
 

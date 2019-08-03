@@ -20,6 +20,7 @@ import xxx.joker.libs.repository.entities.RepoResource;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
@@ -53,7 +54,34 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
         JkDebug.stopTimer("Parse entrant");
 //       if(1==1)    return;
 
-//        Map<String, Integer> expDriverMap = getExpectedDriverPoints(dwHtml.getHtml(mainPageUrl));
+        Map<String, Double> expDriverPoints = getExpectedDriverPoints(getMainPageHtml());
+        List<F1SeasonPoints> plist = JkStreams.map(expDriverPoints.entrySet(), en -> {
+            F1SeasonPoints sp = new F1SeasonPoints();
+            sp.setYear(year);
+            sp.setName(en.getKey());
+            sp.setFinalPoints(en.getValue());
+            return sp;
+        });
+        plist.sort(Comparator.comparing(F1SeasonPoints::getFinalPoints));
+        for(int i = 0; i < plist.size(); i++) {
+            plist.get(i).setFinalPos(i + 1);
+        }
+        model.addAll(plist);
+
+        Map<String, Double> expTeamPoints = getExpectedTeamPoints(getMainPageHtml());
+        plist = JkStreams.map(expTeamPoints.entrySet(), en -> {
+            F1SeasonPoints sp = new F1SeasonPoints();
+            sp.setYear(year);
+            sp.setName(en.getKey());
+            sp.setFinalPoints(en.getValue());
+            return sp;
+        });
+        plist.sort(Comparator.comparing(F1SeasonPoints::getFinalPoints));
+        for(int i = 0; i < plist.size(); i++) {
+            plist.get(i).setFinalPos(i + 1);
+        }
+        model.addAll(plist);
+
 //        List<Map.Entry<String, Integer>> entriesDriverMap = JkStreams.sorted(expDriverMap.entrySet(), Comparator.comparing(Map.Entry::getValue));
 //        String strDrivers = JkStreams.join(entriesDriverMap, "\n", w -> strf("  %-5d%s", w.getValue(), w.getKey()));
 //        display("*** Expected driver points ({})\n{}", entriesDriverMap.size(), strDrivers);
@@ -89,6 +117,13 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
                     JkDebug.startTimer("Parse races");
                     parseRace(html, gp);
                     JkDebug.stopTimer("Parse races");
+
+                    gp.getQualifies().forEach(q -> {
+                        if(q.getFinalGrid() == null || q.getFinalGrid() < 1) {
+                            q.setFinalGrid(q.getPos());
+                            gp.getRaces().stream().filter(r -> r.getEntrant().equals(q.getEntrant())).forEach(r -> r.setStartGrid(q.getPos()));
+                        }
+                    });
 
                     if (gp.getNumLapsRace() == null) {
                         gp.setNumLapsRace(gp.getRaces().get(0).getLaps());
@@ -450,6 +485,7 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
 
     private String getMainPageHtml() {
         String mainPageUrl = createWikiUrl(strf("/wiki/{}_Formula_One_World_Championship", year));
+        LOG.info("Main url {}: {}", year, mainPageUrl);
         return dwHtml.getHtml(mainPageUrl);
     }
 

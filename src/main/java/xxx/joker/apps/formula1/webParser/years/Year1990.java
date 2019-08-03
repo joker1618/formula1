@@ -347,10 +347,12 @@ public class Year1990 extends AWikiParser2018 {
 
                     r.setLaps(JkConvert.toInt(tr.getChild(posMap.get("Laps")).getText(), 0));
 
-                    r.setTime(parseDuration(tr.getChild(posMap.get("Time/Retired")).getText()));
-                    if (gp.getRaces().size() > 1 && r.getTime() != null) {
+                    JkDuration raceTime = parseDuration(tr.getChild(posMap.get("Time/Retired")).getText());
+                    if (gp.getRaces().size() == 1) {
+                        r.setTime(raceTime);
+                    } else if (gp.getRaces().size() > 1 && raceTime != null) {
                         F1Race firstRace = gp.getRaces().get(0);
-                        JkDuration ft = firstRace.getTime().plus(r.getTime());
+                        JkDuration ft = firstRace.getTime().plus(raceTime);
                         r.setTime(ft);
                     }
 

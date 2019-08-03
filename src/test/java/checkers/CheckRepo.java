@@ -55,7 +55,7 @@ public class CheckRepo extends AWebParser {
     @Test
     public void doYearChecks() {
 //        int year = JkStruct.getLastElem(model.getAvailableYears());
-        int year = 1986;
+        int year = 1989;
 //        checkTeams();
 //        checkDrivers();
 //        checkCircuits();
@@ -149,7 +149,7 @@ public class CheckRepo extends AWebParser {
 
         int numRounds = model.getNumQualifyRounds(year);
         model.getGranPrixs(year).forEach(gp -> {
-            if(gp.getYear() == 2003 && JkTests.equalsAny(gp.getNum(), 15, 16)) {
+            if(gp.getYear() == 2003 && JkTests.equalsAny(gp.getNum(), 16, 17)) {
                 return;
             }
 

@@ -6,7 +6,9 @@ import xxx.joker.libs.repository.JkRepo;
 import xxx.joker.libs.repository.entities.RepoResource;
 
 import java.nio.file.Path;
+import java.nio.file.spi.FileSystemProvider;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface F1Model extends JkRepo {
@@ -35,9 +37,12 @@ public interface F1Model extends JkRepo {
 
     Set<F1GranPrix> getGranPrixs();
     List<F1GranPrix> getGranPrixs(int year);
-//
+
     Set<F1Circuit> getCircuits();
     F1Circuit getCircuit(String city, String nation);
+
+    Set<F1SeasonPoints> getSeasonPoints();
+    Map<String, F1SeasonPoints> getSeasonPoints(int year);
 
     List<Integer> getAvailableYears();
 

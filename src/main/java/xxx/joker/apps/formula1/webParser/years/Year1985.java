@@ -13,11 +13,11 @@ import xxx.joker.libs.core.utils.JkStruct;
 
 import java.util.*;
 
-public class Year1987 extends AWikiParser2018 {
+public class Year1985 extends AWikiParser2018 {
 
 
-    public Year1987() {
-        super(1987);
+    public Year1985() {
+        super(1985);
     }
 
     @Override
@@ -31,31 +31,42 @@ public class Year1987 extends AWikiParser2018 {
         F1Entrant previous = null;
         for (JkTag tr : tbody.getChildren("tr")) {
             List<JkTag> tdList = tr.getChildren("td");
+            F1Entrant e = null;
 
             if(tdList.size() == tr.getChildren().size() && tdList.size() == 2) {
                 JkTag spanTag;
                 JkTag aTag;
                 JkTag chTag = tr.getChild(0).getChild("span");
-                if(chTag.getAttribute("class").equals("nowrap")) {
-                    spanTag = chTag.getChild("span");
-                    aTag = chTag.getChild("a");
-                } else  {
-                    spanTag = chTag;
-                    aTag = tr.getChild(0).getChild("a");
+                F1Driver d;
+                int carNo;
+                if(year == 1985 && chTag == null) {
+                    d = previous.getDriver();
+                    carNo = Integer.parseInt(tr.getChild(0).getText());
+                } else {
+                    if (chTag.getAttribute("class").equals("nowrap")) {
+                        spanTag = chTag.getChild("span");
+                        aTag = chTag.getChild("a");
+                    } else {
+                        spanTag = chTag;
+                        aTag = tr.getChild(0).getChild("a");
+                    }
+
+                    d = retrieveDriver(aTag.getAttribute("title"), true);
+                    if (StringUtils.isBlank(d.getCountry())) {
+                        JkTag img = spanTag.findFirstTag("img");
+                        d.setCountry(fixNation(img.getAttribute("alt")));
+                        checkNation(d, d.getCountry());
+                        parseDriverPage(d, aTag);
+                    }
+
+                    carNo = previous.getCarNo();
                 }
 
-                F1Driver d = retrieveDriver(aTag.getAttribute("title"), true);
-                if(StringUtils.isBlank(d.getCountry())) {
-                    JkTag img = spanTag.findFirstTag("img");
-                    d.setCountry(fixNation(img.getAttribute("alt")));
-                    checkNation(d, d.getCountry());
-                    parseDriverPage(d, aTag);
-                }
-
-                F1Entrant e = new F1Entrant();
+//                F1Entrant e = new F1Entrant();
+                e = new F1Entrant();
                 e.setYear(year);
                 e.setTeam(previous.getTeam());
-                e.setCarNo(previous.getCarNo());
+                e.setCarNo(carNo);
                 e.setDriver(d);
                 model.add(e);
 
@@ -67,6 +78,12 @@ public class Year1987 extends AWikiParser2018 {
                 JkTag spanTag;
                 JkTag aTag;
                 JkTag chTag = tr.getChild(1).getChild("span");
+                if(chTag == null) {
+                    JkTag ch0 = tr.getChild(0);
+                    if(year == 1985 && ch0.getTagName().equals("th") && ch0.getTextFlat().contains("Motori Moderni")) {
+                        continue;
+                    }
+                }
                 if(chTag.getAttribute("class").equals("nowrap")) {
                     spanTag = chTag.getChild("span");
                     aTag = chTag.getChild("a");
@@ -83,16 +100,18 @@ public class Year1987 extends AWikiParser2018 {
                     parseDriverPage(d, aTag);
                 }
 
-                F1Entrant e = new F1Entrant();
+//                F1Entrant e = new F1Entrant();
+                e = new F1Entrant();
                 e.setYear(year);
                 e.setTeam(previous.getTeam());
                 e.setCarNo(carNum);
+
                 e.setDriver(d);
                 model.add(e);
 
                 previous = e;
 
-            } else if(tdList.size() == 6) {
+            } else if(tdList.size() == 7) {
                 JkTag tagTeamName = tr.getChild(1).walkFirstChild("a", "span a");
                 F1Team team = retrieveTeam(tagTeamName.getText(), true);
                 if(StringUtils.isBlank(team.getCountry())) {
@@ -101,20 +120,21 @@ public class Year1987 extends AWikiParser2018 {
                     checkNation(team, team.getCountry());
                 }
 
-                int carNum = Integer.valueOf(tr.getChild(4).getText());
+                int carNum = Integer.valueOf(tr.getChild(5).getText());
 
                 JkTag spanTag;
                 JkTag aTag;
-                JkTag chTag = tr.getChild(5).getChild("span");
+                JkTag chTag = tr.getChild(6).getChild("span");
                 if(chTag.getAttribute("class").equals("nowrap")) {
                     spanTag = chTag.getChild("span");
                     aTag = chTag.getChild("a");
                 } else  {
                     spanTag = chTag;
-                    aTag = tr.getChild(5).getChild("a");
+                    aTag = tr.getChild(6).getChild("a");
                 }
 
-                F1Driver d = retrieveDriver(aTag.getAttribute("title"), true);
+                F1Driver d = retrieveDriver(aTag.getText(), true);
+//                F1Driver d = retrieveDriver(aTag.getAttribute("title"), true);
                 if(StringUtils.isBlank(d.getCountry())) {
                     JkTag img = spanTag.findFirstTag("img");
                     d.setCountry(fixNation(img.getAttribute("alt")));
@@ -122,7 +142,8 @@ public class Year1987 extends AWikiParser2018 {
                     parseDriverPage(d, aTag);
                 }
 
-                F1Entrant e = new F1Entrant();
+//                F1Entrant e = new F1Entrant();
+                e = new F1Entrant();
                 e.setYear(year);
                 e.setTeam(team);
                 e.setCarNo(carNum);
@@ -130,6 +151,22 @@ public class Year1987 extends AWikiParser2018 {
                 model.add(e);
 
                 previous = e;
+            }
+
+            if(e != null && year==1985 && e.getDriver().getFullName().equals("Stefan Bellof")) {
+                F1Entrant e2 = new F1Entrant();
+                e2.setYear(year);
+                e2.setTeam(e.getTeam());
+                e2.setCarNo(3);
+                e2.setDriver(e.getDriver());
+                model.add(e2);
+            } else if(e != null && year==1985 && e.getDriver().getFullName().equals("Kenny Acheson")) {
+                F1Entrant e2 = new F1Entrant();
+                e2.setYear(year);
+                e2.setTeam(e.getTeam());
+                e2.setCarNo(9);
+                e2.setDriver(e.getDriver());
+                model.add(e2);
             }
         }
 
@@ -191,8 +228,8 @@ public class Year1987 extends AWikiParser2018 {
     protected Map<String, Double> getExpectedTeamPoints(String html) {
         Map<String, Double> map = new HashMap<>();
 
-        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Constructors'_Championship_–_final_standings\">Constructors' Championship – final standings</span>",
-                "table");
+        JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"World_Constructors'_Championship_–_final_standings\">",
+                "<table");
         JkTag tbody = tableEntrants.getChild("tbody");
 
         for (JkTag tr : tbody.getChildren("tr")) {
@@ -245,14 +282,8 @@ public class Year1987 extends AWikiParser2018 {
 
                 q.setEntrant(getEntrant(year, d, carNo, team));
                 if(q.getEntrant() == null) {
-                    if(team.getTeamName().contains("Larrousse")) {
-                        team = retrieveTeam("Venturi", false);
-                        q.setEntrant(getEntrant(year, d, carNo, team));
-                    }
-                    if(q.getEntrant() == null) {
-                        LOG.error("Entrant[name={}]", dname);
-                        throw new JkRuntimeException("Null entrant for {}", q.getPrimaryKey());
-                    }
+                    LOG.error("Entrant[name={}]", dname);
+                    throw new JkRuntimeException("Null entrant for {}", q.getPrimaryKey());
                 }
 
                 JkDuration q1Time = null;
@@ -352,7 +383,8 @@ public class Year1987 extends AWikiParser2018 {
                         r.setTime(ft);
                     }
 
-                    JkTag lastChild = tr.getChild(posMap.get("Points"));
+                    Integer idx = posMap.containsKey("Points") ? posMap.get("Points") : posMap.get("Pts");
+                    JkTag lastChild = tr.getChild(idx);
                     if (lastChild.getChild("b") == null) {
                         r.setPoints(JkConvert.toDouble(lastChild.getText(), 0d));
                     } else {

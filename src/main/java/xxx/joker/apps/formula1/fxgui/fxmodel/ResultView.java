@@ -4,41 +4,47 @@ import xxx.joker.apps.formula1.model.entities.F1Driver;
 import xxx.joker.apps.formula1.model.entities.F1GranPrix;
 import xxx.joker.apps.formula1.model.entities.F1Race;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ResultView {
+import static xxx.joker.apps.formula1.common.F1Util.safePrint;
+import static xxx.joker.libs.core.utils.JkStrings.strf;
 
-    private F1Driver driver;
-    private Map<F1GranPrix, F1Race> raceMap = new HashMap<>();
+public class ResultView implements Comparable<ResultView> {
 
-    public F1Driver getDriver() {
-        return driver;
+    private String entryName;
+//    private Map<F1GranPrix, F1Race> raceMap = new HashMap<>();
+    private Map<F1GranPrix, ResultCellPoints> raceMap = new HashMap<>();
+    private ResultCellPoints total;
+
+    public String getEntryName() {
+        return entryName;
     }
 
-    public void setDriver(F1Driver driver) {
-        this.driver = driver;
+    public void setEntryName(String entryName) {
+        this.entryName = entryName;
     }
 
-    public Double getRacePoints(F1GranPrix gp) {
-        return raceMap.get(gp) != null ? raceMap.get(gp).getPoints() : 0d;
-    }
-
-    public Double getTotalPoints() {
-        double sum = 0d;
-        for (F1Race race : raceMap.values()) {
-            if(race != null && race.getPoints() != null) {
-                sum += race.getPoints();
-            }
-        }
-        return sum;
-    }
-
-    public Map<F1GranPrix, F1Race> getRaceMap() {
+    public Map<F1GranPrix, ResultCellPoints> getCellMap() {
         return raceMap;
     }
 
-    public void setRaceMap(Map<F1GranPrix, F1Race> raceMap) {
+    public void setRaceMap(Map<F1GranPrix, ResultCellPoints> raceMap) {
         this.raceMap = raceMap;
     }
+
+    public ResultCellPoints getTotal() {
+        return total;
+    }
+
+    public void setTotal(ResultCellPoints total) {
+        this.total = total;
+    }
+
+    @Override
+    public int compareTo(ResultView o) {
+        return total.compareTo(o.getTotal());
+    }
 }
+

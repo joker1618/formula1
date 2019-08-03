@@ -150,9 +150,11 @@ public class RootPane extends BorderPane {
             }
         });
         guiModel.addChangeActionYear(n -> {
+            PaneType spane = this.showedPane.get();
             List<F1GranPrix> gps = model.getGranPrixs(n);
             gpListView.getItems().setAll(gps);
             guiModel.setSelectedGranPrix(gps.get(0));
+            showedPane.set(spane);
         });
 
         comboSelYear.getSelectionModel().selectFirst();

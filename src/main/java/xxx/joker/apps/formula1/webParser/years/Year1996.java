@@ -302,7 +302,8 @@ public class Year1996 extends AWikiParser2018 {
                 F1Qualify q = qualifyMap.remove(carNum);
                 r.setStartGrid(JkConvert.toInt(tr.getChild(posMap.get("Grid")).getText(), -1));
                 r.setEntrant(q.getEntrant());
-                q.setFinalGrid(r.getStartGrid());
+                int qpos = r.getStartGrid() != -1 ? r.getStartGrid() : gp.getQualifies().indexOf(q)+1;
+                q.setFinalGrid(qpos);
 
                 r.setLaps(JkConvert.toInt(tr.getChild(posMap.get("Laps")).getText(), 0));
 

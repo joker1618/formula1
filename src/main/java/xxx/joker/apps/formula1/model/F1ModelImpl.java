@@ -12,6 +12,7 @@ import xxx.joker.libs.repository.entities.RepoResource;
 import java.nio.file.Path;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class F1ModelImpl extends JkRepoFile implements F1Model {
@@ -142,6 +143,16 @@ public class F1ModelImpl extends JkRepoFile implements F1Model {
     public F1Circuit getCircuit(String city, String nation) {
         F1Circuit circuit = new F1Circuit(nation, city);
         return getByPk(circuit);
+    }
+
+    @Override
+    public Set<F1SeasonPoints> getSeasonPoints() {
+        return getDataSet(F1SeasonPoints.class);
+    }
+
+    @Override
+    public Map<String, F1SeasonPoints> getSeasonPoints(int year) {
+        return getMapSingle(F1SeasonPoints.class, F1SeasonPoints::getName, sp -> sp.getYear() == year);
     }
 
     @Override

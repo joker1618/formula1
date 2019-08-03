@@ -122,12 +122,16 @@ public class F1Race extends RepoEntity {
 
         public static F1RaceOutcome byLabel(String label) {
             if(JkTests.isInt(label))    return FINISHED;
+            if(JkTests.isInt(label.replaceAll("[ (].*", "")) && JkTests.isInt(label.replaceAll(".*\\(|\\)*", ""))){
+                return FINISHED;
+            }
 
             for (F1RaceOutcome ro : values()) {
                 if(label.equalsIgnoreCase(ro.label)) {
                     return ro;
                 }
             }
+
             return null;
         }
 

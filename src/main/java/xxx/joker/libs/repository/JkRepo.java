@@ -29,9 +29,9 @@ public interface JkRepo {
     <T extends RepoEntity> T remove(T toRemove);
     <T extends RepoEntity> boolean removeAll(Collection<T> coll);
 
-//    void clearAll();
-//
-//    void rollback();
+    void clearAll();
+
+    void rollback();
     void commit();
 
 //    Set<RepoProperty> getProperties();
@@ -44,4 +44,5 @@ public interface JkRepo {
     RepoResource addResource(Path sourcePath, String resName, String... tags);
 
     RepoCtx getRepoCtx();
+
 }

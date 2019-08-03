@@ -22,7 +22,7 @@ public class YearWebParser extends CommonTest {
     }
     @Test
     public void runYear() {
-        int y = 2018;
+        int y = 1986;
 
         List<F1GranPrix> gpList = model.getGranPrixs(y);
         model.removeAll(gpList);

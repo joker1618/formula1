@@ -71,46 +71,50 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
         F1GranPrix firstGp = null;
         for (int i = 0; i < gpUrls.size(); i++) {
 //            display(""+i);
-            String html = dwHtml.getHtml(createWikiUrl(gpUrls.get(i)));
-            F1GranPrix gp = new F1GranPrix(year, i);
-            if(i == 0)  firstGp = gp;
-            if(model.add(gp)) {
-                JkDebug.startTimer("Parse GP details");
-                parseGpDetails(html, gp);
-                JkDebug.stopTimer("Parse GP details");
+            String wikiUrl = createWikiUrl(gpUrls.get(i));
+            String html = dwHtml.getHtml(wikiUrl);
+            try {
+                F1GranPrix gp = new F1GranPrix(year, i);
+                if (i == 0) firstGp = gp;
+                if (model.add(gp)) {
+                    JkDebug.startTimer("Parse GP details");
+                    parseGpDetails(html, gp);
+                    JkDebug.stopTimer("Parse GP details");
 
 //                display(gp.getCircuit().getCountry());
-                JkDebug.startTimer("Parse qualifies");
-                parseQualify(html, gp);
-                JkDebug.stopTimer("Parse qualifies");
+                    JkDebug.startTimer("Parse qualifies");
+                    parseQualify(html, gp);
+                    JkDebug.stopTimer("Parse qualifies");
 
-                JkDebug.startTimer("Parse races");
-                parseRace(html, gp);
-                JkDebug.stopTimer("Parse races");
+                    JkDebug.startTimer("Parse races");
+                    parseRace(html, gp);
+                    JkDebug.stopTimer("Parse races");
 
-                if(gp.getNumLapsRace() == null) {
-                    gp.setNumLapsRace(gp.getRaces().get(0).getLaps());
-                }
-                if(gp.getQualifies().isEmpty()) {
-                    for(int index = 0; index < gp.getRaces().size(); index++) {
-                        F1Race r = gp.getRaces().get(index);
-                        F1Qualify q = new F1Qualify();
-                        q.setGpPK(gp.getPrimaryKey());
-                        q.setPos(r.getStartGrid());
-                        q.setFinalGrid(r.getStartGrid());
-                        q.setEntrant(r.getEntrant());
-                        gp.getQualifies().add(q);
-                        if(i > 0) {
-                            int numRounds = Math.max(firstGp.getQualifies().get(0).getTimes().size(), 0);
-                            for(int nr = 0; nr < numRounds; nr++) {
-                                q.getTimes().add(null);
+                    if (gp.getNumLapsRace() == null) {
+                        gp.setNumLapsRace(gp.getRaces().get(0).getLaps());
+                    }
+                    if (gp.getQualifies().isEmpty()) {
+                        for (int index = 0; index < gp.getRaces().size(); index++) {
+                            F1Race r = gp.getRaces().get(index);
+                            F1Qualify q = new F1Qualify();
+                            q.setGpPK(gp.getPrimaryKey());
+                            q.setPos(r.getStartGrid());
+                            q.setFinalGrid(r.getStartGrid());
+                            q.setEntrant(r.getEntrant());
+                            gp.getQualifies().add(q);
+                            if (i > 0) {
+                                int numRounds = Math.max(firstGp.getQualifies().get(0).getTimes().size(), 0);
+                                for (int nr = 0; nr < numRounds; nr++) {
+                                    q.getTimes().add(null);
+                                }
                             }
                         }
                     }
-                }
 
-//                if(i == 0) break;
-//                break;
+                }
+            } catch (Exception ex) {
+                LOG.error("Working on {}", wikiUrl);
+                throw new JkRuntimeException(ex);
             }
         }
     }
@@ -156,6 +160,7 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
         if(nation.contains("China"))  return "China";
         if(nation.contains("Canada"))  return "Canada";
         if(nation.contains("Lombardy"))  return "Italy";
+        if(nation.contains("Monza"))  return "Italy";
         if(nation.contains("England") || nation.contains("Great Britain"))  return "United Kingdom";
         if(nation.contains("Wallonia"))  return "Belgium";
         if(nation.contains("Sepang"))  return "Malaysia";

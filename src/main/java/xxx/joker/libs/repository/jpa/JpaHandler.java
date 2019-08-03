@@ -39,7 +39,6 @@ public class JpaHandler {
     private Map<Long, RepoEntity> dataById;
 
     private Map<Class<?>, Map<ClazzWrap, List<FieldWrap>>> entityRefMap;
-    private List<Class<?>> removeOrderList;
 
     public JpaHandler(RepoCtx ctx, List<RepoEntity> entities) {
         this.ctx = ctx;
@@ -55,20 +54,6 @@ public class JpaHandler {
             toRemove.forEach(cwRefMap::remove);
             entityRefMap.put(sourceClass, cwRefMap);
         });
-
-        this.removeOrderList = new ArrayList<>();
-        Map<Class<?>, List<Class<?>>> tmpMap = JkStreams.toMapSingle(entityRefMap.entrySet(), Map.Entry::getKey, en -> JkStreams.map(en.getValue().keySet(), ClazzWrap::getEClazz));
-
-        List<Class<?>> eligibles = JkStreams.filterMap(entityRefMap.entrySet(), en -> en.getValue().isEmpty(), Map.Entry::getKey);
-        removeOrderList.addAll(eligibles);
-        eligibles.forEach(tmpMap::remove);
-
-        while(!tmpMap.isEmpty()) {
-            tmpMap.values().forEach(l -> l.removeIf(removeOrderList::contains));
-            eligibles = JkStreams.filterMap(tmpMap.entrySet(), en -> en.getValue().isEmpty(), Map.Entry::getKey);
-            removeOrderList.addAll(eligibles);
-            eligibles.forEach(tmpMap::remove);
-        }
 
         // Create property 'ID sequence'
         initDataSets(entities);

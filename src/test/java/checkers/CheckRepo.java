@@ -55,7 +55,7 @@ public class CheckRepo extends AWebParser {
     @Test
     public void doYearChecks() {
 //        int year = JkStruct.getLastElem(model.getAvailableYears());
-        int year = 1989;
+        int year = 1986;
 //        checkTeams();
 //        checkDrivers();
 //        checkCircuits();

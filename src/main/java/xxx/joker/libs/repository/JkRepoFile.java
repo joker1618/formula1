@@ -125,6 +125,29 @@ public abstract class JkRepoFile implements JkRepo {
     }
 
     @Override
+    public void clearAll() {
+        try {
+            ctx.getWriteLock().lock();
+            jpaHandler.initDataSets(Collections.emptyList());
+        } finally {
+            ctx.getWriteLock().unlock();
+        }
+    }
+
+    @Override
+    public void rollback() {
+        try {
+            ctx.getWriteLock().lock();
+            List<RepoEntity> fromFiles = daoHandler.loadDataFromFiles();
+            jpaHandler.initDataSets(fromFiles);
+            LOG.info("Rollback repo");
+        } finally {
+            ctx.getWriteLock().unlock();
+        }
+
+    }
+
+    @Override
     public void commit() {
         try {
             ctx.getWriteLock().lock();
@@ -135,7 +158,6 @@ public abstract class JkRepoFile implements JkRepo {
         } finally {
             ctx.getWriteLock().unlock();
         }
-
     }
 
     @Override

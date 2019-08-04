@@ -49,10 +49,11 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
 
     @Override
     public void parseYear() {
+        LOG.info("Main url {}: {}", year, getMainPageUrl());
+
         JkDebug.startTimer("Parse entrant");
         parseEntrants(getMainPageHtml());
         JkDebug.stopTimer("Parse entrant");
-//       if(1==1)    return;
 
         Map<String, Double> expDriverPoints = getExpectedDriverPoints(getMainPageHtml());
         List<F1SeasonPoints> plist = JkStreams.map(expDriverPoints.entrySet(), en -> {
@@ -102,7 +103,7 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
             String wikiUrl = createWikiUrl(gpUrls.get(i));
             String html = dwHtml.getHtml(wikiUrl);
             try {
-                F1GranPrix gp = new F1GranPrix(year, i);
+                F1GranPrix gp = new F1GranPrix(year, i + 1);
                 if (i == 0) firstGp = gp;
                 if (model.add(gp)) {
                     JkDebug.startTimer("Parse GP details");
@@ -231,7 +232,9 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
         if(city.contains("South Jeolla"))  return "Yeongam";
         if(city.contains("Uttar Pradesh"))  return "Uttar Pradesh";
         if(city.contains("Albert Park"))  return "Melbourne";
+        if(city.contains("Milan"))  return "Monza";
         if(city.contains("Adelaide"))  return "Adelaide";
+        if(city.contains("near Heidelberg"))  return "Hockenheim";
         return city;
     }
 
@@ -272,7 +275,7 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
         switch (dn) {
             case "Alessandro Zanardi":  return "Alex Zanardi";
             case "Nelson Piquet, Jr.":  return "Nelson Piquet Jr.";
-            case "Juan-Pablo Montoya":  return "Juan Pablo Montoya";
+            case "Juan Pablo Montoya":  return "Juan-Pablo Montoya";
         }
         if(dn.startsWith("Carlos Sainz")) {
             return "Carlos Sainz Jr.";
@@ -484,9 +487,10 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
     }
 
     private String getMainPageHtml() {
-        String mainPageUrl = createWikiUrl(strf("/wiki/{}_Formula_One_World_Championship", year));
-        LOG.info("Main url {}: {}", year, mainPageUrl);
-        return dwHtml.getHtml(mainPageUrl);
+        return dwHtml.getHtml(getMainPageUrl());
+    }
+    private String getMainPageUrl() {
+        return createWikiUrl(strf("/wiki/{}_Formula_One_World_Championship", year));
     }
 
 }

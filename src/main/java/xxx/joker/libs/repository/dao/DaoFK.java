@@ -1,6 +1,6 @@
 package xxx.joker.libs.repository.dao;
 
-import xxx.joker.libs.core.types.JkFormattable;
+import xxx.joker.libs.core.format.JkFormattable;
 import xxx.joker.libs.core.utils.JkStrings;
 
 import static xxx.joker.libs.core.utils.JkStrings.strf;

@@ -17,9 +17,10 @@ public class YearWebParser extends CommonTest {
     public void runYears() {
 //        model.getSeasonPoints().clear();
 
-        int start = 1985;
-//        int start = 2014;
-        int end = 2018;
+        int start = 1984;
+//        int start = 2000;
+        int end = 1993;
+//        int end = 2018;
         for(int y = end; y >= start; y--) {
             runYear(y);
         }
@@ -28,7 +29,7 @@ public class YearWebParser extends CommonTest {
     }
     @Test
     public void runYear() {
-        int y = 1989;
+        int y = 2018;
 
         List<F1GranPrix> gpList = model.getGranPrixs(y);
         model.removeAll(gpList);

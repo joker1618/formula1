@@ -1,10 +1,12 @@
 package xxx.joker.apps.formula1.fxgui.fxview.panes;
 
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import org.slf4j.Logger;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import xxx.joker.apps.formula1.fxgui.fxmodel.FxCountry;
 import xxx.joker.apps.formula1.fxgui.fxview.SubPane;
 import xxx.joker.apps.formula1.fxgui.fxview.box.TableBoxCaption;
+import xxx.joker.apps.formula1.fxgui.fxview.control.GridPaneBuilder;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTable;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTableCol;
 import xxx.joker.apps.formula1.model.entities.F1Circuit;
@@ -26,7 +29,7 @@ public class CircuitsPane extends SubPane {
     private SimpleObjectProperty<F1Circuit> selectedCircuit = new SimpleObjectProperty<>();
 
     public CircuitsPane() {
-        TableBoxCaption<F1Circuit> circuitsBox = createCircuitsPane();
+        TableBoxCaption<F1Circuit> circuitsBox = createListPane();
         setLeft(circuitsBox);
 
         setCenter(createInfoPane());
@@ -34,10 +37,9 @@ public class CircuitsPane extends SubPane {
         getStyleClass().add("circuitsPane");
         getStylesheets().add(getClass().getResource("/css/CircuitsPane.css").toExternalForm());
 
-//        circuitsBox.selectFirstTableElem();
     }
 
-    private TableBoxCaption<F1Circuit> createCircuitsPane() {
+    private TableBoxCaption<F1Circuit> createListPane() {
         JfxTableCol<F1Circuit, String> colNation = JfxTableCol.createCol("NATION", "country");
         JfxTableCol<F1Circuit, String> colCity = JfxTableCol.createCol("CITY", "city");
 
@@ -54,19 +56,36 @@ public class CircuitsPane extends SubPane {
         bp.getStyleClass().add("infoPane");
 
         ImageView ivFlag = JfxUtil.createImageView(150, 100);
-        Label lblTitle = new Label();
-        HBox topBox = new HBox(ivFlag, lblTitle);
-//        topBox.getStyleClass().addAll("pad10", "spacing10");
-//        topBox.getStyleClass().addAll("bgGrey");
+        HBox topBox = new HBox(ivFlag);
         bp.setTop(topBox);
+
+        topBox.getStyleClass().addAll("subBox");
+
+        int row = 0;
+
+        GridPaneBuilder gpBuilder = new GridPaneBuilder();
+        gpBuilder.add(row, 0, "Country:");
+        Label nat = new Label();
+        gpBuilder.add(row, 1, nat);
+
+        row++;
+        gpBuilder.add(row, 0, "City:");
+        Label city = new Label();
+        gpBuilder.add(row, 1, city);
+
+        GridPane gridPane = gpBuilder.createGridPane();
+
+        HBox cbox = new HBox(gridPane);
+        cbox.getStyleClass().addAll("subBox");
+        bp.setCenter(cbox);
 
         selectedCircuit.addListener((obs,o,n) -> {
             if(n != null) {
                 FxCountry fxCountry = guiModel.getNation(n.getCountry());
                 ivFlag.setImage(fxCountry.getFlagImage());
-                lblTitle.setText(strf("{} - {}", fxCountry.getName(), n.getCity()));
+                nat.setText(n.getCountry());
+                city.setText(n.getCity());
             }
-            bp.setVisible(n != null);
         });
 
         BorderPane.setMargin(bp, new Insets(0d, 0d, 0d, 40d));

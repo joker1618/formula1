@@ -12,7 +12,7 @@ import xxx.joker.libs.core.format.JkOutput;
 import xxx.joker.libs.core.utils.JkConvert;
 import xxx.joker.libs.repository.design.RepoEntity;
 import xxx.joker.libs.repository.entities.RepoUri;
-import xxx.joker.libs.repository.export.TMPCsvParser;
+import xxx.joker.libs.repository.export.TmpFmt;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -25,7 +25,7 @@ import static xxx.joker.libs.core.utils.JkStrings.strf;
 public abstract class CommonTest {
 
     protected F1Model model;
-    protected TMPCsvParser csvParser = TMPCsvParser.get();
+    protected TmpFmt csvParser = TmpFmt.get();
 
     @BeforeClass
     public static void beforeClass() {

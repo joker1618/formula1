@@ -32,6 +32,8 @@ import xxx.joker.libs.core.javafx.JfxUtil;
 
 import java.util.List;
 
+import static xxx.joker.libs.core.utils.JkStrings.strf;
+
 public class RootPane extends BorderPane {
 
     private static final Logger LOG = LoggerFactory.getLogger(RootPane.class);
@@ -137,7 +139,7 @@ public class RootPane extends BorderPane {
                         ImageView ivIcon = (ImageView) getGraphic().lookup(".iconBox .image-view");
                         ivIcon.setImage(flagIcon);
                     }
-                    setText(fnat.getCode());
+                    setText(strf("%2d  -  %s", item.getNum(), fnat.getCode()));
                 }
             }
         });

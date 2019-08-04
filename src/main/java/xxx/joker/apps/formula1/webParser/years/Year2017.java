@@ -189,7 +189,7 @@ public class Year2017 extends AWikiParser2018 {
 				r.setOutcome(F1Race.F1RaceOutcome.byLabel(outcome));
 
                 int carNum = Integer.parseInt(tr.getChild(1).getText());
-                if(gp.getNum() == 16 && carNum == 39) {
+                if(gp.getNum() == 17 && carNum == 39) {
                     // error on wikipedia
                     carNum = 28;
                 }

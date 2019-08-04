@@ -1,10 +1,10 @@
 package xxx.joker.libs.repository.export;
 
+import org.apache.commons.lang3.StringUtils;
 import xxx.joker.libs.core.files.JkFiles;
-import xxx.joker.libs.core.format.JkOutput;
 import xxx.joker.libs.core.lambdas.JkStreams;
 import xxx.joker.libs.core.runtimes.JkReflection;
-import xxx.joker.libs.core.types.JkFormattable;
+import xxx.joker.libs.core.format.JkFormattable;
 import xxx.joker.libs.core.utils.JkConvert;
 import xxx.joker.libs.core.utils.JkStrings;
 
@@ -21,10 +21,19 @@ import java.util.function.Function;
 
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
-public class TMPCsvParser {
+public class TmpFmt {
 
-    private String fieldSep = JkOutput.DEF_SEP;
+    private static class CsvSep {
+        public static final String SEP_FIELD = "|";
+        public static final String SEP_LIST = ";";
 
+        public static final String PH_SEP_FIELD = "@_PIPE_@";
+        public static final String PH_SEP_LIST = "@_SCL_@";
+        public static final String PH_TAB = "@_TAB_@";
+        public static final String PH_NEWLINE = "@_LF_@";
+        public static final String PH_NULL = "@_NUL_@";
+    }
+    
     private DateTimeFormatter DTF_TIME = DateTimeFormatter.ISO_LOCAL_TIME;
     private DateTimeFormatter DTF_DATE = DateTimeFormatter.ISO_LOCAL_DATE;
     private DateTimeFormatter DTF_DATETIME = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
@@ -34,29 +43,29 @@ public class TMPCsvParser {
     private Map<Class<?>, Function<String, ?>> customClassParses = new HashMap<>();
     private Map<Class<?>, Function<String, ?>> customInstanceParses = new HashMap<>();
 
-    private TMPCsvParser() {
+    private TmpFmt() {
 
     }
 
-    public static TMPCsvParser get() {
-        return new TMPCsvParser();
+    public static TmpFmt get() {
+        return new TmpFmt();
     }
 
     public <T> List<T> parseCsv(Path csvPath, Class<T> clazz) {
         return parseCsv(JkFiles.readLines(csvPath), clazz);
     }
     public <T> List<T> parseCsv(List<String> csvLines, Class<T> clazz) {
-        return parseCsv1(csvLines, clazz, fieldSep);
+        return parseCsv1(csvLines, clazz, CsvSep.SEP_FIELD);
     }
     private <T> List<T> parseCsv1(List<String> csvLines, Class<T> clazz, String fieldSep)  {
         List<T> toRet = new ArrayList<>();
 
         if(!csvLines.isEmpty()) {
-            List<String> fnames = JkStrings.splitList(csvLines.get(0), fieldSep);
+            List<String> fnames = JkStrings.splitList(csvLines.get(0), CsvSep.SEP_FIELD);
             Map<String, Field> fmap = JkStreams.toMapSingle(fnames, fn -> fn, f -> JkReflection.getFieldByName(clazz, f));
             for(int i = 1; i < csvLines.size(); i++) {
                 T elem = JkReflection.createInstance(clazz);
-                List<String> line = JkStrings.splitList(csvLines.get(i), fieldSep);
+                List<String> line = JkStrings.splitList(csvLines.get(i), CsvSep.SEP_FIELD);
                 for(int col = 0; col < fnames.size(); col++) {
                     Field f = fmap.get(fnames.get(col));
                     if(f != null) {
@@ -71,9 +80,9 @@ public class TMPCsvParser {
         return toRet;
     }
     private Object parseSingleValue(String value, Class<?> fclazz) {
-        Object o = null;
+        Object o = isOfClass(fclazz, String.class) ? "" : null;
 
-        if (value != null && !value.equalsIgnoreCase(JkOutput.PH_NULL)) {
+        if (StringUtils.isNotBlank(value) && !value.equalsIgnoreCase(CsvSep.PH_NULL)) {
             Function<String, ?> parseFunc = retrieveCustomParse(fclazz);
             if(parseFunc != null) {
                 o = parseFunc.apply(value);
@@ -123,13 +132,13 @@ public class TMPCsvParser {
     }
 
     public <T> List<String> formatCsv(Collection<T> list)  {
-        return formatCsv1(list, fieldSep);
+        return formatCsv1(list, CsvSep.SEP_FIELD);
     }
     public List<String> formatCsvExclude(Collection<?> list, String... fieldsToExclude)  {
-        return formatCsv1(list, fieldSep, JkConvert.toList(fieldsToExclude));
+        return formatCsv1(list, CsvSep.SEP_FIELD, JkConvert.toList(fieldsToExclude));
     }
     private List<String> formatCsv1(Collection<?> list, String fieldSep)  {
-        return formatCsv1(list, fieldSep, Collections.emptyList());
+        return formatCsv1(list, CsvSep.SEP_FIELD, Collections.emptyList());
     }
     private List<String> formatCsv1(Collection<?> coll, String fieldSep, List<String> fieldsToExclude)  {
         List<String> toRet = new ArrayList<>();
@@ -139,11 +148,11 @@ public class TMPCsvParser {
             List<Field> allFields = JkReflection.findAllFields(list.get(0).getClass());
             allFields.removeIf(f -> fieldsToExclude.contains(f.getName()));
 
-            String header = JkStreams.join(allFields, fieldSep, Field::getName);
+            String header = JkStreams.join(allFields, CsvSep.SEP_FIELD, Field::getName);
             toRet.add(header);
 
             list.forEach(elem -> {
-                String join = JkStreams.join(allFields, fieldSep, f -> formatFieldValue(JkReflection.getFieldValue(elem, f), f.getType()));
+                String join = JkStreams.join(allFields, CsvSep.SEP_FIELD, f -> formatFieldValue(JkReflection.getFieldValue(elem, f), f.getType()));
                 toRet.add(join);
             });
         }
@@ -207,14 +216,6 @@ public class TMPCsvParser {
         return null;
     }
 
-    public String getFieldSep() {
-        return fieldSep;
-    }
-    public TMPCsvParser setFieldSep(String fieldSep) {
-        this.fieldSep = fieldSep;
-        return this;
-    }
-
     public <T> void addCustomClassFormat(Class<T> clazz, Function<T, String> formatFunc) {
         customClassFormats.put(clazz, formatFunc);
     }
@@ -227,4 +228,5 @@ public class TMPCsvParser {
     public <T> void addCustomInstanceParse(Class<T> clazz, Function<String, T> parseFunc) {
         customInstanceParses.put(clazz, parseFunc);
     }
+
 }

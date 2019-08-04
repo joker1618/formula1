@@ -15,7 +15,7 @@ import xxx.joker.libs.core.datetime.JkDuration;
 import xxx.joker.libs.core.lambdas.JkStreams;
 import xxx.joker.libs.core.runtimes.JkReflection;
 import xxx.joker.libs.core.tests.JkTests;
-import xxx.joker.libs.core.types.JkFormattable;
+import xxx.joker.libs.core.format.JkFormattable;
 import xxx.joker.libs.repository.design.RepoEntity;
 import xxx.joker.libs.repository.design.RepoField;
 
@@ -55,7 +55,7 @@ public class CheckRepo extends AWebParser {
     @Test
     public void doYearChecks() {
 //        int year = JkStruct.getLastElem(model.getAvailableYears());
-        int year = 1989;
+        int year = 1984;
 //        checkTeams();
 //        checkDrivers();
 //        checkCircuits();
@@ -149,7 +149,7 @@ public class CheckRepo extends AWebParser {
 
         int numRounds = model.getNumQualifyRounds(year);
         model.getGranPrixs(year).forEach(gp -> {
-            if(gp.getYear() == 2003 && JkTests.equalsAny(gp.getNum(), 16, 17)) {
+            if(gp.getYear() == 2003 && JkTests.equalsAny(gp.getNum(), 17, 18)) {
                 return;
             }
 

@@ -73,7 +73,6 @@ public class F1ModelImpl extends JkRepoFile implements F1Model {
         return addResource(imgPath, driver.getPrimaryKey(), "driver cover");
     }
 
-
     @Override
     public RepoResource getGpTrackMap(F1GranPrix gp) {
         return getResource(gp.getPrimaryKey(), "trackMap");

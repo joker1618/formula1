@@ -3,7 +3,7 @@ package unitTests;
 import org.junit.Test;
 import xxx.joker.libs.core.format.JkOutput;
 import xxx.joker.libs.core.utils.JkConvert;
-import xxx.joker.libs.repository.export.TMPCsvParser;
+import xxx.joker.libs.repository.export.TmpFmt;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +33,7 @@ public class TestRepo {
 
         model.getDataSets().forEach((c,elist) -> {
             display(c.getSimpleName());
-            List<String> lines = TMPCsvParser.get().formatCsv(elist);
+            List<String> lines = TmpFmt.get().formatCsv(elist);
             display("{}\n", JkOutput.columnsView(lines));
         });
     }

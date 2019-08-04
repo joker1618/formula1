@@ -116,7 +116,7 @@ public class ShowData extends CommonTest {
 
     @Test
     public void singleCheckPoints() {
-        int year = 1986;
+        int year = 1984;
         checkPoints(defYear == -1 ? year : defYear);
     }
     public void checkPoints(int year) {

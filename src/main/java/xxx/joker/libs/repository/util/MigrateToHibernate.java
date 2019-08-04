@@ -17,6 +17,8 @@ import static xxx.joker.libs.core.utils.JkStrings.strf;
 public class MigrateToHibernate {
 
     public static void migrate(Path destFolder, RepoCtx ctx) {
+        List<String> daoNames = new ArrayList<>();
+
         for (ClazzWrap cw : ctx.getClazzWraps().values()) {
             List<String> newLines = new ArrayList<>();
             newLines.add("import javax.persistence.*;");
@@ -53,7 +55,7 @@ public class MigrateToHibernate {
                 } else if(fw.isEntityColl()) {
                     newLines.add("@OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})");
                 }
-                newLines.add(strf("public () get{}() {", fw.getFieldType().getSimpleName(), StringUtils.capitalize(fw.getFieldName())));
+                newLines.add(strf("public {} get{}() {", fw.getFieldType().getSimpleName(), StringUtils.capitalize(fw.getFieldName())));
                 newLines.add(strf("return {};", fw.getFieldName()));
                 newLines.add(strf("}"));
                 newLines.add(strf("public void set{}({} {}) {", StringUtils.capitalize(fw.getFieldName()), fw.getFieldType().getSimpleName(), fw.getFieldName()));
@@ -70,8 +72,18 @@ public class MigrateToHibernate {
                     "public interface {}Dao extends JpaRepository<{}, Long> {\n" +
                     "\n" +
                     "}", cw.getEClazz().getSimpleName(), cw.getEClazz().getSimpleName());
-            JkFiles.writeFile(destFolder.resolve(strf("{}Dao.java", cw.getEClazz().getSimpleName())), str);
+            String daoName = strf("{}Dao", cw.getEClazz().getSimpleName());
+            daoNames.add(daoName);
+            JkFiles.writeFile(destFolder.resolve(strf("{}.java", daoName)), str);
         }
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("public abstract class AbstractJpaModel {\n\n");
+        daoNames.forEach(dn -> sb.append(strf("@Autowired\nprotected {} {}\n\n", dn, dn.substring(0, 1).toLowerCase()+dn.substring(1))));
+        sb.append("}");
+
+        JkFiles.writeFile(destFolder.resolve("AbstractJpaModel.java"), sb.toString());
+
 
         String str = "import org.apache.commons.lang3.builder.ToStringBuilder;\n" +
                 "import org.apache.commons.lang3.builder.ToStringStyle;\n" +

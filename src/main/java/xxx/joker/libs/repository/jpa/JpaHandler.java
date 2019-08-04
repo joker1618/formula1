@@ -24,6 +24,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.Lock;
 import java.util.function.Predicate;
 
+import static xxx.joker.libs.core.utils.JkConsole.display;
 import static xxx.joker.libs.repository.config.RepoConfig.REPO_SEQ_PROP;
 
 public class JpaHandler {
@@ -396,12 +397,7 @@ public class JpaHandler {
 
                 if ("addAll".equals(methodName)) {
                     Collection<RepoEntity> coll = (Collection<RepoEntity>) args[0];
-                    boolean res = false;
-                    for (RepoEntity e : coll) {
-                        addEntityToRepo(e);
-                        res |= sourceSet.add(e);
-                    }
-                    return res;
+                    return sourceSet.addAll(coll);
                 }
 
                 return method.invoke(sourceSet, args);

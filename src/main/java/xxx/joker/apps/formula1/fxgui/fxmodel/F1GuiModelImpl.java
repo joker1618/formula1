@@ -44,10 +44,23 @@ public class F1GuiModelImpl implements F1GuiModel {
     public FxCountry getNation(String nationName) {
         return cacheNation.get(nationName, () -> {
             F1Country country = model.getCountry(nationName);
-            Path iconPath = model.getRepoCtx().getResourcesFolder().resolve(country.getFlagIcon().getUri().getPath());
-            Image icon = new Image(JkFiles.toURL(iconPath));
-            Path imagePath = model.getRepoCtx().getResourcesFolder().resolve(country.getFlagImage().getUri().getPath());
-            Image image = new Image(JkFiles.toURL(imagePath));
+
+            Image icon;
+            if(country.getFlagIcon() == null)  {
+                icon = null;
+            } else {
+                Path iconPath = model.getRepoCtx().getResourcesFolder().resolve(country.getFlagIcon().getUri().getPath());
+                icon = new Image(JkFiles.toURL(iconPath));
+            }
+
+            Image image;
+            if(country.getFlagIcon() == null)  {
+                image = null;
+            } else {
+                Path imagePath = model.getRepoCtx().getResourcesFolder().resolve(country.getFlagIcon().getUri().getPath());
+                image = new Image(JkFiles.toURL(imagePath));
+            }
+
             return new FxCountry(country, icon, image);
         });
     }

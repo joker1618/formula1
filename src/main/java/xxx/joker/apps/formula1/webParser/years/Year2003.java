@@ -200,7 +200,7 @@ public class Year2003 extends AWikiParser2018 {
 
     @Override
     protected void parseQualify(String html, F1GranPrix gp) {
-        if(JkTests.equalsAny(gp.getNum(), 14, 15))   return;
+        if(JkTests.equalsAny(gp.getNum(), 16, 15))   return;
 
         JkTag tableQualify = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Qualifying_2\">", "<table class=\"wikitable");
         if(tableQualify == null) {

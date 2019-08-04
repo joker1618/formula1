@@ -150,7 +150,12 @@ public class F1ModelImpl extends JkRepoFile implements F1Model {
     }
 
     @Override
-    public Map<String, F1SeasonPoints> getSeasonPoints(int year) {
+    public List<F1SeasonPoints> getSeasonPoints(int year) {
+        return getList(F1SeasonPoints.class, sp -> sp.getYear() == year);
+    }
+
+    @Override
+    public Map<String, F1SeasonPoints> getSeasonPointsMap(int year) {
         return getMapSingle(F1SeasonPoints.class, F1SeasonPoints::getName, sp -> sp.getYear() == year);
     }
 

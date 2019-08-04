@@ -69,7 +69,7 @@ public class F1GuiModelImpl implements F1GuiModel {
     public SeasonView getSeasonView(int year) {
         return cacheYears.get(year, () -> {
             SeasonView sv = new SeasonView(year);
-            Map<String, F1SeasonPoints> seasonPoints = model.getSeasonPoints(year);
+            Map<String, F1SeasonPoints> seasonPoints = model.getSeasonPointsMap(year);
 
             List<F1Driver> drivers = JkStreams.mapUniq(model.getEntrants(year), F1Entrant::getDriver);
             for (F1Driver d : drivers) {

@@ -4,10 +4,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import webparser.CommonTest;
-import xxx.joker.apps.formula1.model.entities.F1Country;
-import xxx.joker.apps.formula1.model.entities.F1Entrant;
-import xxx.joker.apps.formula1.model.entities.F1GranPrix;
-import xxx.joker.apps.formula1.model.entities.F1Race;
+import xxx.joker.apps.formula1.model.entities.*;
 import xxx.joker.apps.formula1.webParser.WikiParser;
 import xxx.joker.libs.core.format.JkOutput;
 import xxx.joker.libs.core.lambdas.JkStreams;
@@ -116,18 +113,21 @@ public class ShowData extends CommonTest {
 
     @Test
     public void singleCheckPoints() {
-        int year = 1984;
+        int year = 1983;
         checkPoints(defYear == -1 ? year : defYear);
     }
     public void checkPoints(int year) {
         List<F1GranPrix> gp = model.getGranPrixs(year);
         List<F1Race> races = gp.stream().flatMap(g -> g.getRaces().stream()).collect(Collectors.toList());
 
+        List<F1SeasonPoints> seasonPoints = model.getSeasonPoints(year);
+        Map<String, Double> expected = JkStreams.toMapSingle(seasonPoints, F1SeasonPoints::getName, F1SeasonPoints::getFinalPoints);
+
         Map<String, List<F1Race>> byDriver = JkStreams.toMap(races, r -> r.getEntrant().getDriver().getFullName());
-        printList(year, "DRIVER", byDriver, WikiParser.getParser(year).getExpectedDriverPoints());
+        printList(year, "DRIVER", byDriver, expected);
 
         Map<String, List<F1Race>> byTeam = JkStreams.toMap(races, r -> r.getEntrant().getTeam().getTeamName());
-        printList(year, "TEAM", byTeam, WikiParser.getParser(year).getExpectedTeamPoints());
+        printList(year, "TEAM", byTeam, expected);
     }
 
     public void printList(int year, String label, Map<String, List<F1Race>> raceMap, Map<String, Double> expected) {

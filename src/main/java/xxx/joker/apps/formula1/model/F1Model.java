@@ -42,7 +42,8 @@ public interface F1Model extends JkRepo {
     F1Circuit getCircuit(String city, String nation);
 
     Set<F1SeasonPoints> getSeasonPoints();
-    Map<String, F1SeasonPoints> getSeasonPoints(int year);
+    List<F1SeasonPoints> getSeasonPoints(int year);
+    Map<String, F1SeasonPoints> getSeasonPointsMap(int year);
 
     List<Integer> getAvailableYears();
 

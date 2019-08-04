@@ -55,7 +55,7 @@ public class CheckRepo extends AWebParser {
     @Test
     public void doYearChecks() {
 //        int year = JkStruct.getLastElem(model.getAvailableYears());
-        int year = 1984;
+        int year = 1983;
 //        checkTeams();
 //        checkDrivers();
 //        checkCircuits();
@@ -121,11 +121,14 @@ public class CheckRepo extends AWebParser {
         List<F1GranPrix> gp = model.getGranPrixs(year);
         List<F1Race> races = gp.stream().flatMap(g -> g.getRaces().stream()).collect(Collectors.toList());
 
+        List<F1SeasonPoints> seasonPoints = model.getSeasonPoints(year);
+        Map<String, Double> expected = JkStreams.toMapSingle(seasonPoints, F1SeasonPoints::getName, F1SeasonPoints::getFinalPoints);
+
         Map<String, List<F1Race>> byDriver = JkStreams.toMap(races, r -> r.getEntrant().getDriver().getFullName());
-        boolean dres = checkPoints(byDriver, WikiParser.getParser(year).getExpectedDriverPoints());
+        boolean dres = checkPoints(byDriver, expected);
 
         Map<String, List<F1Race>> byTeam = JkStreams.toMap(races, r -> r.getEntrant().getTeam().getTeamName());
-        boolean tres = checkPoints(byTeam, WikiParser.getParser(year).getExpectedTeamPoints());
+        boolean tres = checkPoints(byTeam, expected);
 
         display("{}   CHECK POINT", (!tres || !dres ? "--KO--" : "OK"));
     }

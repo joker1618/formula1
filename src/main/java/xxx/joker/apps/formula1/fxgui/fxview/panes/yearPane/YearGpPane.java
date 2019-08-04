@@ -1,5 +1,7 @@
 package xxx.joker.apps.formula1.fxgui.fxview.panes.yearPane;
 
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +27,14 @@ public class YearGpPane extends SubPane {
         HBox hbox = new HBox(qtable, rtable);
         hbox.getStyleClass().addAll("centered");
         hbox.setStyle("-fx-spacing: 50");
-        setCenter(hbox);
+//        setCenter(hbox);
+
+        Tab tab1 = new Tab("Details");
+        Tab tab2 = new Tab("Results");
+        tab2.setContent(hbox);
+        TabPane tabPane = new TabPane();
+        tabPane.getTabs().addAll(tab1, tab2);
+        setCenter(tabPane);
     }
 
     private TableBoxCaption<F1Qualify> createTableQualify() {

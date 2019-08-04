@@ -191,9 +191,9 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
         if(nation.contains("Ireland"))  return "Ireland";
         if(nation.contains("Monte Carlo"))  return "Monaco";
         if(nation.contains("Indiana") || nation.contains("Arizona"))  return "United States";
-        if(nation.contains("Texas") || nation.contains("Michigan"))  return "United States";
+        if(nation.contains("Texas") || nation.contains("California") || nation.contains("Michigan"))  return "United States";
         if(nation.contains("Germany"))  return "Germany";
-        if(nation.contains("China"))  return "China";
+        if(nation.contains("China") || nation.contains("Hong Kong"))  return "China";
         if(nation.contains("Canada"))  return "Canada";
         if(nation.contains("Lombardy"))  return "Italy";
         if(nation.contains("Monza"))  return "Italy";
@@ -270,8 +270,14 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
     }
     private String fixDriverName(String driverName) {
         String dn = JkHtmlChars.fixDirtyChars(driverName);
-        dn = dn.replace("(racing driver)", "").trim();
-        dn = dn.replace("(driver)", "").trim();
+
+        if(dn.equals("Jacques Villeneuve (racing driver, born 1953)")) {
+            return "Jacques Villeneuve Sr.";
+        }
+
+        dn = dn.replaceAll("\\(Formula 1.*", "").trim();
+        dn = dn.replaceAll("\\(racing driver.*", "").trim();
+        dn = dn.replaceAll("\\(driver.*", "").trim();
         switch (dn) {
             case "Alessandro Zanardi":  return "Alex Zanardi";
             case "Nelson Piquet, Jr.":  return "Nelson Piquet Jr.";
@@ -279,6 +285,9 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
         }
         if(dn.startsWith("Carlos Sainz")) {
             return "Carlos Sainz Jr.";
+        }
+        if(dn.contains("Jacques Villeneuve") && dn.contains("Sr")) {
+            return "Jacques Villeneuve Sr.";
         }
         if(dn.equals("Adrián Campos")) {
             return "Adrian Campos";
@@ -423,6 +432,9 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
                         } else if(list.get(0).equals("Circuit de Monaco")) {
                             nation = "Monaco";
                             city = "Monte Carlo";
+                        } else if(list.get(0).equals("Paul Ricard Circuit")) {
+                            nation = "France";
+                            city = "Le Castellet";
                         } else if(list.get(0).equals("Autódromo do Estoril")) {
                             nation = "Portugal";
                             city = "Autódromo do Estoril";

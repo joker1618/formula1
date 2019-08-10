@@ -1,8 +1,8 @@
 package xxx.joker.apps.formula1.model.entities;
 
 import xxx.joker.libs.core.datetime.JkDuration;
-import xxx.joker.libs.repository.design.RepoEntity;
-import xxx.joker.libs.repository.design.RepoField;
+import xxx.joker.libs.datalayer.design.RepoEntity;
+import xxx.joker.libs.datalayer.design.RepoField;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class F1Qualify extends RepoEntity {
 
     @Override
     public String getPrimaryKey() {
-        return strf("qualify:[%s]-%02d", gpPK, pos);
+        return strf("qualify-[%s]-%02d", gpPK, pos);
     }
 
     public String getGpPK() {

@@ -23,7 +23,7 @@ public class Year1988 extends AWikiParser2018 {
     @Override
     protected void parseEntrants(String html) {
         JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Teams_and_drivers\">", "<table class=\"wikitable\"");
-        if(tableEntrants == null) {
+        if (tableEntrants == null) {
             tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Drivers_and_constructors\">", "<table class=\"wikitable\"");
         }
         JkTag tbody = tableEntrants.getChild("tbody");
@@ -32,20 +32,20 @@ public class Year1988 extends AWikiParser2018 {
         for (JkTag tr : tbody.getChildren("tr")) {
             List<JkTag> tdList = tr.getChildren("td");
 
-            if(tdList.size() == tr.getChildren().size() && tdList.size() == 2) {
+            if (tdList.size() == tr.getChildren().size() && tdList.size() == 2) {
                 JkTag spanTag;
                 JkTag aTag;
                 JkTag chTag = tr.getChild(0).getChild("span");
-                if(chTag.getAttribute("class").equals("nowrap")) {
+                if (chTag.getAttribute("class").equals("nowrap")) {
                     spanTag = chTag.getChild("span");
                     aTag = chTag.getChild("a");
-                } else  {
+                } else {
                     spanTag = chTag;
                     aTag = tr.getChild(0).getChild("a");
                 }
 
                 F1Driver d = retrieveDriver(aTag.getAttribute("title"), true);
-                if(StringUtils.isBlank(d.getCountry())) {
+                if (StringUtils.isBlank(d.getCountry())) {
                     JkTag img = spanTag.findFirstTag("img");
                     d.setCountry(fixNation(img.getAttribute("alt")));
                     checkNation(d, d.getCountry());
@@ -61,23 +61,24 @@ public class Year1988 extends AWikiParser2018 {
 
                 previous = e;
 
-            } else if(tdList.size() == tr.getChildren().size() && tdList.size() == 3) {
+            } else if (tdList.size() == tr.getChildren().size() && tdList.size() == 3) {
                 int carNum = JkConvert.toInt(tr.getChild(0).getText(), -1);
-                if(year==1988 && "entrant:1988-Dallara-Alex Caffi-36".equals(previous.getPrimaryKey()) && carNum == -1 && model.getEntrants(1988).size()==36) continue;
+                if (year == 1988 && "1988-Dallara-Alex Caffi-36".equals(previous.getPrimaryKey()) && carNum == -1 && model.getEntrants(1988).size() == 36)
+                    continue;
 
                 JkTag spanTag;
                 JkTag aTag;
                 JkTag chTag = tr.getChild(1).getChild("span");
-                if(chTag.getAttribute("class").equals("nowrap")) {
+                if (chTag.getAttribute("class").equals("nowrap")) {
                     spanTag = chTag.getChild("span");
                     aTag = chTag.getChild("a");
-                } else  {
+                } else {
                     spanTag = chTag;
                     aTag = tr.getChild(1).getChild("a");
                 }
 
                 F1Driver d = retrieveDriver(aTag.getAttribute("title"), true);
-                if(StringUtils.isBlank(d.getCountry())) {
+                if (StringUtils.isBlank(d.getCountry())) {
                     JkTag img = spanTag.findFirstTag("img");
                     d.setCountry(fixNation(img.getAttribute("alt")));
                     checkNation(d, d.getCountry());
@@ -93,10 +94,10 @@ public class Year1988 extends AWikiParser2018 {
 
                 previous = e;
 
-            } else if(tdList.size() >= 6) {
+            } else if (tdList.size() >= 6) {
                 JkTag tagTeamName = tr.getChild(1).walkFirstChild("a", "span a");
                 F1Team team = retrieveTeam(tagTeamName.getText(), true);
-                if(StringUtils.isBlank(team.getCountry())) {
+                if (StringUtils.isBlank(team.getCountry())) {
                     JkTag img = tr.getChild(0).findFirstTag("img");
                     team.setCountry(fixNation(img.getAttribute("alt")));
                     checkNation(team, team.getCountry());
@@ -107,16 +108,16 @@ public class Year1988 extends AWikiParser2018 {
                 JkTag spanTag;
                 JkTag aTag;
                 JkTag chTag = tr.getChild(6).getChild("span");
-                if(chTag.getAttribute("class").equals("nowrap")) {
+                if (chTag.getAttribute("class").equals("nowrap")) {
                     spanTag = chTag.getChild("span");
                     aTag = chTag.getChild("a");
-                } else  {
+                } else {
                     spanTag = chTag;
                     aTag = tr.getChild(6).getChild("a");
                 }
 
                 F1Driver d = retrieveDriver(aTag.getAttribute("title"), true);
-                if(StringUtils.isBlank(d.getCountry())) {
+                if (StringUtils.isBlank(d.getCountry())) {
                     JkTag img = spanTag.findFirstTag("img");
                     d.setCountry(fixNation(img.getAttribute("alt")));
                     checkNation(d, d.getCountry());
@@ -133,11 +134,6 @@ public class Year1988 extends AWikiParser2018 {
                 previous = e;
             }
         }
-
-//        List<F1Entrant> elist = model.getEntrants(year);
-//        System.out.println(elist.size()+"");
-//        System.out.println(RepoUtil.formatEntities(elist));
-//        System.exit(1);
 
     }
 

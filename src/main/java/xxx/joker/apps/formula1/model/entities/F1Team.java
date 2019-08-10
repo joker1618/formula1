@@ -1,7 +1,7 @@
 package xxx.joker.apps.formula1.model.entities;
 
-import xxx.joker.libs.repository.design.RepoEntity;
-import xxx.joker.libs.repository.design.RepoField;
+import xxx.joker.libs.datalayer.design.RepoEntity;
+import xxx.joker.libs.datalayer.design.RepoField;
 
 public class F1Team extends RepoEntity {
 
@@ -19,7 +19,7 @@ public class F1Team extends RepoEntity {
 
     @Override
     public String getPrimaryKey() {
-        return "team:" + teamName;
+        return teamName;
     }
 
     public String getTeamName() {

@@ -2,8 +2,8 @@ package xxx.joker.apps.formula1.model.entities;
 
 import xxx.joker.libs.core.datetime.JkDuration;
 import xxx.joker.libs.core.tests.JkTests;
-import xxx.joker.libs.repository.design.RepoEntity;
-import xxx.joker.libs.repository.design.RepoField;
+import xxx.joker.libs.datalayer.design.RepoEntity;
+import xxx.joker.libs.datalayer.design.RepoField;
 
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
@@ -31,7 +31,7 @@ public class F1Race extends RepoEntity {
 
     @Override
     public String getPrimaryKey() {
-        return strf("race:[%s]-%02d", gpPK, pos);
+        return strf("race-[%s]-%02d", gpPK, pos);
     }
 
     public String getGpPK() {

@@ -1,9 +1,9 @@
 package webparser;
 
+import common.CommonTest;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import xxx.joker.apps.formula1.webParser.FlagsDownloader;
-import xxx.joker.libs.core.debug.JkDebug;
 
 public class FlagsWebParser extends CommonTest {
 

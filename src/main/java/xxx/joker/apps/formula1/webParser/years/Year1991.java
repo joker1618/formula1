@@ -240,7 +240,7 @@ public class Year1991 extends AWikiParser2018 {
                 Integer index = posMap.containsKey("Constructor") ? posMap.get("Constructor") : posMap.get("Team");
                 JkTag ttag = tr.getChild(index).walkFirstChild("a", "span a", "b a");
                 F1Team team = retrieveTeam(ttag.getText().replaceAll("-$", ""), false);
-                if(q.getPrimaryKey().equals("qualify:[gp:1991-03]-22")) {
+                if(q.getPrimaryKey().equals("qualify-[gp-1991-03]-22")) {
                     carNo = 16;
                 }
                 q.setEntrant(getEntrant(year, d, carNo, team));

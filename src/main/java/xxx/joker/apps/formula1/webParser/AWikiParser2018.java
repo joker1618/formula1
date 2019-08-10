@@ -14,8 +14,8 @@ import xxx.joker.libs.core.scanners.JkHtmlChars;
 import xxx.joker.libs.core.scanners.JkScanners;
 import xxx.joker.libs.core.scanners.JkTag;
 import xxx.joker.libs.core.utils.JkStrings;
-import xxx.joker.libs.repository.design.RepoEntity;
-import xxx.joker.libs.repository.entities.RepoResource;
+import xxx.joker.libs.datalayer.design.RepoEntity;
+import xxx.joker.libs.datalayer.entities.RepoResource;
 
 import java.nio.file.Path;
 import java.time.LocalDate;

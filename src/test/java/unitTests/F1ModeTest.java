@@ -1,7 +1,7 @@
 package unitTests;
 
 
-import xxx.joker.libs.repository.JkRepo;
+import xxx.joker.libs.datalayer.JkRepo;
 
 public interface F1ModeTest extends JkRepo {
 

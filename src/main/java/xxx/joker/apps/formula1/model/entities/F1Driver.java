@@ -1,7 +1,7 @@
 package xxx.joker.apps.formula1.model.entities;
 
-import xxx.joker.libs.repository.design.RepoEntity;
-import xxx.joker.libs.repository.design.RepoField;
+import xxx.joker.libs.datalayer.design.RepoEntity;
+import xxx.joker.libs.datalayer.design.RepoField;
 
 import java.time.LocalDate;
 
@@ -25,7 +25,7 @@ public class F1Driver extends RepoEntity {
 
     @Override
     public String getPrimaryKey() {
-        return "driver:" + fullName;
+        return fullName;
     }
 
     public String getFullName() {

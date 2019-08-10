@@ -1,8 +1,8 @@
 package webparser;
 
+import common.CommonTest;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import xxx.joker.apps.formula1.webParser.FlagsDownloader;
 
 public class Eraser extends CommonTest {
 

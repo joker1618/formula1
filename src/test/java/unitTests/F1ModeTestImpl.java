@@ -2,7 +2,7 @@ package unitTests;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import xxx.joker.libs.repository.JkRepoFile;
+import xxx.joker.libs.datalayer.JkRepoFile;
 
 import java.nio.file.Paths;
 

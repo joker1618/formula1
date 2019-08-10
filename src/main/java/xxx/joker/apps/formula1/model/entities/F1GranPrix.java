@@ -1,8 +1,8 @@
 package xxx.joker.apps.formula1.model.entities;
 
 import xxx.joker.apps.formula1.model.fields.F1FastLap;
-import xxx.joker.libs.repository.design.RepoEntity;
-import xxx.joker.libs.repository.design.RepoField;
+import xxx.joker.libs.datalayer.design.RepoEntity;
+import xxx.joker.libs.datalayer.design.RepoField;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -45,7 +45,7 @@ public class F1GranPrix extends RepoEntity {
 
     @Override
     public String getPrimaryKey() {
-        return strf("gp:%04d-%02d", year, num);
+        return strf("gp-%04d-%02d", year, num);
     }
 
     public Integer getYear() {

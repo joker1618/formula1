@@ -1,10 +1,7 @@
 package xxx.joker.apps.formula1.model.entities;
 
-import xxx.joker.libs.core.datetime.JkDuration;
-import xxx.joker.libs.repository.design.RepoEntity;
-import xxx.joker.libs.repository.design.RepoField;
-
-import java.util.List;
+import xxx.joker.libs.datalayer.design.RepoEntity;
+import xxx.joker.libs.datalayer.design.RepoField;
 
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
@@ -26,7 +23,7 @@ public class F1SeasonPoints extends RepoEntity {
 
     @Override
     public String getPrimaryKey() {
-        return strf("points:{}-{}", year, name);
+        return strf("{}-{}", year, name);
     }
 
     public int getYear() {

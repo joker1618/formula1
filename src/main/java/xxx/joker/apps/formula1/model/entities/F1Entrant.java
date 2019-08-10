@@ -1,7 +1,7 @@
 package xxx.joker.apps.formula1.model.entities;
 
-import xxx.joker.libs.repository.design.RepoEntity;
-import xxx.joker.libs.repository.design.RepoField;
+import xxx.joker.libs.datalayer.design.RepoEntity;
+import xxx.joker.libs.datalayer.design.RepoField;
 
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
@@ -18,7 +18,7 @@ public class F1Entrant extends RepoEntity {
 
     @Override
     public String getPrimaryKey() {
-        return strf("entrant:{}-{}-{}-{}", year, team.getTeamName(), driver.getFullName(), carNo);
+        return strf("{}-{}-{}-{}", year, team.getTeamName(), driver.getFullName(), carNo);
     }
 
     public Integer getYear() {

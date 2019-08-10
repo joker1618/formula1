@@ -1,8 +1,8 @@
 package xxx.joker.apps.formula1.model.entities;
 
-import xxx.joker.libs.repository.design.RepoEntity;
-import xxx.joker.libs.repository.design.RepoField;
-import xxx.joker.libs.repository.entities.RepoResource;
+import xxx.joker.libs.datalayer.design.RepoEntity;
+import xxx.joker.libs.datalayer.design.RepoField;
+import xxx.joker.libs.datalayer.entities.RepoResource;
 
 public class F1Country extends RepoEntity {
 
@@ -24,7 +24,7 @@ public class F1Country extends RepoEntity {
 
     @Override
     public String getPrimaryKey() {
-        return "country:" + name;
+        return name;
     }
 
     public String getName() {

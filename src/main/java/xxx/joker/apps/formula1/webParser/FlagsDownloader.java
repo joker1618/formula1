@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import xxx.joker.apps.formula1.model.entities.F1Country;
 import xxx.joker.libs.core.scanners.JkScanners;
 import xxx.joker.libs.core.scanners.JkTag;
-import xxx.joker.libs.repository.entities.RepoResource;
+import xxx.joker.libs.datalayer.entities.RepoResource;
 
 import java.nio.file.Path;
 import java.util.List;

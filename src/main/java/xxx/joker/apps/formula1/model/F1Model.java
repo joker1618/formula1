@@ -2,11 +2,10 @@ package xxx.joker.apps.formula1.model;
 
 
 import xxx.joker.apps.formula1.model.entities.*;
-import xxx.joker.libs.repository.JkRepo;
-import xxx.joker.libs.repository.entities.RepoResource;
+import xxx.joker.libs.datalayer.JkRepo;
+import xxx.joker.libs.datalayer.entities.RepoResource;
 
 import java.nio.file.Path;
-import java.nio.file.spi.FileSystemProvider;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;

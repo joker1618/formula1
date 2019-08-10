@@ -1,7 +1,7 @@
 package xxx.joker.apps.formula1.model.entities;
 
-import xxx.joker.libs.repository.design.RepoEntity;
-import xxx.joker.libs.repository.design.RepoField;
+import xxx.joker.libs.datalayer.design.RepoEntity;
+import xxx.joker.libs.datalayer.design.RepoField;
 
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
@@ -22,7 +22,7 @@ public class F1Circuit extends RepoEntity {
 
     @Override
     public String getPrimaryKey() {
-        return strf("circuit:{}-{}", country, city);
+        return strf("{}-{}", country, city);
     }
 
     public String getCity() {

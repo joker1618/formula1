@@ -241,9 +241,7 @@ public class Year1990 extends AWikiParser2018 {
                 Integer index = posMap.containsKey("Constructor") ? posMap.get("Constructor") : posMap.get("Team");
                 JkTag ttag = tr.getChild(index).walkFirstChild("a", "span a", "b a");
                 F1Team team = retrieveTeam(ttag.getText().replaceAll("-$", ""), false);
-                if(q.getPrimaryKey().equals("qualify:[gp:1991-02]-22")) {
-                    carNo = 16;
-                }
+
                 q.setEntrant(getEntrant(year, d, carNo, team));
                 if(q.getEntrant() == null) {
                     if(team.getTeamName().contains("Larrousse")) {
@@ -254,13 +252,6 @@ public class Year1990 extends AWikiParser2018 {
                         throw new JkRuntimeException("Null entrant for {}", q.getPrimaryKey());
                     }
                 }
-
-//                Integer fnum = posMap.get("Lap");
-//                if(fnum == null)    fnum = posMap.get("Time");
-//                if(fnum == null)    fnum = posMap.get("Lap Time");
-//                JkTag chTime = tr.getChild(fnum);
-//                q.getTimes().add(getQualTime(chTime));
-
 
                 JkDuration q1Time = null;
                 for (String key : Arrays.asList("Q1 Time", "Q1 time", "Q1")) {

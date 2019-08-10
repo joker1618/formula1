@@ -6,8 +6,8 @@ import xxx.joker.apps.formula1.common.F1Const;
 import xxx.joker.apps.formula1.model.entities.*;
 import xxx.joker.libs.core.debug.JkDebug;
 import xxx.joker.libs.core.lambdas.JkStreams;
-import xxx.joker.libs.repository.JkRepoFile;
-import xxx.joker.libs.repository.entities.RepoResource;
+import xxx.joker.libs.datalayer.JkRepoFile;
+import xxx.joker.libs.datalayer.entities.RepoResource;
 
 import java.nio.file.Path;
 import java.util.Comparator;
@@ -31,37 +31,9 @@ public class F1ModelImpl extends JkRepoFile implements F1Model {
             JkDebug.startTimer("createModel");
             instance = new F1ModelImpl();
             JkDebug.stopTimer("createModel");
-//            instance = ModelHandler.createHandler();
         }
         return instance;
     }
-//
-//    private static class ModelHandler implements InvocationHandler {
-//
-//        private F1ModelNew model;
-//
-//        public ModelHandler() {
-//            F1ModelNew m = new F1ModelNewImpl();
-//            ClassLoader loader = F1ModelNew.class.getClassLoader();
-//            Class[] interfaces = {F1ModelNew.class};
-//            model = (F1ModelNew) Proxy.newProxyInstance(loader, interfaces, this);
-//        }
-//
-//        public static F1ModelNew createHandler() {
-//            ModelHandler mh = new ModelHandler();
-//            return mh.model;
-//        }
-//
-//        @Override
-//        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-//            try {
-//                LOG.trace();
-//
-//            } finally {
-//
-//            }
-//        }
-//    }
 
     @Override
     public RepoResource getDriverCover(F1Driver driver) {

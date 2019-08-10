@@ -22,7 +22,7 @@ import static xxx.joker.libs.core.utils.JkConsole.displayColl;
 public class TestF1RepoRemove extends CommonTest {
 
     @Test
-    public void doTestRemoveFromDataset() {
+    public void doTestRemoveCircuits() {
         printRepo(F1Circuit.class, F1GranPrix.class);
 
         Set<F1Circuit> ds = model.getDataSet(F1Circuit.class);

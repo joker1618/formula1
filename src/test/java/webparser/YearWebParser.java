@@ -29,16 +29,16 @@ public class YearWebParser extends CommonTest {
     }
     @Test
     public void runYear() {
-        int y = 1991;
+        int y = 1982;
 
-//        model.removeAll(model.getSeasonPointsMap(y).values());
-//        List<F1GranPrix> gpList = model.getGranPrixs(y);
-//        model.removeAll(gpList);
-//        gpList.forEach(gp -> model.removeAll(gp.getQualifies()));
-//        gpList.forEach(gp -> model.removeAll(gp.getRaces()));
+        model.removeAll(model.getSeasonPointsMap(y).values());
+        List<F1GranPrix> gpList = model.getGranPrixs(y);
+        model.removeAll(gpList);
+        gpList.forEach(gp -> model.removeAll(gp.getQualifies()));
+        gpList.forEach(gp -> model.removeAll(gp.getRaces()));
 
         runYear(y);
-//        model.commit();
+        model.commit();
     }
 
     private void runYear(int year) {

@@ -1,9 +1,9 @@
 package unitTests;
 
 import org.junit.Test;
+import xxx.joker.libs.core.format.JkFormatter;
 import xxx.joker.libs.core.format.JkOutput;
 import xxx.joker.libs.core.utils.JkConvert;
-import xxx.joker.libs.datalayer.export.TmpFmt;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,7 +33,7 @@ public class TestRepoAdd {
 
         model.getDataSets().forEach((c,elist) -> {
             display(c.getSimpleName());
-            List<String> lines = TmpFmt.get().formatCsv(elist);
+            List<String> lines = JkFormatter.get().formatCsv(elist);
             display("{}\n", JkOutput.columnsView(lines));
         });
     }

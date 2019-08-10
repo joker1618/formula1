@@ -1,15 +1,9 @@
 package xxx.joker.apps.formula1.fxgui.fxmodel;
 
-import xxx.joker.apps.formula1.model.entities.F1Driver;
 import xxx.joker.apps.formula1.model.entities.F1GranPrix;
-import xxx.joker.apps.formula1.model.entities.F1Race;
 
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-
-import static xxx.joker.apps.formula1.common.F1Util.safePrint;
-import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 public class ResultView implements Comparable<ResultView> {
 

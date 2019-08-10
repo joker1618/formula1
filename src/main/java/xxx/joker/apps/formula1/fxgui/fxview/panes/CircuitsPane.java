@@ -1,6 +1,5 @@
 package xxx.joker.apps.formula1.fxgui.fxview.panes;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;

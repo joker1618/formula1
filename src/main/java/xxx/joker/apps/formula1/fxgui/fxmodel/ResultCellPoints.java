@@ -1,7 +1,5 @@
 package xxx.joker.apps.formula1.fxgui.fxmodel;
 
-import java.util.Comparator;
-
 import static xxx.joker.apps.formula1.common.F1Util.safePrint;
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
@@ -50,6 +48,8 @@ public class ResultCellPoints implements Comparable<ResultCellPoints> {
 
     @Override
     public int compareTo(ResultCellPoints o) {
+        if(o.getPos() <= 0) return -1;
+        if(pos <= 0) return 1;
         return pos - o.getPos();
     }
 

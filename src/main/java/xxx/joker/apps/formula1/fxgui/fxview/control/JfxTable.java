@@ -29,6 +29,15 @@ public class JfxTable<T> extends TableView<T> {
             columns.add(c);
             getColumns().add(c);
         });
+
+        if(!columns.isEmpty()){
+            for(int i = 0; i < columns.size(); i++) {
+                JfxTableCol col = columns.get(i);
+                col.getStyleClass().addAll("col", "col" + i);
+                col.getStyleClass().add("col-" + (i % 2 == 0 ? "odd" : "even"));
+            }
+            columns.get(columns.size() - 1).getStyleClass().add("col-last");
+        }
     }
 
     public void update(Collection<T> items) {
@@ -69,13 +78,12 @@ public class JfxTable<T> extends TableView<T> {
         }
 
         setPrefWidth(tablePrefWidth);
-
     }
 
     public void resizeHeight() {
         double h = 2d; // top and bottom border
         h += JfxCss.retrieveInt(this, "-headerHeight");
         h += JfxCss.retrieveInt(this, "-rowHeight") * getItems().size();
-        setMaxHeight(h);
+        setPrefHeight(h);
     }
 }

@@ -1,7 +1,7 @@
 package export;
 
-import org.junit.Test;
 import common.CommonTest;
+import org.junit.Test;
 import xxx.joker.apps.formula1.model.F1Model;
 import xxx.joker.apps.formula1.model.F1ModelImpl;
 import xxx.joker.libs.datalayer.util.MigrateToHibernate;

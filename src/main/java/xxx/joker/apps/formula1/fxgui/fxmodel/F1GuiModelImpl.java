@@ -13,7 +13,10 @@ import xxx.joker.libs.core.files.JkFiles;
 import xxx.joker.libs.core.lambdas.JkStreams;
 
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
@@ -77,13 +80,13 @@ public class F1GuiModelImpl implements F1GuiModel {
                 rv.setEntryName(d.getFullName());
                 for (F1GranPrix gp : model.getGranPrixs(year)) {
                     F1Race unique = JkStreams.findUnique(gp.getRaces(), r -> r.getEntrant().getDriver().equals(d));
+                    ResultCellPoints rcell = new ResultCellPoints();
                     if(unique != null) {
-                        ResultCellPoints rcell = new ResultCellPoints();
                         rcell.setExpectedPoints(unique.getPoints());
                         rcell.setComputedPoints(unique.getPoints());
                         rcell.setPos(unique.getPos());
-                        rv.getCellMap().put(gp, rcell);
                     }
+                    rv.getCellMap().put(gp, rcell);
                 }
                 try {
                     ResultCellPoints cp = new ResultCellPoints();

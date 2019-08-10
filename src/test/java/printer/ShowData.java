@@ -1,9 +1,9 @@
-package stuff.printer;
+package printer;
 
+import common.CommonTest;
 import org.apache.commons.lang3.tuple.Pair;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import common.CommonTest;
 import xxx.joker.apps.formula1.model.entities.*;
 import xxx.joker.libs.core.format.JkOutput;
 import xxx.joker.libs.core.lambdas.JkStreams;

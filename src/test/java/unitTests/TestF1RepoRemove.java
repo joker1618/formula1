@@ -5,19 +5,11 @@ import org.junit.Test;
 import xxx.joker.apps.formula1.model.entities.F1Circuit;
 import xxx.joker.apps.formula1.model.entities.F1GranPrix;
 import xxx.joker.apps.formula1.model.entities.F1Race;
-import xxx.joker.libs.core.format.JkOutput;
-import xxx.joker.libs.core.utils.JkConsole;
-import xxx.joker.libs.core.utils.JkConvert;
-import xxx.joker.libs.datalayer.design.RepoEntity;
-import xxx.joker.libs.datalayer.export.TmpFmt;
-import xxx.joker.libs.datalayer.util.RepoUtil;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
 import static xxx.joker.libs.core.utils.JkConsole.display;
-import static xxx.joker.libs.core.utils.JkConsole.displayColl;
 
 public class TestF1RepoRemove extends CommonTest {
 

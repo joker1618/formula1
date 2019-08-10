@@ -1,9 +1,9 @@
 package xxx.joker.apps.formula1.fxgui.fxview.panes.yearPane;
 
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.layout.HBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xxx.joker.apps.formula1.fxgui.fxmodel.ResultCellPoints;
@@ -45,7 +45,7 @@ public class YearResultsPane extends SubPane {
         tga.selectedToggleProperty().addListener((obs,o,n) -> {
             showDrivers.set(ra1.isSelected());
             SeasonView sv = guiModel.getSeasonView(guiModel.getSelectedYear());
-            ((JfxTable)getCenter()).update(showDrivers.get() ? sv.getDriverResults(): sv.getTeamResults());
+            ((JfxTable)((HBox)getCenter()).getChildren().get(0)).update(showDrivers.get() ? sv.getDriverResults(): sv.getTeamResults());
         });
 
         ToggleGroup tgb = new ToggleGroup();
@@ -58,7 +58,7 @@ public class YearResultsPane extends SubPane {
         gpBuilder.add(1, 1, rb2);
         tgb.selectedToggleProperty().addListener((obs,o,n) -> {
             showPoints.set(rb1.isSelected());
-            ((JfxTable)getCenter()).refresh();
+            ((JfxTable)((HBox)getCenter()).getChildren().get(0)).refresh();
         });
 
         setTop(gpBuilder.createGridPane());
@@ -68,11 +68,11 @@ public class YearResultsPane extends SubPane {
 
     private void createTableResults(int year) {
         JfxTable<ResultView> table = new JfxTable<>();
-        table.setStyle("-headerHeight: 50; -rowHeight: 40");
+        table.setStyle("-headerHeight: 50; -rowHeight: 50");
 
         JfxTableCol<ResultView, Integer>  colPos = JfxTableCol.createCol("#", rv -> rv.getTotal().getPos(), "centered");
         table.add(colPos);
-        colPos.setFixedWidth(50);
+        colPos.setFixedWidth(30);
 
         JfxTableCol<ResultView, String> colDriver = JfxTableCol.createCol("DRIVER", "entryName");
         table.add(colDriver);
@@ -80,17 +80,20 @@ public class YearResultsPane extends SubPane {
         for (F1GranPrix gp : gps) {
             Image img = guiModel.getNation(gp.getCircuit().getCountry()).getFlagImage();
             JfxTableCol<ResultView, ResultCellPoints>  col = JfxTableCol.createCol("", rv -> rv.getCellMap().get(gp), race -> safePrint(showPoints.get() ? race.getExpectedPoints() : race.getPos()), "centered");
+//            col.setComparator(Comparator.comparing(ResultCellPoints::getPos));
             col.setGraphic(JfxUtil.createImageView(img, 40, 40));
             table.add(col);
             col.setFixedWidth(50);
         }
 
-        JfxTableCol<ResultView, ResultCellPoints>  colPts = JfxTableCol.createCol("Pts", "total", rcell -> showPoints.get() ? rcell.toStringTotPoints() : ""+rcell.getPos(), "centered");
-        colPts.setComparator((cp1,cp2) -> (int)(cp2.getExpectedPoints() - cp1.getExpectedPoints()));
+        JfxTableCol<ResultView, ResultCellPoints>  colPts = JfxTableCol.createCol("TOT", "total", rcell -> showPoints.get() ? rcell.toStringTotPoints() : ""+rcell.getPos(), "centered");
+//        colPts.setComparator(Comparator.comparing(ResultCellPoints::getPos));
         table.add(colPts);
-        colPts.setFixedWidth(60);
+        colPts.setFixedWidth(55);
 
-        setCenter(table);
+        HBox tbox = new HBox(table);
+        tbox.getStyleClass().addAll("bgRed", "pad10");
+        setCenter(tbox);
 
         table.update(showDrivers.get() ? guiModel.getSeasonView(year).getDriverResults(): guiModel.getSeasonView(year).getTeamResults());
     }

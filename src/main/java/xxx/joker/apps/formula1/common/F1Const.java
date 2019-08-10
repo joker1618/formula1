@@ -3,7 +3,6 @@ package xxx.joker.apps.formula1.common;
 import xxx.joker.libs.core.runtimes.JkEnvironment;
 
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class F1Const {
 

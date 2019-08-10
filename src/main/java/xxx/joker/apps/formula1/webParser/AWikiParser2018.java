@@ -20,9 +20,7 @@ import xxx.joker.libs.datalayer.entities.RepoResource;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
@@ -120,7 +118,7 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
                     JkDebug.stopTimer("Parse races");
 
                     gp.getQualifies().forEach(q -> {
-                        if(q.getFinalGrid() == null || q.getFinalGrid() < 1) {
+                        if (q.getFinalGrid() == null || q.getFinalGrid() < 1) {
                             q.setFinalGrid(q.getPos());
                             gp.getRaces().stream().filter(r -> r.getEntrant().equals(q.getEntrant())).forEach(r -> r.setStartGrid(q.getPos()));
                         }
@@ -130,21 +128,28 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
                         gp.setNumLapsRace(gp.getRaces().get(0).getLaps());
                     }
                     if (gp.getQualifies().isEmpty()) {
+                        List<F1Qualify> qlist = new ArrayList<>();
                         for (int index = 0; index < gp.getRaces().size(); index++) {
                             F1Race r = gp.getRaces().get(index);
+                            if(r.getStartGrid() == -1)  break;
                             F1Qualify q = new F1Qualify();
                             q.setGpPK(gp.getPrimaryKey());
                             q.setPos(r.getStartGrid());
                             q.setFinalGrid(r.getStartGrid());
                             q.setEntrant(r.getEntrant());
-                            gp.getQualifies().add(q);
+                            qlist.add(q);
+                            q.setTimes(new ArrayList<>());
                             if (i > 0) {
                                 int numRounds = Math.max(firstGp.getQualifies().get(0).getTimes().size(), 0);
                                 for (int nr = 0; nr < numRounds; nr++) {
                                     q.getTimes().add(null);
                                 }
+                            } else if(year == 1982) {
+                                q.getTimes().add(null);
                             }
                         }
+                        Collections.sort(qlist);
+                        gp.getQualifies().addAll(qlist);
                     }
 
                 }
@@ -444,6 +449,9 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
                         } else if(list.get(0).equals("Circuit de Spa-Francorchamps")) {
                             nation = "Belgium";
                             city = "Spa";
+                        } else if(list.get(0).equals("Las Vegas Strip")) {
+                            nation = "United States";
+                            city = "Las Vegas";
                         }
                         F1Circuit f1Circuit = retrieveCircuit(city, nation, true);
                         gp.setCircuit(f1Circuit);
@@ -452,7 +460,7 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
                         String lenStr = tr.getChild(1).getText().replaceAll("[ ]*km.*", "").trim();
                         gp.setLapLength(Double.parseDouble(lenStr));
                     } else if(tr.getChild(0).getText().equals("Distance")) {
-                        String numStr = tr.getChild(1).getText().replaceAll("[ ]*laps.*", "").trim();
+                        String numStr = tr.getChild(1).getText().replaceAll("[ ]*laps.*", "").replaceAll("\\..*", "").trim();
                         gp.setNumLapsRace(Integer.parseInt(numStr));
                     } else if(tr.getChild(0).getText().equals("Date")) {
                         String attrValue = tr.getChild(1).getChild("span").getAttribute("title");

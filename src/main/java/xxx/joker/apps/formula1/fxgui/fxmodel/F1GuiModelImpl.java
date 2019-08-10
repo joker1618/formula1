@@ -57,10 +57,10 @@ public class F1GuiModelImpl implements F1GuiModel {
             }
 
             Image image;
-            if(country.getFlagIcon() == null)  {
+            if(country.getFlagImage() == null)  {
                 image = null;
             } else {
-                Path imagePath = model.getRepoCtx().getResourcesFolder().resolve(country.getFlagIcon().getUri().getPath());
+                Path imagePath = model.getRepoCtx().getResourcesFolder().resolve(country.getFlagImage().getUri().getPath());
                 image = new Image(JkFiles.toURL(imagePath));
             }
 

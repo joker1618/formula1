@@ -54,7 +54,8 @@ public class CircuitsPane extends SubPane {
         BorderPane bp = new BorderPane();
         bp.getStyleClass().add("infoPane");
 
-        ImageView ivFlag = JfxUtil.createImageView(150, 100);
+        ImageView ivFlag = JfxUtil.createImageView(400, 300);
+//        ImageView ivFlag = JfxUtil.createImageView(150, 100);
         HBox topBox = new HBox(ivFlag);
         bp.setTop(topBox);
 

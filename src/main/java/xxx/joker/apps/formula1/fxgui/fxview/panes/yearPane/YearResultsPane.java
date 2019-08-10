@@ -68,7 +68,7 @@ public class YearResultsPane extends SubPane {
 
     private void createTableResults(int year) {
         JfxTable<ResultView> table = new JfxTable<>();
-        table.setStyle("-headerHeight: 50; -rowHeight: 50");
+        table.setStyle("-headerHeight: 50; -rowHeight: 45");
 
         JfxTableCol<ResultView, Integer>  colPos = JfxTableCol.createCol("#", rv -> rv.getTotal().getPos(), "centered");
         table.add(colPos);
@@ -82,8 +82,8 @@ public class YearResultsPane extends SubPane {
             JfxTableCol<ResultView, ResultCellPoints>  col = JfxTableCol.createCol("", rv -> rv.getCellMap().get(gp), race -> safePrint(showPoints.get() ? race.getExpectedPoints() : race.getPos()), "centered");
 //            col.setComparator(Comparator.comparing(ResultCellPoints::getPos));
             col.setGraphic(JfxUtil.createImageView(img, 40, 40));
-            table.add(col);
             col.setFixedWidth(50);
+            table.add(col);
         }
 
         JfxTableCol<ResultView, ResultCellPoints>  colPts = JfxTableCol.createCol("TOT", "total", rcell -> showPoints.get() ? rcell.toStringTotPoints() : ""+rcell.getPos(), "centered");
@@ -92,7 +92,10 @@ public class YearResultsPane extends SubPane {
         colPts.setFixedWidth(55);
 
         HBox tbox = new HBox(table);
-        tbox.getStyleClass().addAll("bgRed", "pad10");
+//        tbox.getStyleClass().addAll("bgRed", "pad10");
+        tbox.getStyleClass().addAll("bgRed");
+        tbox.setStyle("-fx-padding: 20 0 0 0");
+        tbox.widthProperty().addListener((obs,o,n) -> table.setFixedWidth(n.doubleValue()));
         setCenter(tbox);
 
         table.update(showDrivers.get() ? guiModel.getSeasonView(year).getDriverResults(): guiModel.getSeasonView(year).getTeamResults());

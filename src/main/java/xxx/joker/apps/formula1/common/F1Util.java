@@ -6,6 +6,9 @@ import java.text.NumberFormat;
 
 public class F1Util {
 
+    public static String safePrint(int n) {
+        return safePrint(Double.valueOf(n));
+    }
     public static String safePrint(Double d) {
         NumberFormat nf = JkOutput.getNumberFmtEN(0, 2);
         return d == null || d == 0d ? "-" : nf.format(d.doubleValue());

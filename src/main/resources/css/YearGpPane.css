@@ -1,0 +1,28 @@
+
+.tabPane .tab:selected .tab-label {
+    -fx-font-weight: BOLD;
+}
+
+.tabPane .tab-header-background {
+    -fx-border-color: -darkBlue;
+    -fx-border-width: 0 0 2 0;
+}
+.tabPane .tab:selected {
+    -fx-border-color: -darkBlue;
+    -fx-border-width: 2 2 0 2;
+}
+.tabPane .tab-content-area {
+    -fx-border-color: -darkBlue;
+    -fx-border-width: 0 2 2 2;
+}
+
+.tabPane .boxTrackGp {
+    -fx-alignment: CENTER;
+}
+
+.tabPane .boxResults {
+    -fx-alignment: TOP-CENTER;
+    -fx-spacing: 50;
+}
+
+

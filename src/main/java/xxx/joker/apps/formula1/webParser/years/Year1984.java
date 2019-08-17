@@ -334,6 +334,10 @@ public class Year1984 extends AWikiParser2018 {
 
     @Override
     protected void parseRace(String html, F1GranPrix gp) {
+        if("gp-1984-15".equals(gp.getPrimaryKey())) {
+            F1Driver d = retrieveDriver("Nelson Piquet", false);
+            gp.getFastLap().setDriverPK(d.getPrimaryKey());
+        }
         JkTag tableRace = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Race_3\">Race</span>", "<table class=\"wikitable");
         if(tableRace == null) tableRace = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Race_2\">Race</span>", "<table class=\"wikitable");
         if(tableRace == null) tableRace = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"Race\">Race</span>", "<table class=\"wikitable");

@@ -44,7 +44,7 @@ public class JfxTable<T> extends TableView<T> {
     public void update(Collection<T> items) {
         getItems().setAll(items);
         resizeWidth(true);
-        resizeHeight();
+//        resizeHeight();
     }
 
     public void resizeWidth(boolean reserveScrollSpace) {
@@ -54,10 +54,10 @@ public class JfxTable<T> extends TableView<T> {
         for (JfxTableCol<T, ?> col : columns) {
             if(col.isVisible()) {
                 double max;
-                if (col.getFixedWidth() != -1) {
-                    max = col.getFixedWidth();
-                    double wcol = max + EXTRA_COL_WIDTH;
-                    col.setPrefWidth(wcol);
+                if (col.getFixedPrefWidth() != -1) {
+                    max = col.getFixedPrefWidth();
+//                    double wcol = max + EXTRA_COL_WIDTH;
+//                    col.setPrefWidth(wcol);
                 } else {
                     //Minimal width = columnheader
                     Text t = new Text(col.getText());
@@ -81,9 +81,9 @@ public class JfxTable<T> extends TableView<T> {
         }
 
 //        if(fixedWidth != -1) {
-        if(fixedWidth == -1) {
-//            setPrefWidth(fixedWidth);
-//        } else {
+        if(fixedWidth != -1) {
+            setPrefWidth(fixedWidth);
+        } else {
             setPrefWidth(tablePrefWidth);
         }
     }

@@ -5,6 +5,7 @@
 .centered   { -fx-alignment: CENTER }
 .hcenter    { -fx-alignment: TOP-CENTER }
 
+.bgWhite    { -fx-background-color: WHITE }
 .bgPurple   { -fx-background-color: PURPLE }
 .bgRed      { -fx-background-color: RED }
 .bgGrey     { -fx-background-color: GREY }
@@ -29,6 +30,15 @@
 
 .vgap5  { -fx-vgap: 5 }
 .vgap10 { -fx-vgap: 10 }
+
+.bold-font { -fx-font-weight: BOLD; }
+
+.borderBlack    { -fx-border-width: 2; -fx-border-color: BLACK }
+.borderRed      { -fx-border-width: 2; -fx-border-color: RED }
+.borderBlue     { -fx-border-width: 2; -fx-border-color: BLUE }
+.borderCyan     { -fx-border-width: 2; -fx-border-color: CYAN }
+.borderGreen    { -fx-border-width: 2; -fx-border-color: GREEN }
+.borderWhite    { -fx-border-width: 2; -fx-border-color: WHITE }
 
 .no-width  { -fx-min-width: -1; -fx-pref-width: -1; -fx-max-width: -1; }
 .no-height { -fx-min-height: -1; -fx-pref-height: -1; -fx-max-height: -1; }

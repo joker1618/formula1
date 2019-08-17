@@ -2,7 +2,7 @@ package xxx.joker.apps.formula1.fxgui.fxview.panes;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import xxx.joker.apps.formula1.fxgui.fxview.SubPane;
+import xxx.joker.apps.formula1.fxgui.fxview.CentralPane;
 import xxx.joker.apps.formula1.fxgui.fxview.box.TableBoxCaption;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTable;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTableCol;
@@ -10,7 +10,7 @@ import xxx.joker.apps.formula1.model.entities.F1Team;
 
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
-public class TeamsPane extends SubPane {
+public class TeamsPane extends CentralPane {
 
     private static final Logger LOG = LoggerFactory.getLogger(TeamsPane.class);
 

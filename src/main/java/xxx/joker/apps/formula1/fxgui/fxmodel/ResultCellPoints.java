@@ -1,11 +1,12 @@
 package xxx.joker.apps.formula1.fxgui.fxmodel;
 
 import static xxx.joker.apps.formula1.common.F1Util.safePrint;
+import static xxx.joker.apps.formula1.common.F1Util.safePrint0;
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 public class ResultCellPoints implements Comparable<ResultCellPoints> {
     private int pos;
-    private double expectedPoints;
+    private double value;
     private double computedPoints;
 
     public ResultCellPoints() {
@@ -16,9 +17,9 @@ public class ResultCellPoints implements Comparable<ResultCellPoints> {
         this.computedPoints = computedPoints;
     }
 
-    public ResultCellPoints(int pos, double expectedPoints, double computedPoints) {
+    public ResultCellPoints(int pos, double value, double computedPoints) {
         this.pos = pos;
-        this.expectedPoints = expectedPoints;
+        this.value = value;
         this.computedPoints = computedPoints;
     }
 
@@ -30,12 +31,12 @@ public class ResultCellPoints implements Comparable<ResultCellPoints> {
         this.pos = pos;
     }
 
-    public double getExpectedPoints() {
-        return expectedPoints;
+    public double getValue() {
+        return value;
     }
 
-    public void setExpectedPoints(double expectedPoints) {
-        this.expectedPoints = expectedPoints;
+    public void setValue(double value) {
+        this.value = value;
     }
 
     public double getComputedPoints() {
@@ -48,14 +49,14 @@ public class ResultCellPoints implements Comparable<ResultCellPoints> {
 
     @Override
     public int compareTo(ResultCellPoints o) {
-        if(o.getPos() <= 0) return -1;
+        if(o.getPos() <= 0) return pos > 0 ? -1 : pos - o.getPos();
         if(pos <= 0) return 1;
         return pos - o.getPos();
     }
 
     public String toStringTotPoints() {
-        String str = strf("{}", safePrint(getExpectedPoints()));
-        if(getExpectedPoints() != getComputedPoints()) {
+        String str = strf("{}", safePrint(getValue()));
+        if(getValue() != getComputedPoints()) {
             str += strf(" ({})", safePrint(getComputedPoints()));
         }
         return str;

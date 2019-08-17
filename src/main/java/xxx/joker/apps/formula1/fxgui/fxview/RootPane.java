@@ -41,7 +41,7 @@ public class RootPane extends BorderPane {
     private F1Model model = F1ModelImpl.getInstance();
     protected F1GuiModel guiModel = F1GuiModelImpl.getInstance();
 
-    private JkCache<PaneType, SubPane> cachePanes = new JkCache<>();
+    private JkCache<PaneType, CentralPane> cachePanes = new JkCache<>();
     private SimpleObjectProperty<PaneType> showedPane = new SimpleObjectProperty<>();
 
 
@@ -54,10 +54,11 @@ public class RootPane extends BorderPane {
         
         showedPane.addListener((obs,o,n) -> setCenter(cachePanes.get(n)));
 
-//        showedPane.set(PaneType.HOME);
+        showedPane.set(PaneType.HOME);
 //        showedPane.set(PaneType.CIRCUITS);
-        showedPane.set(PaneType.YEAR_ENTRANTS);
+//        showedPane.set(PaneType.YEAR_RESULTS);
 //        showedPane.set(PaneType.YEAR_ENTRANTS);
+//        showedPane.set(PaneType.TEAMS);
 //        showedPane.set(PaneType.YEAR_GRAN_PRIX);
 
         getStylesheets().add(getClass().getResource("/css/RootPane.css").toExternalForm());

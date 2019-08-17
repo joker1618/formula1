@@ -52,8 +52,10 @@ public class GridPaneBuilder {
             for(int c = 0; c < maxCol; c++) {
                 HBox hbox = boxMap.getOrDefault(r, new HashMap<>()).getOrDefault(c, new HBox(new Label("")));
                 hbox.getStyleClass().addAll("row"+r, "col"+c, "cellBox");
-                hbox.getStyleClass().add(r % 2 == 0 ? "oddRow" : "evenRow");
-                hbox.getStyleClass().add(c % 2 == 0 ? "oddCol" : "evenCol");
+                hbox.getStyleClass().add(r % 2 == 0 ? "row-odd" : "row-even");
+                hbox.getStyleClass().add(c % 2 == 0 ? "col-odd" : "col-even");
+                if(c == maxCol - 1)     hbox.getStyleClass().add("col-last");
+                if(r == maxRow - 1)     hbox.getStyleClass().add("row-last");
                 gp.add(hbox, c, r);
             }
         }

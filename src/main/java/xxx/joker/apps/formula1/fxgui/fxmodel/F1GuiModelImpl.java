@@ -29,6 +29,7 @@ public class F1GuiModelImpl implements F1GuiModel {
     private F1Model model = F1ModelImpl.getInstance();
 
     private JkCache<String, FxCountry> cacheNation = new JkCache<>();
+    private JkCache<F1GranPrix, Image> cacheGpTrackMap = new JkCache<>();
     private JkCache<Integer, SeasonView> cacheYears = new JkCache<>();
 
     private SimpleIntegerProperty selectedYear = new SimpleIntegerProperty();
@@ -52,7 +53,7 @@ public class F1GuiModelImpl implements F1GuiModel {
             if(country.getFlagIcon() == null)  {
                 icon = null;
             } else {
-                Path iconPath = model.getRepoCtx().getResourcesFolder().resolve(country.getFlagIcon().getUri().getPath());
+                Path iconPath = model.getUriPath(country.getFlagIcon());
                 icon = new Image(JkFiles.toURL(iconPath));
             }
 
@@ -60,11 +61,19 @@ public class F1GuiModelImpl implements F1GuiModel {
             if(country.getFlagImage() == null)  {
                 image = null;
             } else {
-                Path imagePath = model.getRepoCtx().getResourcesFolder().resolve(country.getFlagImage().getUri().getPath());
+                Path imagePath = model.getUriPath(country.getFlagImage());
                 image = new Image(JkFiles.toURL(imagePath));
             }
 
             return new FxCountry(country, icon, image);
+        });
+    }
+
+    @Override
+    public Image getGpTrackMap(F1GranPrix gp) {
+        return cacheGpTrackMap.get(gp, () -> {
+            Path uriPath = model.getUriPath(model.getGpTrackMap(gp));
+            return new Image(JkFiles.toURL(uriPath));
         });
     }
 
@@ -82,7 +91,7 @@ public class F1GuiModelImpl implements F1GuiModel {
                     F1Race unique = JkStreams.findUnique(gp.getRaces(), r -> r.getEntrant().getDriver().equals(d));
                     ResultCellPoints rcell = new ResultCellPoints();
                     if(unique != null) {
-                        rcell.setExpectedPoints(unique.getPoints());
+                        rcell.setValue(unique.getPoints());
                         rcell.setComputedPoints(unique.getPoints());
                         rcell.setPos(unique.getPos());
                     }
@@ -92,7 +101,7 @@ public class F1GuiModelImpl implements F1GuiModel {
                     ResultCellPoints cp = new ResultCellPoints();
                     cp.setComputedPoints(getTotalPoints(rv.getCellMap()));
                     F1SeasonPoints spoint = seasonPoints.get(d.getFullName());
-                    cp.setExpectedPoints(spoint == null ? 0d : spoint.getFinalPoints());
+                    cp.setValue(spoint == null ? 0d : spoint.getFinalPoints());
                     rv.setTotal(cp);
                     sv.getDriverResults().add(rv);
                 } catch (Exception ex) {
@@ -101,7 +110,7 @@ public class F1GuiModelImpl implements F1GuiModel {
                 }
             }
             AtomicInteger pos = new AtomicInteger(1);
-            JkStreams.reverseOrder(sv.getDriverResults(), Comparator.comparing(r -> r.getTotal().getExpectedPoints()))
+            JkStreams.reverseOrder(sv.getDriverResults(), Comparator.comparing(r -> r.getTotal().getValue()))
                     .forEach(drv -> drv.getTotal().setPos(pos.getAndIncrement()));
             Collections.sort(sv.getDriverResults());
 
@@ -112,7 +121,7 @@ public class F1GuiModelImpl implements F1GuiModel {
                 for (F1GranPrix gp : model.getGranPrixs(year)) {
                     double sum = gp.getRaces().stream().filter(r -> r.getEntrant().getTeam().equals(team)).mapToDouble(F1Race::getPoints).sum();
                     ResultCellPoints rcell = new ResultCellPoints();
-                    rcell.setExpectedPoints(sum);
+                    rcell.setValue(sum);
                     rcell.setComputedPoints(sum);
                     rv.getCellMap().put(gp, rcell);
                 }
@@ -120,7 +129,7 @@ public class F1GuiModelImpl implements F1GuiModel {
                     ResultCellPoints cp = new ResultCellPoints();
                     cp.setComputedPoints(getTotalPoints(rv.getCellMap()));
                     F1SeasonPoints spoint = seasonPoints.get(team.getTeamName());
-                    cp.setExpectedPoints(spoint == null ? 0d : spoint.getFinalPoints());
+                    cp.setValue(spoint == null ? 0d : spoint.getFinalPoints());
                     rv.setTotal(cp);
                     sv.getTeamResults().add(rv);
                 } catch (Exception ex) {
@@ -131,17 +140,16 @@ public class F1GuiModelImpl implements F1GuiModel {
 
             for (F1GranPrix gp : model.getGranPrixs(year)) {
                 pos.set(1);
-                JkStreams.reverseOrder(sv.getTeamResults(), Comparator.comparing(tr -> tr.getCellMap().get(gp).getExpectedPoints()))
+                JkStreams.reverseOrder(sv.getTeamResults(), Comparator.comparing(tr -> tr.getCellMap().get(gp).getValue()))
                         .forEach(tr -> tr.getCellMap().get(gp).setPos(pos.getAndIncrement()));
             }
 
             pos.set(1);
-            JkStreams.reverseOrder(sv.getTeamResults(), Comparator.comparing(r -> r.getTotal().getExpectedPoints()))
+            JkStreams.reverseOrder(sv.getTeamResults(), Comparator.comparing(r -> r.getTotal().getValue()))
                     .forEach(drv -> drv.getTotal().setPos(pos.getAndIncrement()));
             Collections.sort(sv.getTeamResults());
 
             return sv;
-
         });
     }
 
@@ -150,25 +158,15 @@ public class F1GuiModelImpl implements F1GuiModel {
         return selectedYear.get();
     }
 
-    public Double getTotalPoints(Map<F1GranPrix, ResultCellPoints> raceMap) {
+    private Double getTotalPoints(Map<F1GranPrix, ResultCellPoints> raceMap) {
         double sum = 0d;
         for (ResultCellPoints race : raceMap.values()) {
             if(race != null) {
-                sum += race.getExpectedPoints();
+                sum += race.getValue();
             }
         }
         return sum;
     }
-//    public Double getTotalPoints(Map<F1GranPrix, F1Race> raceMap) {
-//        double sum = 0d;
-//        for (F1Race race : raceMap.values()) {
-//            if(race != null && race.getPoints() != null) {
-//                sum += race.getPoints();
-//            }
-//        }
-//        return sum;
-//    }
-
 
     @Override
     public void setSelectedYear(int year) {

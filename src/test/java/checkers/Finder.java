@@ -1,5 +1,6 @@
 package checkers;
 
+import common.CommonTest;
 import org.junit.Test;
 import xxx.joker.apps.formula1.model.entities.F1GranPrix;
 import xxx.joker.apps.formula1.model.entities.F1Race;
@@ -7,7 +8,7 @@ import xxx.joker.apps.formula1.webParser.AWebParser;
 
 import static xxx.joker.libs.core.utils.JkConsole.display;
 
-public class Finder extends AWebParser {
+public class Finder extends CommonTest {
 
     @Test
     public void findNonIntPoints() {

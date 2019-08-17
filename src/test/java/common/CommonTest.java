@@ -48,14 +48,10 @@ public abstract class CommonTest {
         display(model.toStringRepo());
     }
     public void printRepo(Class<?>... classes) {
-        display(model.toStringRepo(classes));
+        display(model.toStringClass(classes));
     }
-    public <T extends RepoEntity> void printRepo(Collection<T> entities) {
-        if(entities.isEmpty()) {
-            display("<empty list>");
-        }
-        Class<?> c = JkConvert.toList(entities).get(0).getClass();
-        display(model.toStringRepo(c));
+    public void printRepo(Collection<? extends RepoEntity> entities) {
+        display(model.toStringEntities(entities));
     }
 
 }

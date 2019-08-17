@@ -15,7 +15,7 @@ public class JfxTableCol<T, V> extends TableColumn<T, V> {
     private Function<T, V> extractor;
     private Function<V, String> strFunc;
     private boolean autoSize;
-    private double fixedWidth = -1d;
+    private double fixedPrefWidth = -1d;
 
     public JfxTableCol() {
 
@@ -66,7 +66,7 @@ public class JfxTableCol<T, V> extends TableColumn<T, V> {
 
         col.strFunc = strFunc;
         col.autoSize = autoSize;
-        col.fixedWidth = prefWidth;
+        col.fixedPrefWidth = prefWidth;
 
         return col;
     }
@@ -108,12 +108,12 @@ public class JfxTableCol<T, V> extends TableColumn<T, V> {
         this.autoSize = autoSize;
     }
 
-    public double getFixedWidth() {
-        return fixedWidth;
+    public double getFixedPrefWidth() {
+        return fixedPrefWidth;
     }
 
-    public void setFixedWidth(double fixedWidth) {
-        this.fixedWidth = fixedWidth;
+    public void setFixedPrefWidth(double fixedPrefWidth) {
+        this.fixedPrefWidth = fixedPrefWidth;
     }
 
 

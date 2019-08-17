@@ -11,7 +11,7 @@ import javafx.scene.layout.Pane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xxx.joker.apps.formula1.fxgui.fxmodel.FxCountry;
-import xxx.joker.apps.formula1.fxgui.fxview.SubPane;
+import xxx.joker.apps.formula1.fxgui.fxview.CentralPane;
 import xxx.joker.apps.formula1.fxgui.fxview.box.TableBoxCaption;
 import xxx.joker.apps.formula1.fxgui.fxview.control.GridPaneBuilder;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTable;
@@ -21,7 +21,7 @@ import xxx.joker.libs.core.javafx.JfxUtil;
 
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
-public class CircuitsPane extends SubPane {
+public class CircuitsPane extends CentralPane {
 
     private static final Logger LOG = LoggerFactory.getLogger(CircuitsPane.class);
 
@@ -55,7 +55,6 @@ public class CircuitsPane extends SubPane {
         bp.getStyleClass().add("infoPane");
 
         ImageView ivFlag = JfxUtil.createImageView(400, 300);
-//        ImageView ivFlag = JfxUtil.createImageView(150, 100);
         HBox topBox = new HBox(ivFlag);
         bp.setTop(topBox);
 

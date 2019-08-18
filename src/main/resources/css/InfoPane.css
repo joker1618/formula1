@@ -1,4 +1,4 @@
-.circuitsPane .infoPane {
+.infoPane {
     -fx-border-color: -darkBlue;
     -fx-border-width: 2;
     -fx-font-size: 22;
@@ -8,6 +8,8 @@
 .customGrid {
     -fx-hgap: 10;
     -fx-vgap: 10;
+    -fx-font-size: 20;
+    -fx-text-fill: BLACK;
 }
 
 .customGrid .col0 {

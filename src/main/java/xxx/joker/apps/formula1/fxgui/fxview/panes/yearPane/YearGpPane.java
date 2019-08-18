@@ -1,5 +1,6 @@
 package xxx.joker.apps.formula1.fxgui.fxview.panes.yearPane;
 
+import javafx.geometry.Side;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -35,6 +36,7 @@ public class YearGpPane extends CentralPane {
 
     public YearGpPane() {
         getStylesheets().add(getClass().getResource("/css/YearGpPane.css").toExternalForm());
+        getStylesheets().add(getClass().getResource("/css/InfoPane.css").toExternalForm());
 
         BorderPane detailsPane = createDetailsPane();
 
@@ -52,6 +54,8 @@ public class YearGpPane extends CentralPane {
         tabPane.getStyleClass().add("tabPane");
         tabPane.getTabs().addAll(tab1, tab2);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
+
+        tabPane.setSide(Side.LEFT);
 
         setCenter(tabPane);
     }

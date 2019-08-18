@@ -89,20 +89,16 @@ public class YearResultsPane extends CentralPane {
 //            col.setComparator(Comparator.comparing(ResultCellPoints::getPos));
             col.setGraphic(JfxUtil.createImageView(img, 40, 40));
             col.setFixedPrefWidth(60);
-            col.setMaxWidth(60);
+//            col.setMaxWidth(60);
             table.add(col);
         }
 
         JfxTableCol<ResultView, ResultCellPoints>  colPts = JfxTableCol.createCol("TOT", "total", rcell -> showPoints.get() ? rcell.toStringTotPoints() : safePrint0(rcell.getPos()), "centered");
-//        colPts.setComparator(Comparator.comparing(ResultCellPoints::getPos));
         table.add(colPts);
-        colPts.setFixedPrefWidth(60);
 
-        HBox tbox = new HBox(table);
-//        tbox.getStyleClass().addAll("bgRed", "pad10");
-        tbox.getStyleClass().addAll("bgRed");
-        tbox.setStyle("-fx-padding: 20 0 0 0");
-        tbox.widthProperty().addListener((obs,o,n) -> table.setFixedWidth(n.doubleValue()));
+//        HBox tbox = new HBox(table);
+//        tbox.setStyle("-fx-padding: 20 0 0 0");
+//        tbox.widthProperty().addListener((obs,o,n) -> table.setFixedPrefWidth(n.doubleValue()));
 //        setCenter(tbox);
 
         table.update(showDrivers.get() ? guiModel.getSeasonView(year).getDriverResults(): guiModel.getSeasonView(year).getTeamResults());

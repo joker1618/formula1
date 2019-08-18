@@ -10,6 +10,7 @@
 
 .table-row-cell {
     -fx-pref-height: -rowHeight;
+    -fx-border-width: 3;
 }
 .column-header-background {
     -fx-pref-height: -headerHeight;

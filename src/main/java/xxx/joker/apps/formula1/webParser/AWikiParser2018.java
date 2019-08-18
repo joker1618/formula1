@@ -61,7 +61,7 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
             sp.setFinalPoints(en.getValue());
             return sp;
         });
-        plist.sort(Comparator.comparing(F1SeasonPoints::getFinalPoints));
+        plist = JkStreams.reverseOrder(plist, Comparator.comparing(F1SeasonPoints::getFinalPoints));
         for(int i = 0; i < plist.size(); i++) {
             plist.get(i).setFinalPos(i + 1);
         }
@@ -75,7 +75,7 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
             sp.setFinalPoints(en.getValue());
             return sp;
         });
-        plist.sort(Comparator.comparing(F1SeasonPoints::getFinalPoints));
+        plist = JkStreams.reverseOrder(plist, Comparator.comparing(F1SeasonPoints::getFinalPoints));
         for(int i = 0; i < plist.size(); i++) {
             plist.get(i).setFinalPos(i + 1);
         }

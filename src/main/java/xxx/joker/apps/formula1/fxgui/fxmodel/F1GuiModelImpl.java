@@ -11,7 +11,9 @@ import xxx.joker.apps.formula1.model.entities.*;
 import xxx.joker.libs.core.cache.JkCache;
 import xxx.joker.libs.core.files.JkFiles;
 import xxx.joker.libs.core.lambdas.JkStreams;
+import xxx.joker.libs.datalayer.entities.RepoResource;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
 import java.util.Comparator;
@@ -29,7 +31,9 @@ public class F1GuiModelImpl implements F1GuiModel {
     private F1Model model = F1ModelImpl.getInstance();
 
     private JkCache<String, FxCountry> cacheNation = new JkCache<>();
+    private final Image imageUnavailable;
     private JkCache<F1GranPrix, Image> cacheGpTrackMap = new JkCache<>();
+    private JkCache<F1Driver, Image> cacheDriverCoverMap = new JkCache<>();
     private JkCache<Integer, SeasonView> cacheYears = new JkCache<>();
 
     private SimpleIntegerProperty selectedYear = new SimpleIntegerProperty();
@@ -37,7 +41,9 @@ public class F1GuiModelImpl implements F1GuiModel {
 
 
     private F1GuiModelImpl() {
-
+        RepoResource res = model.getImageUnavailable();
+        Path uriPath = model.getUriPath(res);
+        this.imageUnavailable = new Image(JkFiles.toURL(uriPath));
     }
 
     public static F1GuiModel getInstance() {
@@ -73,7 +79,25 @@ public class F1GuiModelImpl implements F1GuiModel {
     public Image getGpTrackMap(F1GranPrix gp) {
         return cacheGpTrackMap.get(gp, () -> {
             Path uriPath = model.getUriPath(model.getGpTrackMap(gp));
-            return new Image(JkFiles.toURL(uriPath));
+            if(Files.exists(uriPath)) {
+                return new Image(JkFiles.toURL(uriPath));
+            } else {
+                return imageUnavailable;
+            }
+        });
+    }
+
+    @Override
+    public Image getDriverCover(F1Driver driver) {
+        return cacheDriverCoverMap.get(driver, () -> {
+            RepoResource res = model.getDriverCover(driver);
+            if (res != null) {
+                Path uriPath = model.getUriPath(res);
+                if (Files.exists(uriPath)) {
+                    return new Image(JkFiles.toURL(uriPath));
+                }
+            }
+            return imageUnavailable;
         });
     }
 

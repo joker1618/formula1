@@ -1,10 +1,11 @@
 package xxx.joker.apps.formula1.fxgui.fxview.panes;
 
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xxx.joker.apps.formula1.common.F1Util;
-import xxx.joker.apps.formula1.fxgui.fxmodel.StatsView;
-import xxx.joker.apps.formula1.fxgui.fxmodel.StatsView.*;
+import xxx.joker.apps.formula1.fxgui.fxmodel.StatsLine;
+import xxx.joker.apps.formula1.fxgui.fxmodel.StatsLine.*;
 import xxx.joker.apps.formula1.fxgui.fxview.CentralPane;
 import xxx.joker.apps.formula1.fxgui.fxview.box.TableBoxCaption;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTable;
@@ -24,22 +25,24 @@ public class HomePane extends CentralPane {
         setCenter(createTableStats());
     }
 
-    private TableBoxCaption<StatsView> createTableStats() {
-        JfxTable<StatsView> table = new JfxTable<>();
+    private TableBoxCaption<StatsLine> createTableStats() {
+        JfxTable<StatsLine> table = new JfxTable<>();
 
-        JfxTableCol<StatsView, String> colName = JfxTableCol.createCol("NAME", "statName");
+        JfxTableCol<StatsLine, String> colName = JfxTableCol.createCol("NAME", "statName");
         table.add(colName);
 
-        for (StatKind skind : StatKind.values()) {
-            JfxTableCol<StatsView, StatsCell> col = JfxTableCol.createCol(skind.getLabel(), sv -> sv.getStatsCell(skind), sc -> F1Util.safePrint0(sc.getValue()));
+        Pair<List<StatKind>, List<StatsLine>> pairs = statsComputer.computeByDriver(JkConvert.toList(model.getGranPrixs()));
+        for (StatKind skind : pairs.getKey()) {
+            JfxTableCol<StatsLine, StatsCell> col = JfxTableCol.createCol(skind.getLabel(), sv -> sv.getStatsCell(skind), sc -> F1Util.safePrint0(sc.getValue()));
             col.getStyleClass().add("centered");
+            col.setFixedPrefWidth(85);
             table.add(col);
         }
 
-        List<StatsView> statsViews = statsComputer.computeByDriver(JkConvert.toList(model.getGranPrixs()));
-        table.update(statsViews);
+        TableBoxCaption<StatsLine> toRet = new TableBoxCaption<>(strf("STATS"), table);
+        table.update(pairs.getValue());
 
-        return new TableBoxCaption<>(strf("STATS"), table);
+        return toRet;
     }
 }
 

@@ -10,10 +10,7 @@ import xxx.joker.libs.core.scanners.JkTag;
 import xxx.joker.libs.core.utils.JkConvert;
 import xxx.joker.libs.core.utils.JkStruct;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Year2006 extends AWikiParser2018 {
 
@@ -158,7 +155,7 @@ public class Year2006 extends AWikiParser2018 {
 
     @Override
     protected Map<String, Double> getExpectedDriverPoints(String html) {
-        Map<String, Double> map = new HashMap<>();
+        Map<String, Double> map = new LinkedHashMap<>();
 
         JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"World_Drivers'_Championship_standings\">"
                 , "<table>", "<table class=\"wikitable\"");
@@ -179,7 +176,7 @@ public class Year2006 extends AWikiParser2018 {
 
     @Override
     protected Map<String, Double> getExpectedTeamPoints(String html) {
-        Map<String, Double> map = new HashMap<>();
+        Map<String, Double> map = new LinkedHashMap<>();
 
         JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"World_Constructors'_Championship_standings\">", "<table class=\"wikitable\"");
         JkTag tbody = tableEntrants.getChild("tbody");

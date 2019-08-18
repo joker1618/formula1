@@ -5,9 +5,11 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import xxx.joker.apps.formula1.model.entities.*;
+import xxx.joker.libs.core.format.JkFormatter;
 import xxx.joker.libs.core.format.JkOutput;
 import xxx.joker.libs.core.lambdas.JkStreams;
 import xxx.joker.libs.core.utils.JkStrings;
+import xxx.joker.libs.datalayer.design.RepoEntity;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -37,6 +39,14 @@ public class ShowData extends CommonTest {
             int totNum = years.size();
             display("Available years from {} to {}  ({})", years.get(0), years.get(totNum -1), totNum);
         }
+    }
+
+    @Test
+    public void printNumEntitiesByClass() {
+        Map<Class<RepoEntity>, Integer> resMap = JkStreams.toMapSingle(model.getDataSets().entrySet(), Map.Entry::getKey, e -> e.getValue().size());
+        List<String> lines = JkStreams.mapSort(resMap.entrySet(), e -> strf("{}|{}", e.getKey().getSimpleName(), e.getValue()));
+        lines.add(0, "CLASS|NUM");
+        display("{}", JkOutput.columnsView(lines));
     }
 
     @Test

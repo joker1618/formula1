@@ -56,6 +56,16 @@ public class F1ModelImpl extends JkRepoFile implements F1Model {
     }
 
     @Override
+    public RepoResource getImageUnavailable() {
+        return getResource("imageUnavailable", "image");
+    }
+
+    @Override
+    public RepoResource saveImageUnavailable(Path imgPath) {
+        return addResource(imgPath, "imageUnavailable", "image");
+    }
+
+    @Override
     public F1Country getCountry(String countryName) {
         return get(F1Country.class, c -> c.getName().equalsIgnoreCase(countryName));
     }

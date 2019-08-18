@@ -15,7 +15,7 @@ public class JfxTable<T> extends TableView<T> {
     private static final double EXTRA_COL_WIDTH = 30d;
 
     private List<JfxTableCol<T, ?>> columns;
-    private double fixedWidth = -1;
+    private double fixedPrefWidth = -1;
 
     @SafeVarargs
     public JfxTable(JfxTableCol<T, ?>... cols) {
@@ -35,9 +35,9 @@ public class JfxTable<T> extends TableView<T> {
             for(int i = 0; i < columns.size(); i++) {
                 JfxTableCol col = columns.get(i);
                 col.getStyleClass().addAll("col", "col" + i);
-                col.getStyleClass().add("col-" + (i % 2 == 0 ? "odd" : "even"));
+                col.getStyleClass().add(i % 2 == 0 ? "col-odd" : "col-even");
+                col.getStyleClass().add(i == 0 ? "col-first" : i == columns.size() - 1 ? "col-last" : "col-middle");
             }
-            columns.get(columns.size() - 1).getStyleClass().add("col-last");
         }
     }
 
@@ -54,10 +54,10 @@ public class JfxTable<T> extends TableView<T> {
         for (JfxTableCol<T, ?> col : columns) {
             if(col.isVisible()) {
                 double max;
+                double wcol;
                 if (col.getFixedPrefWidth() != -1) {
                     max = col.getFixedPrefWidth();
-//                    double wcol = max + EXTRA_COL_WIDTH;
-//                    col.setPrefWidth(wcol);
+                    wcol = max;
                 } else {
                     //Minimal width = columnheader
                     Text t = new Text(col.getText());
@@ -72,17 +72,17 @@ public class JfxTable<T> extends TableView<T> {
                             }
                         }
                     }
-                    double wcol = max + EXTRA_COL_WIDTH;
-                    col.setPrefWidth(wcol);
+                    wcol = max + EXTRA_COL_WIDTH;
                 }
+                col.setPrefWidth(wcol);
                 // add extra space
-                tablePrefWidth += max + EXTRA_COL_WIDTH;
+                tablePrefWidth += wcol;
             }
         }
 
-//        if(fixedWidth != -1) {
-        if(fixedWidth != -1) {
-            setPrefWidth(fixedWidth);
+//        if(fixedPrefWidth != -1) {
+        if(fixedPrefWidth != -1) {
+            setPrefWidth(fixedPrefWidth);
         } else {
             setPrefWidth(tablePrefWidth);
         }
@@ -95,8 +95,8 @@ public class JfxTable<T> extends TableView<T> {
         setPrefHeight(h);
     }
 
-    public void setFixedWidth(double fixedWidth) {
-        this.fixedWidth = fixedWidth;
-        setPrefWidth(fixedWidth);
+    public void setFixedPrefWidth(double fixedPrefWidth) {
+        this.fixedPrefWidth = fixedPrefWidth;
+        setPrefWidth(fixedPrefWidth);
     }
 }

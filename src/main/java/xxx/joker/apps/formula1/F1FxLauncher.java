@@ -8,6 +8,7 @@ import org.scenicview.ScenicView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xxx.joker.apps.formula1.fxgui.fxview.RootPane;
+import xxx.joker.libs.core.debug.JkDebug;
 
 public class F1FxLauncher extends Application {
 
@@ -47,6 +48,7 @@ public class F1FxLauncher extends Application {
     @Override
     public void stop() throws Exception {
         LOG.debug("STOP APP");
+        JkDebug.displayTimes();
     }
 
     public static void main(String[] args) {

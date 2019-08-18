@@ -169,7 +169,7 @@ public class Year1986 extends AWikiParser2018 {
 
     @Override
     protected Map<String, Double> getExpectedDriverPoints(String html) {
-        Map<String, Double> map = new HashMap<>();
+        Map<String, Double> map = new LinkedHashMap<>();
 
         JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"World_Drivers'_Championship_–_final_standings\">"
                 , "<table>", "<table class=\"wikitable\"");
@@ -191,7 +191,7 @@ public class Year1986 extends AWikiParser2018 {
 
     @Override
     protected Map<String, Double> getExpectedTeamPoints(String html) {
-        Map<String, Double> map = new HashMap<>();
+        Map<String, Double> map = new LinkedHashMap<>();
 
         JkTag tableEntrants = JkScanners.parseHtmlTag(html, "table", "<span class=\"mw-headline\" id=\"World_Manufacturers'_Championship_–_final_standings\">World Manufacturers' Championship – final standings</span>",
                 "<table", "tbody", "<table");

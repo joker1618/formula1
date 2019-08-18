@@ -34,7 +34,7 @@ public class CircuitsPane extends CentralPane {
         setCenter(createInfoPane());
 
         getStyleClass().add("circuitsPane");
-        getStylesheets().add(getClass().getResource("/css/CircuitsPane.css").toExternalForm());
+        getStylesheets().add(getClass().getResource("/css/InfoPane.css").toExternalForm());
 
     }
 
@@ -87,7 +87,7 @@ public class CircuitsPane extends CentralPane {
             }
         });
 
-        BorderPane.setMargin(bp, new Insets(0d, 0d, 0d, 40d));
+        BorderPane.setMargin(bp, new Insets(0d, 0d, 0d, 20d));
 
         return bp;
     }

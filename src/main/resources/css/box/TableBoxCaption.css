@@ -13,8 +13,9 @@
     -fx-border-width: 2 2 0 2;
 }
 
-.boxCenter {
+.hbox.boxCenter {
     -fx-border-width: 2;
+    -fx-padding: 10;
 }
 .boxBottom {
     -fx-border-width: 0 2 2 2;

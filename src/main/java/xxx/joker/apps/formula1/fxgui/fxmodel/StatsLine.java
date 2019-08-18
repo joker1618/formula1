@@ -1,19 +1,19 @@
 package xxx.joker.apps.formula1.fxgui.fxmodel;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class StatsView {
+public class StatsLine {
 
     public enum StatKind {
-        NUM_RACES("NR"),
-        NUM_FIRST("P1"),
-//        NUM_PODIUM("Pod"),
+        NUM_SEASONS("Season"),
+        WIN_SEASONS("Champion"),
+        NUM_RACES("Race"),
+        NUM_P1("P1"),
+        NUM_P2("P2"),
+        NUM_P3("P3"),
+        NUM_PODIUMS("Podium"),
         NUM_POLE("Pole"),
-        NUM_FAST_LAPS("FLap"),
-
+        NUM_FAST_LAPS("Fast Lap"),
         ;
         private String label;
 
@@ -27,7 +27,7 @@ public class StatsView {
     }
 
     private String statName;
-    private Map<StatKind, StatsCell> statsCells = new HashMap<>();
+    private Map<StatKind, StatsCell> statsCells = new LinkedHashMap<>();
 
     public String getStatName() {
         return statName;
@@ -51,10 +51,15 @@ public class StatsView {
     public static class StatsCell implements Comparable<StatsCell> {
         private int pos;
         private double value;
-//        private double perc;
 
 
         public StatsCell() {
+            this(-1, -1d);
+        }
+
+        public StatsCell(double value) {
+            this.pos = -1;
+            this.value = value;
         }
 
         public StatsCell(int pos, double value) {
@@ -77,14 +82,6 @@ public class StatsView {
         public void setValue(double value) {
             this.value = value;
         }
-
-//        public double getPerc() {
-//            return perc;
-//        }
-//
-//        public void setPerc(double perc) {
-//            this.perc = perc;
-//        }
 
         @Override
         public int compareTo(StatsCell o) {

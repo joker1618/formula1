@@ -1,4 +1,7 @@
 
+.tabPane .tab-label {
+    -fx-font-size: 20;
+}
 .tabPane .tab:selected .tab-label {
     -fx-font-weight: BOLD;
 }

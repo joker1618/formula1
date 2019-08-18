@@ -17,14 +17,13 @@ public interface F1Model extends JkRepo {
 
     RepoResource getGpTrackMap(F1GranPrix gp);
     RepoResource saveGpTrackMap(Path imgPath, F1GranPrix gp);
-//
-    F1Country getCountry(String name);
 
+    RepoResource getImageUnavailable();
+    RepoResource saveImageUnavailable(Path imgPath);
+
+    F1Country getCountry(String name);
     Set<F1Country> getCountries();
 
-    //    Set<F1Country> getCountries();
-////    RepoResource saveCountryFlag(Path imgPath, F1Country country);
-//
     F1Team getTeam(String teamName);
     Set<F1Team> getTeams();
 

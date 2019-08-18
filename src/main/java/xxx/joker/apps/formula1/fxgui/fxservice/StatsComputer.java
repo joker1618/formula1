@@ -3,17 +3,15 @@ package xxx.joker.apps.formula1.fxgui.fxservice;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import xxx.joker.apps.formula1.fxgui.fxmodel.StatsView;
-import static xxx.joker.apps.formula1.fxgui.fxmodel.StatsView.StatKind;
-import xxx.joker.apps.formula1.fxgui.fxmodel.StatsView.StatsCell;
+import xxx.joker.apps.formula1.fxgui.fxmodel.StatsLine;
+import static xxx.joker.apps.formula1.fxgui.fxmodel.StatsLine.StatKind.*;
+import static xxx.joker.apps.formula1.fxgui.fxmodel.StatsLine.StatKind;
+import xxx.joker.apps.formula1.fxgui.fxmodel.StatsLine.StatsCell;
 import xxx.joker.apps.formula1.model.F1Model;
 import xxx.joker.apps.formula1.model.F1ModelImpl;
-import xxx.joker.apps.formula1.model.entities.F1Driver;
-import xxx.joker.apps.formula1.model.entities.F1GranPrix;
-import xxx.joker.apps.formula1.model.entities.F1Qualify;
-import xxx.joker.apps.formula1.model.entities.F1Race;
-import xxx.joker.libs.core.datetime.JkDuration;
+import xxx.joker.apps.formula1.model.entities.*;
 import xxx.joker.libs.core.lambdas.JkStreams;
+import xxx.joker.libs.datalayer.design.RepoEntity;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -24,58 +22,62 @@ public class StatsComputer {
 
     private static final Logger LOG = LoggerFactory.getLogger(StatsComputer.class);
 
-//    public enum StatKind {
-//        NUM_RACES("NR"),
-//        NUM_FIRST("P1"),
-//        NUM_PODIUM("Pod"),
-//        NUM_POLE("Pole"),
-//        NUM_FAST_LAPS("FLap"),
-//
-//        ;
-//        private String label;
-//
-//        StatKind(String label) {
-//            this.label = label;
-//        }
-//    }
-
     private F1Model model = F1ModelImpl.getInstance();
 
-    public List<StatsView> computeByDriver(List<F1GranPrix> gpList) {
-        List<StatsView> svList = new ArrayList<>();
+    public Pair<List<StatKind>, List<StatsLine>> computeByDriver(List<F1GranPrix> gpList) {
+
         List<F1Driver> allDrivers = extractDrivers(gpList);
+        List<RepoEntity> allKeys = JkStreams.map(allDrivers, d -> d);
 
-        Map<F1Driver, StatsCell> raceNumMap = countElems(JkStreams.flatMap(gpList, F1GranPrix::getRaces), r -> r.getEntrant().getDriver(), allDrivers);
-        Map<F1Driver, StatsCell> poleMap = countElems(gpList, this::getPoleDriver, allDrivers);
-        Map<F1Driver, StatsCell> p1Map = countElems(gpList, gp -> getNumPosition(gp, 1), allDrivers);
-        Map<F1Driver, StatsCell> p2Map = countElems(gpList, gp -> getNumPosition(gp, 2), allDrivers);
-        Map<F1Driver, StatsCell> p3Map = countElems(gpList, gp -> getNumPosition(gp, 3), allDrivers);
-        Map<F1Driver, StatsCell> fastLapMap = countElems(gpList, this::getFastLapDriver, allDrivers);
+        Map<F1Driver, Integer> seasonNums = JkStreams.toMapSingle(allDrivers, d -> d, d -> JkStreams.filterMapSortUniq(model.getEntrants(), e -> e.getDriver().equals(d), F1Entrant::getYear).size());
+        Map<RepoEntity, StatsCell> seasonMap = JkStreams.toMapSingle(seasonNums.entrySet(), Map.Entry::getKey, e -> new StatsCell(e.getValue()));
+        AtomicInteger pos = new AtomicInteger(1);
+        JkStreams.reverseOrder(seasonMap.values(), Comparator.comparingDouble(StatsCell::getValue)).forEach(sc -> sc.setPos(pos.getAndIncrement()));
 
-//        for (F1Driver d : allDrivers) {
-//            double numPodium = p1Map.get(d).getValue() + p2Map.get(d).getValue() + p3Map.get(d).getValue();
-//            new Sta
-//        }
+        Map<String, List<F1SeasonPoints>> winSeasons = JkStreams.toMap(model.getSeasonPoints(), F1SeasonPoints::getName, sp -> sp, sp -> sp.getFinalPos() == 1);
+        Map<RepoEntity, StatsCell> winSeasonMap = JkStreams.toMapSingle(allDrivers, d -> d, d -> new StatsCell(winSeasons.getOrDefault(d.getFullName(), Collections.emptyList()).size()));
+        pos.set(1);
+        JkStreams.reverseOrder(winSeasonMap.values(), Comparator.comparingDouble(StatsCell::getValue)).forEach(sc -> sc.setPos(pos.getAndIncrement()));
+
+        List<F1Race> raceList = JkStreams.flatMap(gpList, F1GranPrix::getRaces);
+        Map<RepoEntity, StatsCell> raceNumMap = countElems(raceList, r -> r.getEntrant().getDriver(), allKeys);
+        Map<RepoEntity, StatsCell> poleMap = countElems(gpList, this::getPoleDriver, allKeys);
+        Map<RepoEntity, StatsCell> p1Map = countElems(gpList, gp -> getDriverAtPos(gp, 1), allKeys);
+        Map<RepoEntity, StatsCell> p2Map = countElems(gpList, gp -> getDriverAtPos(gp, 2), allKeys);
+        Map<RepoEntity, StatsCell> p3Map = countElems(gpList, gp -> getDriverAtPos(gp, 3), allKeys);
+        Map<RepoEntity, StatsCell> fastLapMap = countElems(gpList, this::getFastLapDriver, allKeys);
+
+        raceList.removeIf(r -> r.getPos() > 3);
+        Map<RepoEntity, StatsCell> podiumMap = countElems(raceList, r -> r.getEntrant().getDriver(), allKeys);
+
+        List<StatsLine> svList = new ArrayList<>();
+        List<StatKind> skList = new ArrayList<>();
         for (F1Driver d : allDrivers) {
-            StatsView sv = new StatsView();
+            StatsLine sv = new StatsLine();
             sv.setStatName(d.getFullName());
-            sv.getStatsCells().put(StatKind.NUM_RACES, raceNumMap.get(d));
-            sv.getStatsCells().put(StatKind.NUM_FIRST, p1Map.get(d));
-            sv.getStatsCells().put(StatKind.NUM_POLE, poleMap.get(d));
-            sv.getStatsCells().put(StatKind.NUM_FAST_LAPS, fastLapMap.get(d));
-//            double numPodium = p1Map.get(d).getValue() + p2Map.get(d).getValue() + p3Map.get(d).getValue();
+            sv.getStatsCells().put(NUM_SEASONS, seasonMap.get(d));
+            sv.getStatsCells().put(WIN_SEASONS, winSeasonMap.get(d));
+            sv.getStatsCells().put(NUM_RACES, raceNumMap.get(d));
+            sv.getStatsCells().put(NUM_P1, p1Map.get(d));
+            sv.getStatsCells().put(NUM_P2, p2Map.get(d));
+            sv.getStatsCells().put(NUM_P3, p3Map.get(d));
+            sv.getStatsCells().put(NUM_POLE, poleMap.get(d));
+            sv.getStatsCells().put(NUM_PODIUMS, podiumMap.get(d));
+            sv.getStatsCells().put(NUM_FAST_LAPS, fastLapMap.get(d));
             svList.add(sv);
+            if(skList.isEmpty()) {
+                sv.getStatsCells().forEach((k,v) -> skList.add(k));
+            }
         }
 
-        return svList;
+        return Pair.of(skList, svList);
     }
 
-    private <T> Map<F1Driver, StatsCell> countElems(List<T> list, Function<T, F1Driver> keyMapper, List<F1Driver> allDrivers) {
-        Map<F1Driver, List<T>> map = JkStreams.toMap(list, keyMapper);
-        Map<F1Driver, Integer> numMap = JkStreams.toMapSingle(map.entrySet(), Map.Entry::getKey, e -> e.getValue().size());
-        allDrivers.forEach(d -> numMap.putIfAbsent(d, 0));
-//        numMap.remove(null);
-        Map<F1Driver, StatsCell> statCells = new TreeMap<>();
+    private <T> Map<RepoEntity, StatsCell> countElems(List<T> list, Function<T, RepoEntity> keyMapper, List<RepoEntity> allKeys) {
+        Map<RepoEntity, List<T>> map = JkStreams.toMap(list, keyMapper);
+        Map<RepoEntity, Integer> numMap = JkStreams.toMapSingle(map.entrySet(), Map.Entry::getKey, e -> e.getValue().size());
+        allKeys.forEach(d -> numMap.putIfAbsent(d, 0));
+        Map<RepoEntity, StatsCell> statCells = new TreeMap<>();
         AtomicInteger counter = new AtomicInteger(1);
         JkStreams.reverseOrder(numMap.entrySet(), Comparator.comparing(Map.Entry::getValue)).forEach(e -> {
             StatsCell sc = new StatsCell(counter.getAndIncrement(), e.getValue());
@@ -102,7 +104,7 @@ public class StatsComputer {
         F1Qualify qual = gp.getQualifies().get(0);
         return qual.getEntrant().getDriver();
     }
-    private F1Driver getNumPosition(F1GranPrix gp, int pos) {
+    private F1Driver getDriverAtPos(F1GranPrix gp, int pos) {
         return gp.getRaces().get(pos-1).getEntrant().getDriver();
     }
     private F1Driver getFastLapDriver(F1GranPrix gp) {

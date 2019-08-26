@@ -133,7 +133,10 @@ public class RootPane extends BorderPane {
                     Image flagIcon = fnat.getFlagIcon();
                     if(getGraphic() == null) {
                         ImageView ivIcon = JfxUtil.createImageView(flagIcon, 45, 28);
-                        HBox iconBox = new HBox(ivIcon);
+                        ivIcon.setPreserveRatio(false);
+                        HBox hbox = new HBox(ivIcon);
+                        hbox.getStyleClass().addAll("borderBlack", "centered");
+                        HBox iconBox = new HBox(hbox);
                         iconBox.getStyleClass().addAll("iconBox");
                         setGraphic(iconBox);
                     } else {
@@ -160,7 +163,7 @@ public class RootPane extends BorderPane {
             showedPane.set(spane);
         });
 
-        comboSelYear.getSelectionModel().selectFirst();
+//        comboSelYear.getSelectionModel().selectFirst();
 
         return menuBox;
     }

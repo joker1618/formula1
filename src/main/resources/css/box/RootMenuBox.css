@@ -31,10 +31,11 @@
 .rootMenu .yearBox .button.no-width {
     -fx-min-width: -1;
     -fx-pref-width: -1;
+    -fx-max-width: -1;
 }
 .rootMenu .gpList {
     -fx-pref-width: 150;
-    -fx-pref-height: 600;
+    -fx-pref-height: 9999;
 }
 .rootMenu .gpList .iconBox {
     -fx-min-width: 50;
@@ -47,6 +48,9 @@
     -fx-pref-height: 50;
 }
 
+.rootMenu .gpList .list-cell:odd {
+    -fx-background-color: #f2f2f2;
+}
 .rootMenu .gpList .list-cell:even {
     -fx-background-color: #adebad;
 }

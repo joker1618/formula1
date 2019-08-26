@@ -37,7 +37,6 @@ public class CircuitsPane extends CentralPane {
         getStylesheets().add(getClass().getResource("/css/InfoPane.css").toExternalForm());
 
     }
-
     private TableBoxCaption<F1Circuit> createListPane() {
         JfxTableCol<F1Circuit, String> colNation = JfxTableCol.createCol("NATION", "country");
         JfxTableCol<F1Circuit, String> colCity = JfxTableCol.createCol("CITY", "city");
@@ -55,7 +54,9 @@ public class CircuitsPane extends CentralPane {
         bp.getStyleClass().add("infoPane");
 
         ImageView ivFlag = JfxUtil.createImageView(400, 300);
-        HBox topBox = new HBox(ivFlag);
+        HBox containerBox = new HBox(ivFlag);
+        containerBox.getStyleClass().add("borderBlack");
+        HBox topBox = new HBox(containerBox);
         bp.setTop(topBox);
 
         topBox.getStyleClass().addAll("subBox");

@@ -31,7 +31,7 @@ public class F1Race extends RepoEntity {
 
     @Override
     public String getPrimaryKey() {
-        return strf("race-[%s]-%02d", gpPK, pos);
+        return strf("%s-race-%02d", gpPK, pos);
     }
 
     public String getGpPK() {

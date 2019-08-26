@@ -26,7 +26,11 @@ public class FlagsWebParser extends CommonTest {
 
     @Test
     public void downloadFlags() {
+        URL url = getClass().getClassLoader().getResource("imageUnavailable.png");
+        model.saveImageUnavailable(JkFiles.toPath(url));
+
         new FlagsDownloader().downloadCountries();
+
         model.commit();
     }
 

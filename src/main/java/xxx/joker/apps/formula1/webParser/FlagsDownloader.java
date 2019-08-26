@@ -31,7 +31,7 @@ public class FlagsDownloader extends AWebParser {
                 JkTag img = span.walkFirstChild("a img");
 
                 String countryName = img.getAttribute("alt");
-                countryName = AWikiParser2018.fixNation(countryName);
+                countryName = AWikiParser2018.fixCountry(countryName);
                 F1Country country = new F1Country(countryName);
 
                 boolean add = model.add(country);
@@ -44,7 +44,7 @@ public class FlagsDownloader extends AWebParser {
                 country.setCode(code);
 
                 Pair<Boolean, Path> dwRes1 = dwTemp.downloadResource(iconUrl);
-                RepoResource iconResource = model.addResource(dwRes1.getValue(), countryName, "icon flag");
+                RepoResource iconResource = model.addResource(dwRes1.getValue(), countryName, "flag icon");
                 country.setFlagIcon(iconResource);
 
                 String nationPageUrl = createWikiUrl(span.getChild("a"));
@@ -59,7 +59,7 @@ public class FlagsDownloader extends AWebParser {
                         String imageUrl = getImageUrl(imgTag);
 
                         Pair<Boolean, Path> dwRes2 = dwTemp.downloadResource(imageUrl);
-                        RepoResource imageURI = model.addResource(dwRes2.getValue(), countryName, "image flag");
+                        RepoResource imageURI = model.addResource(dwRes2.getValue(), countryName, "flag large");
                         country.setFlagImage(imageURI);
 
                         break;

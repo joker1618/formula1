@@ -27,7 +27,7 @@ public class F1Qualify extends RepoEntity {
 
     @Override
     public String getPrimaryKey() {
-        return strf("qualify-[%s]-%02d", gpPK, pos);
+        return strf("%s-qual-%02d", gpPK, pos);
     }
 
     public String getGpPK() {

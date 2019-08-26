@@ -1,0 +1,11 @@
+.driversPane .topBox {
+    -fx-spacing: 30;
+}
+/*
+.driversPane .topBox .coverBox {
+    -fx-background-color: RED;
+}
+.driversPane .topBox .gpBox {
+    -fx-background-color: GREEN;
+}
+*/

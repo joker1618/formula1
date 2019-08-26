@@ -47,8 +47,8 @@ public class StatsComputer {
         Map<RepoEntity, StatsCell> p3Map = countElems(gpList, gp -> getDriverAtPos(gp, 3), allKeys);
         Map<RepoEntity, StatsCell> fastLapMap = countElems(gpList, this::getFastLapDriver, allKeys);
 
-        raceList.removeIf(r -> r.getPos() > 3);
-        Map<RepoEntity, StatsCell> podiumMap = countElems(raceList, r -> r.getEntrant().getDriver(), allKeys);
+        List<F1Race> filterRaces = JkStreams.filter(raceList, r -> r.getPos() > 0 && r.getPos() <= 3);
+        Map<RepoEntity, StatsCell> podiumMap = countElems(filterRaces, r -> r.getEntrant().getDriver(), allKeys);
 
         List<StatsLine> svList = new ArrayList<>();
         List<StatKind> skList = new ArrayList<>();

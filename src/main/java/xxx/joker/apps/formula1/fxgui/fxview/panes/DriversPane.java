@@ -39,6 +39,7 @@ public class DriversPane extends CentralPane {
         setLeft(createListPane());
         setCenter(createInfoPane());
 
+        getStylesheets().add(getClass().getResource("/css/DriversPane.css").toExternalForm());
         getStylesheets().add(getClass().getResource("/css/InfoPane.css").toExternalForm());
 
     }
@@ -46,8 +47,8 @@ public class DriversPane extends CentralPane {
     private TableBoxCaption<F1Driver> createListPane() {
         JfxTableCol<F1Driver, String> colName = JfxTableCol.createCol("NAME", "fullName");
         JfxTableCol<F1Driver, String> colNation = JfxTableCol.createCol("NATION", "country");
-        JfxTableCol<F1Driver, LocalDate> colBirth = JfxTableCol.createCol("BIRTH", "birthDay", bd -> JkDates.format(bd, "dd/MM/yyyy"));
-        JfxTableCol<F1Driver, LocalDate> colAge = JfxTableCol.createCol("AGE", "birthDay", ld -> ""+ChronoUnit.YEARS.between(ld, LocalDate.now()));
+        JfxTableCol<F1Driver, LocalDate> colBirth = JfxTableCol.createCol("BIRTH", "birthDay", bd -> JkDates.format(bd, "dd/MM/yyyy"), "centered");
+        JfxTableCol<F1Driver, LocalDate> colAge = JfxTableCol.createCol("AGE", "birthDay", ld -> ""+ChronoUnit.YEARS.between(ld, LocalDate.now()), "centered");
 
         JfxTable<F1Driver> tableDrivers = new JfxTable<>();
         tableDrivers.add(colName, colNation, colBirth, colAge);
@@ -63,14 +64,10 @@ public class DriversPane extends CentralPane {
 
     private Pane createInfoPane() {
         BorderPane bp = new BorderPane();
-        bp.getStyleClass().add("infoPane");
+        bp.getStyleClass().addAll("infoPane", "driversPane");
 
-        ImageView ivCover = JfxUtil.createImageView(500, 500);
-        HBox topBox = new HBox(ivCover);
-        bp.setTop(topBox);
-        topBox.getStyleClass().addAll("centered", "bgBlack");
-
-        topBox.getStyleClass().addAll("subBox");
+        int fieldSize = 300;
+        ImageView ivCover = JfxUtil.createImageView(fieldSize, fieldSize);
 
         int row = 0;
 
@@ -91,9 +88,17 @@ public class DriversPane extends CentralPane {
 
         GridPane gridPane = gpBuilder.createGridPane();
 
-        HBox cbox = new HBox(gridPane);
-        cbox.getStyleClass().addAll("subBox");
-        bp.setCenter(cbox);
+        HBox gpBox = new HBox(gridPane);
+        gpBox.getStyleClass().addAll("gpBox");
+        HBox coverBox = new HBox(ivCover);
+        coverBox.getStyleClass().addAll("coverBox");
+//        cbox.getStyleClass().addAll("subBox");
+//        bp.setCenter(cbox);
+
+        HBox topBox = new HBox(coverBox, gpBox);
+        bp.setTop(topBox);
+//        topBox.getStyleClass().addAll("centered", "bgBlack", "spacing20");
+        topBox.getStyleClass().addAll("subBox", "topBox");
 
         selectedDriver.addListener((obs,o,n) -> {
             if(n != null) {

@@ -43,7 +43,7 @@ public class Year2004 extends AWikiParser2018 {
                 F1Driver d = retrieveDriver(aTag.getAttribute("title"), true);
                 if(StringUtils.isBlank(d.getCountry())) {
                     JkTag img = spanTag.findFirstTag("img");
-                    d.setCountry(fixNation(img.getAttribute("alt")));
+                    d.setCountry(fixCountry(img.getAttribute("alt")));
                     checkNation(d, d.getCountry());
                     parseDriverPage(d, aTag);
                 }
@@ -74,7 +74,7 @@ public class Year2004 extends AWikiParser2018 {
                 F1Driver d = retrieveDriver(aTag.getAttribute("title"), true);
                 if(StringUtils.isBlank(d.getCountry())) {
                     JkTag img = spanTag.findFirstTag("img");
-                    d.setCountry(fixNation(img.getAttribute("alt")));
+                    d.setCountry(fixCountry(img.getAttribute("alt")));
                     checkNation(d, d.getCountry());
                     parseDriverPage(d, aTag);
                 }
@@ -93,7 +93,7 @@ public class Year2004 extends AWikiParser2018 {
                 F1Team team = retrieveTeam(tagTeamName.getText(), true);
                 if(StringUtils.isBlank(team.getCountry())) {
                     JkTag img = tr.getChild(0).findFirstTag("img");
-                    team.setCountry(fixNation(img.getAttribute("alt")));
+                    team.setCountry(fixCountry(img.getAttribute("alt")));
                     checkNation(team, team.getCountry());
                 }
 
@@ -113,7 +113,7 @@ public class Year2004 extends AWikiParser2018 {
                 F1Driver d = retrieveDriver(aTag.getAttribute("title"), true);
                 if(StringUtils.isBlank(d.getCountry())) {
                     JkTag img = spanTag.findFirstTag("img");
-                    d.setCountry(fixNation(img.getAttribute("alt")));
+                    d.setCountry(fixCountry(img.getAttribute("alt")));
                     checkNation(d, d.getCountry());
                     parseDriverPage(d, aTag);
                 }

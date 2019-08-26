@@ -1,5 +1,8 @@
 package xxx.joker.apps.formula1.fxgui.fxview.panes;
 
+import javafx.scene.control.ScrollBar;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +17,7 @@ import xxx.joker.libs.core.utils.JkConvert;
 
 import java.util.List;
 
+import static xxx.joker.libs.core.utils.JkConsole.display;
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 public class HomePane extends CentralPane {
@@ -21,7 +25,7 @@ public class HomePane extends CentralPane {
     private static final Logger LOG = LoggerFactory.getLogger(HomePane.class);
 
     public HomePane() {
-        getStyleClass().add("bgYellow");
+        getStyleClass().addAll("homePane", "bgYellow");
         setCenter(createTableStats());
     }
 

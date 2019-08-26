@@ -1,6 +1,8 @@
 package spikes;
 
+import javafx.scene.text.Font;
 import org.junit.Test;
+import xxx.joker.libs.core.lambdas.JkStreams;
 import xxx.joker.libs.core.utils.JkConvert;
 
 import java.io.IOException;
@@ -13,15 +15,25 @@ import java.util.Map;
 
 import static xxx.joker.libs.core.runtimes.JkReflection.getParametrizedTypes;
 import static xxx.joker.libs.core.utils.JkConsole.display;
+import static xxx.joker.libs.core.utils.JkConsole.displayColl;
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 public class VARI {
 
     @Test
     public void strfTest() throws IOException, ClassNotFoundException {
-        int num = 23;
-        display("%03d", num);
-        display("%3d", num);
+//        int num = 23;
+//        display("%03d", num);
+//        display("%3d", num);
+        List<String> families = Font.getFamilies();
+        List<String> names = Font.getFontNames();
+        displayColl(families);
+        display("###################");
+        displayColl(names);
+        display("###################");
+        display("Num families:   {}\tunique: {}", families.size(), JkStreams.filter(families, fam -> !names.contains(fam)));
+        display("Num font names: {}\tunique: {}", names.size(), JkStreams.filter(names, fam -> !families.contains(fam)));
+
     }
 
     @Test

@@ -81,14 +81,6 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
         }
         model.addAll(plist);
 
-//        List<Map.Entry<String, Integer>> entriesDriverMap = JkStreams.sorted(expDriverMap.entrySet(), Comparator.comparing(Map.Entry::getValue));
-//        String strDrivers = JkStreams.join(entriesDriverMap, "\n", w -> strf("  %-5d%s", w.getValue(), w.getKey()));
-//        display("*** Expected driver points ({})\n{}", entriesDriverMap.size(), strDrivers);
-//
-//        Map<String, Integer> expTeamMap = getExpectedTeamPoints(dwHtml.getHtml(mainPageUrl));
-//        List<Map.Entry<String, Integer>> entriesTeamMap = JkStreams.sorted(expTeamMap.entrySet(), Comparator.comparing(Map.Entry::getValue));
-//        String strTeams  = JkStreams.join(entriesTeamMap, "\n", w -> strf("  %-5d%s", w.getValue(), w.getKey()));
-//        display("*** Expected team points ({})\n{}", entriesTeamMap.size(), strTeams);
 
 
         List<String> gpUrls = getGpUrls(getMainPageHtml());
@@ -181,7 +173,7 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
     }
 
     protected F1Circuit retrieveCircuit(String city, String nation, boolean createIfMissing) {
-        nation = fixNation(nation);
+        nation = fixCountry(nation);
         city = fixCity(city);
         F1Circuit circuit = model.getCircuit(city, nation);
         if(circuit == null && createIfMissing) {
@@ -191,27 +183,28 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
         return circuit;
     }
 
-    public static String fixNation(String nation) {
-        if(nation.contains("Rio de Janeiro"))  return "Brazil";
-        if(nation.contains("Ireland"))  return "Ireland";
-        if(nation.contains("Monte Carlo"))  return "Monaco";
-        if(nation.contains("Indiana") || nation.contains("Arizona"))  return "United States";
-        if(nation.contains("Texas") || nation.contains("California") || nation.contains("Michigan"))  return "United States";
-        if(nation.contains("Germany"))  return "Germany";
-        if(nation.contains("China") || nation.contains("Hong Kong"))  return "China";
-        if(nation.contains("Canada"))  return "Canada";
-        if(nation.contains("Lombardy"))  return "Italy";
-        if(nation.contains("Monza"))  return "Italy";
-        if(nation.contains("England") || nation.contains("Great Britain"))  return "United Kingdom";
-        if(nation.contains("Wallonia"))  return "Belgium";
-        if(nation.contains("Sepang"))  return "Malaysia";
-        if(nation.contains("Mexico City")) return "Mexico";
-        if(nation.contains("Melbourne")) return "Australia";
-        if(nation.contains("South Australia")) return "Australia";
-        return nation;
+    public static String fixCountry(String country) {
+        if(country.contains("Rio de Janeiro"))  return "Brazil";
+        if(country.contains("Ireland"))  return "Ireland";
+        if(country.contains("Monte Carlo"))  return "Monaco";
+        if(country.contains("Indiana") || country.contains("Arizona"))  return "United States";
+        if(country.contains("Texas") || country.contains("California") || country.contains("Michigan"))  return "United States";
+        if(country.contains("Germany"))  return "Germany";
+        if(country.contains("China") || country.contains("Hong Kong"))  return "China";
+        if(country.contains("Canada"))  return "Canada";
+        if(country.contains("Lombardy"))  return "Italy";
+        if(country.contains("Monza"))  return "Italy";
+        if(country.contains("England") || country.contains("Great Britain"))  return "United Kingdom";
+        if(country.contains("Wallonia"))  return "Belgium";
+        if(country.contains("Sepang"))  return "Malaysia";
+        if(country.contains("Mexico City")) return "Mexico";
+        if(country.contains("Melbourne")) return "Australia";
+        if(country.contains("South Australia")) return "Australia";
+        return country;
     }
     private String fixCity(String city) {
         if(city.contains("Mogyoród") || city.contains("Budapest"))  return "Mogyoród";
+        if(city.contains("Jerez"))  return "Jerez";
         if(city.contains("Jacarepaguá"))  return "Rio de Janeiro";
         if(city.contains("Magny-Cours"))  return "Magny-Cours";
         if(city.contains("Melbourne"))  return "Melbourne";
@@ -221,7 +214,7 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
         if(city.contains("Monza"))     return "Monza";
         if(city.contains("Montreal"))   return "Montreal";
         if(city.contains("Oyama"))  return "Oyama";
-        if(city.contains("Suzuka"))  return "Suzuka";
+        if(city.contains("Suzuka") || city.equals("Mie"))  return "Suzuka";
         if(city.contains("Sepang"))  return "Sepang";
         if(city.contains("Mexico City"))  return "Mexico City";
         if(city.contains("Magdalena Mixhuca"))  return "Mexico City";
@@ -276,7 +269,7 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
     private String fixDriverName(String driverName) {
         String dn = JkHtmlChars.fixDirtyChars(driverName);
 
-        if(dn.equals("Jacques Villeneuve (racing driver, born 1953)")) {
+        if(dn.equals("Jacques Villeneuve (racing driver, born 1953)") || dn.equals("Jacques Villeneuve (elder)")) {
             return "Jacques Villeneuve Sr.";
         }
 
@@ -296,6 +289,9 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
         }
         if(dn.equals("Adrián Campos")) {
             return "Adrian Campos";
+        }
+        if(dn.equals("Miguel Angel Guerra")) {
+            return "Miguel Ángel Guerra";
         }
         return dn;
     }
@@ -388,6 +384,9 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
 
         String[] split = rowBorn.getHtmlTag().split("<br[ ]?/>");
         String strCity = split[split.length - 1].replaceAll("<[^<]*?>", "").replaceAll(",[^,]*$", "").trim();
+        if(strCity.matches("^Born \\([12].*\\(age.*")) {
+            strCity = "";
+        }
         driver.setCity(strCity);
     }
     protected boolean checkExceptions(F1Driver driver, String pageUrl) {

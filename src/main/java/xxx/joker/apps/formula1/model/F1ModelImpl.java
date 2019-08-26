@@ -57,12 +57,12 @@ public class F1ModelImpl extends JkRepoFile implements F1Model {
 
     @Override
     public RepoResource getImageUnavailable() {
-        return getResource("imageUnavailable", "image");
+        return getResource("imageUnavailable", "misc");
     }
 
     @Override
     public RepoResource saveImageUnavailable(Path imgPath) {
-        return addResource(imgPath, "imageUnavailable", "image");
+        return addResource(imgPath, "imageUnavailable", "misc");
     }
 
     @Override

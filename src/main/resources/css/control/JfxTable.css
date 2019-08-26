@@ -8,9 +8,13 @@
     -rowHeight: 35;
 }
 
+.scroll-bar {
+    -fx-pref-width: 22;
+    -fx-background-color: red;
+}
+
 .table-row-cell {
     -fx-pref-height: -rowHeight;
-    -fx-border-width: 3;
 }
 .column-header-background {
     -fx-pref-height: -headerHeight;

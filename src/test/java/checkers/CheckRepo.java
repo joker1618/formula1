@@ -55,10 +55,10 @@ public class CheckRepo extends CommonTest {
     @Test
     public void doYearChecks() {
 //        int year = JkStruct.getLastElem(model.getAvailableYears());
-        int year = 1983;
-//        checkTeams();
-//        checkDrivers();
-//        checkCircuits();
+        int year = 1981;
+        checkTeams();
+        checkDrivers();
+        checkCircuits();
         doYearChecks(year);
     }
 

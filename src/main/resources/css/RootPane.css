@@ -1,10 +1,9 @@
 .root {
     -darkBlue: #000033;
-    -lightBlue: #e6ffff;
+    -lightBlue: #ccf2ff;
     -fx-font-family: "Calibri";
     -fx-font-size: 18;
 }
-
 
 
 .centralPane {

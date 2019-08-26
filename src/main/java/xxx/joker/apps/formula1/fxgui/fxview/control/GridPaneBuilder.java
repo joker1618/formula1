@@ -55,7 +55,9 @@ public class GridPaneBuilder {
                 hbox.getStyleClass().add(r % 2 == 0 ? "row-odd" : "row-even");
                 hbox.getStyleClass().add(c % 2 == 0 ? "col-odd" : "col-even");
                 if(c == maxCol - 1)     hbox.getStyleClass().add("col-last");
+                else if(c > 0)          hbox.getStyleClass().add("col-middle");
                 if(r == maxRow - 1)     hbox.getStyleClass().add("row-last");
+                else if(r > 0)          hbox.getStyleClass().add("row-middle");
                 gp.add(hbox, c, r);
             }
         }

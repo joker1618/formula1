@@ -2,7 +2,6 @@ package xxx.joker.apps.formula1.fxgui.fxview.control;
 
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
-import xxx.joker.apps.formula1.common.JfxCss;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,6 +21,7 @@ public class JfxTable<T> extends TableView<T> {
         setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
         this.columns = new ArrayList<>();
         add(cols);
+        getStyleClass().addAll("jkTable");
         getStylesheets().add(getClass().getResource(CSS_FILEPATH).toExternalForm());
     }
 
@@ -86,13 +86,6 @@ public class JfxTable<T> extends TableView<T> {
         } else {
             setPrefWidth(tablePrefWidth);
         }
-    }
-
-    public void resizeHeight() {
-        double h = 2d; // top and bottom border
-        h += JfxCss.retrieveInt(this, "-headerHeight");
-        h += JfxCss.retrieveInt(this, "-rowHeight") * getItems().size();
-        setPrefHeight(h);
     }
 
     public void setFixedPrefWidth(double fixedPrefWidth) {

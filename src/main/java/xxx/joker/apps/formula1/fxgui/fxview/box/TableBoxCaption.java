@@ -25,7 +25,10 @@ public class TableBoxCaption<T> extends BorderPane {
 
         this.tableView = tableView;
 
-        HBox tbox = new HBox(tableView);
+        HBox container = new HBox(tableView);
+        container.getStyleClass().addAll("borderBlack");
+        HBox tbox = new HBox(container);
+//        HBox tbox = new HBox(tableView);
         tbox.getStyleClass().addAll("boxCenter", "hbox");
 
         lblCaption = new Label(caption);

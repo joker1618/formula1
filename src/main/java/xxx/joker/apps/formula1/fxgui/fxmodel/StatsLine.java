@@ -6,7 +6,7 @@ public class StatsLine {
 
     public enum StatKind {
         NUM_SEASONS("Season"),
-        WIN_SEASONS("Champion"),
+        WIN_SEASONS("Winner"),
         NUM_RACES("Race"),
         NUM_P1("P1"),
         NUM_P2("P2"),

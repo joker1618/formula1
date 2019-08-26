@@ -44,9 +44,12 @@ public class ShowData extends CommonTest {
     @Test
     public void printNumEntitiesByClass() {
         Map<Class<RepoEntity>, Integer> resMap = JkStreams.toMapSingle(model.getDataSets().entrySet(), Map.Entry::getKey, e -> e.getValue().size());
-        List<String> lines = JkStreams.mapSort(resMap.entrySet(), e -> strf("{}|{}", e.getKey().getSimpleName(), e.getValue()));
-        lines.add(0, "CLASS|NUM");
+        int total = JkStreams.sumInt(resMap.values());
+        List<String> lines = JkStreams.mapSort(resMap.entrySet(), e -> strf("{}|{}|{}", e.getKey().getSimpleName(), e.getValue(), JkOutput.getNumberFmtEN(2).format(100d*e.getValue()/total)));
+        lines.add(0, "CLASS|NUM|%");
+        lines.add(strf("TOTAL|{}", total));
         display("{}", JkOutput.columnsView(lines));
+
     }
 
     @Test

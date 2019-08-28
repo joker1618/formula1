@@ -1,4 +1,4 @@
-.table-view {
+.jkTable {
     -bgColor: -lightBlue;
     -bgColorHover: -darkBlue;
     -fgColor: BLACK;
@@ -8,9 +8,13 @@
     -rowHeight: 35;
 }
 
+.jkTable.bigRowHeight {
+    -headerHeight: 50;
+    -rowHeight: 40;
+}
+
 .scroll-bar {
-    -fx-pref-width: 22;
-    -fx-background-color: red;
+    -fx-pref-width: 20;
 }
 
 .table-row-cell {
@@ -32,17 +36,17 @@
 }
 
 .table-row-cell:filled:selected .table-cell,
-.table-view:row-selection .table-row-cell:filled:hover .table-cell,
-.table-view:row-selection .table-row-cell:filled:selected:hover .table-cell,
-.table-view:row-selection .table-row-cell:filled:selected:focused:hover .table-cell,
-.table-view:row-selection .table-row-cell:filled:selected:focused  .table-cell {
+.jkTable:row-selection .table-row-cell:filled:hover .table-cell,
+.jkTable:row-selection .table-row-cell:filled:selected:hover .table-cell,
+.jkTable:row-selection .table-row-cell:filled:selected:focused:hover .table-cell,
+.jkTable:row-selection .table-row-cell:filled:selected:focused  .table-cell {
     -fx-text-fill: -fgColorHover;
 }
 
 .table-row-cell:filled:selected,
-.table-view:row-selection .table-row-cell:filled:hover,
-.table-view:row-selection .table-row-cell:filled:selected:hover,
-.table-view:row-selection .table-row-cell:filled:selected:focused:hover,
-.table-view:row-selection .table-row-cell:filled:selected:focused  {
+.jkTable:row-selection .table-row-cell:filled:hover,
+.jkTable:row-selection .table-row-cell:filled:selected:hover,
+.jkTable:row-selection .table-row-cell:filled:selected:focused:hover,
+.jkTable:row-selection .table-row-cell:filled:selected:focused  {
     -fx-background-color: -bgColorHover;
 }

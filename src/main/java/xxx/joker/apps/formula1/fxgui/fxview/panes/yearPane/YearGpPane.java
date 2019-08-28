@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xxx.joker.apps.formula1.fxgui.fxmodel.FxCountry;
 import xxx.joker.apps.formula1.fxgui.fxview.CentralPane;
-import xxx.joker.apps.formula1.fxgui.fxview.box.TableBoxCaption;
+import xxx.joker.apps.formula1.fxgui.fxview.box.JfxBorderPane;
 import xxx.joker.apps.formula1.fxgui.fxview.control.GridPaneBuilder;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTable;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTableCol;
@@ -21,9 +21,8 @@ import xxx.joker.apps.formula1.model.entities.F1Race;
 import xxx.joker.libs.core.datetime.JkDates;
 import xxx.joker.libs.core.datetime.JkDuration;
 import xxx.joker.libs.core.format.JkOutput;
-import xxx.joker.libs.core.javafx.JfxUtil;
+import xxx.joker.libs.core.javafx.JfxUtil2;
 
-import java.nio.file.Path;
 import java.text.NumberFormat;
 import java.util.Arrays;
 
@@ -40,8 +39,8 @@ public class YearGpPane extends CentralPane {
 
         BorderPane detailsPane = createDetailsPane();
 
-        TableBoxCaption<F1Qualify> qtable = createTableQualify();
-        TableBoxCaption<F1Race> rtable = createTableRace();
+        JfxBorderPane<F1Qualify> qtable = createTableQualify();
+        JfxBorderPane<F1Race> rtable = createTableRace();
         HBox boxResults = new HBox(qtable, rtable);
         boxResults.getStyleClass().addAll("boxResults");
 
@@ -60,7 +59,7 @@ public class YearGpPane extends CentralPane {
         setCenter(tabPane);
     }
 
-    private TableBoxCaption<F1Qualify> createTableQualify() {
+    private JfxBorderPane<F1Qualify> createTableQualify() {
         JfxTableCol<F1Qualify, Integer> colIdx = JfxTableCol.createCol("#", "pos");
 
         JfxTableCol<F1Qualify, String> colDriver = JfxTableCol.createCol("DRIVER", q -> q.getEntrant().getDriver().getFullName());
@@ -76,7 +75,7 @@ public class YearGpPane extends CentralPane {
 
         JfxTable<F1Qualify> tv = new JfxTable<>();
         tv.add(colIdx, colDriver, colQ1, colQ2, colQ3, colGrid);
-        TableBoxCaption<F1Qualify> tbox = new TableBoxCaption<>(tv);
+        JfxBorderPane<F1Qualify> tbox = new JfxBorderPane<>(tv);
         guiModel.addChangeActionGranPrix(gp -> tbox.updateBox("Qualify", gp.getQualifies()));
 
         return tbox;
@@ -89,7 +88,7 @@ public class YearGpPane extends CentralPane {
         return col;
     }
 
-    private TableBoxCaption<F1Race> createTableRace() {
+    private JfxBorderPane<F1Race> createTableRace() {
         JfxTableCol<F1Race, Integer> colPos = JfxTableCol.createCol("#", "pos");
         JfxTableCol<F1Race, String> colOutcome = JfxTableCol.createCol("OUTCOME", r -> r.getOutcome().getLabel());
         JfxTableCol<F1Race, String> colDriver = JfxTableCol.createCol("DRIVER", r -> r.getEntrant().getDriver().getFullName());
@@ -106,7 +105,7 @@ public class YearGpPane extends CentralPane {
 
         JfxTable<F1Race> tv = new JfxTable<>();
         tv.add(colPos, colOutcome, colDriver, colLaps, colTime, colGrid, colPoints);
-        TableBoxCaption<F1Race> tbox = new TableBoxCaption<>(tv);
+        JfxBorderPane<F1Race> tbox = new JfxBorderPane<>(tv);
         guiModel.addChangeActionGranPrix(gp -> tbox.updateBox("Race", gp.getRaces()));
 
         return tbox;
@@ -121,7 +120,7 @@ public class YearGpPane extends CentralPane {
         vboxLeft.getStyleClass().addAll("boxLeft", "subBox");
         vboxLeft.getStyleClass().addAll("bgGrey", "borderBlue");
 
-        ImageView ivFlag = JfxUtil.createImageView(400, 300);
+        ImageView ivFlag = JfxUtil2.createImageView(400, 300);
         HBox flagBox = new HBox(ivFlag);
         flagBox.setPrefWidth(400);
         flagBox.setPrefHeight(300);
@@ -185,7 +184,7 @@ public class YearGpPane extends CentralPane {
         hboxTrackGp.getStyleClass().addAll("boxTrackGp", "subBox");
         hboxTrackGp.getStyleClass().addAll("bgYellow", "borderRed");
 
-        ImageView iv = JfxUtil.createImageView(800, 800);
+        ImageView iv = JfxUtil2.createImageView(800, 800);
         HBox hboxTmp = new HBox(iv);
 //        hboxTmp.getStyleClass().addAll("bgRed", "borderWhite", "centered");
         hboxTmp.getStyleClass().addAll("centered");

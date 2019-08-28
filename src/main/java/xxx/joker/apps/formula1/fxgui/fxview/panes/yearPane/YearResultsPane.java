@@ -1,28 +1,32 @@
 package xxx.joker.apps.formula1.fxgui.fxview.panes.yearPane;
 
+import com.madhukaraphatak.sizeof.SizeEstimator;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xxx.joker.apps.formula1.fxgui.fxmodel.ResultCellPoints;
 import xxx.joker.apps.formula1.fxgui.fxmodel.ResultView;
 import xxx.joker.apps.formula1.fxgui.fxmodel.SeasonView;
 import xxx.joker.apps.formula1.fxgui.fxview.CentralPane;
-import xxx.joker.apps.formula1.fxgui.fxview.box.TableBoxCaption;
+import xxx.joker.apps.formula1.fxgui.fxview.box.JfxBorderPane;
 import xxx.joker.apps.formula1.fxgui.fxview.control.GridPaneBuilder;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTable;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTableCol;
 import xxx.joker.apps.formula1.model.entities.F1GranPrix;
-import xxx.joker.libs.core.javafx.JfxUtil;
+import xxx.joker.libs.core.debug.JkDebug;
+import xxx.joker.libs.core.format.JkOutput;
+import xxx.joker.libs.core.javafx.JfxUtil2;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static xxx.joker.apps.formula1.common.F1Util.*;
+import static xxx.joker.libs.core.utils.JkConsole.display;
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 public class YearResultsPane extends CentralPane {
@@ -31,7 +35,7 @@ public class YearResultsPane extends CentralPane {
 
     private AtomicBoolean showDrivers = new AtomicBoolean(true);
     private AtomicBoolean showPoints = new AtomicBoolean(true);
-    private TableBoxCaption<ResultView> tboxCaption;
+    private JfxBorderPane<ResultView> tboxCaption;
     private GridPane choicePane;
 
     public YearResultsPane() {
@@ -73,8 +77,9 @@ public class YearResultsPane extends CentralPane {
     }
 
     private void createTableResults(int year) {
+        JkDebug.startTimer("Year result");
         JfxTable<ResultView> table = new JfxTable<>();
-        table.setStyle("-headerHeight: 50; -rowHeight: 45");
+        table.getStyleClass().add("bigRowHeight");
 
         JfxTableCol<ResultView, Integer>  colPos = JfxTableCol.createCol("#", rv -> rv.getTotal().getPos(), "centered");
         table.add(colPos);
@@ -84,16 +89,18 @@ public class YearResultsPane extends CentralPane {
         table.add(colDriver);
         List<F1GranPrix> gps = model.getGranPrixs(year);
         for (F1GranPrix gp : gps) {
-            Image img = guiModel.getNation(gp.getCircuit().getCountry()).getFlagImage();
+            Image img = guiModel.getNation(gp.getCircuit().getCountry()).getFlagIcon();
             JfxTableCol<ResultView, ResultCellPoints>  col = JfxTableCol.createCol("", rv -> rv.getCellMap().get(gp), race -> safePrint0(showPoints.get() ? race.getValue() : race.getPos()), "centered");
 //            col.setComparator(Comparator.comparing(ResultCellPoints::getPos));
-            col.setGraphic(JfxUtil.createImageView(img, 40, 40));
-            col.setFixedPrefWidth(60);
+            ImageView iv = JfxUtil2.createImageView(img, 35, 24, false);
+            col.setGraphic(iv);
+            col.setFixedPrefWidth(55);
 //            col.setMaxWidth(60);
             table.add(col);
         }
 
         JfxTableCol<ResultView, ResultCellPoints>  colPts = JfxTableCol.createCol("TOT", "total", rcell -> showPoints.get() ? rcell.toStringTotPoints() : safePrint0(rcell.getPos()), "centered");
+        colPts.setFixedPrefWidth(60);
         table.add(colPts);
 
 //        HBox tbox = new HBox(table);
@@ -104,9 +111,12 @@ public class YearResultsPane extends CentralPane {
         table.update(showDrivers.get() ? guiModel.getSeasonView(year).getDriverResults(): guiModel.getSeasonView(year).getTeamResults());
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
-        this.tboxCaption = new TableBoxCaption<>(strf("Results {}", year), table);
+        this.tboxCaption = new JfxBorderPane<>(strf("Results {}", year), table);
         tboxCaption.setBottomPane(choicePane);
         setCenter(tboxCaption);
+
+        JkDebug.stopTimer("Year result");
+
     }
 
 

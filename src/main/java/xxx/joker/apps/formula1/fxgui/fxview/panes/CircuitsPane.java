@@ -12,12 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xxx.joker.apps.formula1.fxgui.fxmodel.FxCountry;
 import xxx.joker.apps.formula1.fxgui.fxview.CentralPane;
-import xxx.joker.apps.formula1.fxgui.fxview.box.TableBoxCaption;
+import xxx.joker.apps.formula1.fxgui.fxview.box.JfxBorderPane;
 import xxx.joker.apps.formula1.fxgui.fxview.control.GridPaneBuilder;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTable;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTableCol;
 import xxx.joker.apps.formula1.model.entities.F1Circuit;
-import xxx.joker.libs.core.javafx.JfxUtil;
+import xxx.joker.libs.core.javafx.JfxUtil2;
 
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
@@ -28,7 +28,7 @@ public class CircuitsPane extends CentralPane {
     private SimpleObjectProperty<F1Circuit> selectedCircuit = new SimpleObjectProperty<>();
 
     public CircuitsPane() {
-        TableBoxCaption<F1Circuit> circuitsBox = createListPane();
+        JfxBorderPane<F1Circuit> circuitsBox = createListPane();
         setLeft(circuitsBox);
 
         setCenter(createInfoPane());
@@ -37,7 +37,7 @@ public class CircuitsPane extends CentralPane {
         getStylesheets().add(getClass().getResource("/css/InfoPane.css").toExternalForm());
 
     }
-    private TableBoxCaption<F1Circuit> createListPane() {
+    private JfxBorderPane<F1Circuit> createListPane() {
         JfxTableCol<F1Circuit, String> colNation = JfxTableCol.createCol("NATION", "country");
         JfxTableCol<F1Circuit, String> colCity = JfxTableCol.createCol("CITY", "city");
 
@@ -46,14 +46,14 @@ public class CircuitsPane extends CentralPane {
         tableCircuits.update(model.getCircuits());
 
         tableCircuits.getSelectionModel().selectedItemProperty().addListener((obs,o,n) -> selectedCircuit.set(n));
-        return new TableBoxCaption<>(strf("CIRCUITS   ({})", model.getCircuits().size()), tableCircuits);
+        return new JfxBorderPane<>(strf("CIRCUITS   ({})", model.getCircuits().size()), tableCircuits);
     }
 
     private Pane createInfoPane() {
         BorderPane bp = new BorderPane();
         bp.getStyleClass().add("infoPane");
 
-        ImageView ivFlag = JfxUtil.createImageView(400, 300);
+        ImageView ivFlag = JfxUtil2.createImageView(400, 300);
         HBox containerBox = new HBox(ivFlag);
         containerBox.getStyleClass().add("borderBlack");
         HBox topBox = new HBox(containerBox);

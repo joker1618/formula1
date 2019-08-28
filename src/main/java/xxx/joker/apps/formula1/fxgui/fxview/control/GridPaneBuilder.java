@@ -36,7 +36,7 @@ public class GridPaneBuilder {
 
     public void createGridPane(GridPane gp) {
         gp.getChildren().clear();
-        gp.getStyleClass().addAll("customGrid");
+        gp.getStyleClass().addAll("jkGridBox");
 
         Integer maxRow = 1 + boxMap.keySet().stream().mapToInt(i -> i).max().orElse(-1);
         Integer maxCol = -1;

@@ -5,14 +5,14 @@
     -fx-text-fill: BLACK;
 }
 
-.customGrid {
+.jkGridBox {
     -fx-hgap: 10;
     -fx-vgap: 10;
     -fx-font-size: 20;
     -fx-text-fill: BLACK;
 }
 
-.customGrid .col0 {
+.jkGridBox .col0 {
     -fx-font-weight: BOLD;
 }
 

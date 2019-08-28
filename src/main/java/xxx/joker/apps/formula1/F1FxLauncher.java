@@ -25,30 +25,25 @@ public class F1FxLauncher extends Application {
 
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         this.rootPane = new RootPane();
 
         // Create scene
         Group root = new Group();
         Scene scene = new Scene(root);
-//        Scene scene = new Scene(root, 600, 500);
         scene.setRoot(rootPane);
+        scene.getStylesheets().add(getClass().getResource("/css/common.css").toExternalForm());
 
         // Show stage
         primaryStage.setScene(scene);
-//        primaryStage.sizeToScene();
         primaryStage.setMaximized(true);
-
-//        primaryStage.setResizable(false);
-        scene.getStylesheets().add(getClass().getResource("/css/common.css").toExternalForm());
         primaryStage.show();
 
+        rootPane.selectFirstYear();
 
         if(scenicView) {
             ScenicView.show(scene);
         }
-
-
     }
 
 
@@ -56,6 +51,7 @@ public class F1FxLauncher extends Application {
     public void stop() throws Exception {
         LOG.debug("STOP APP");
         JkDebug.displayTimes();
+        rootPane.closse();
 //        JfxTable<StatsLine> table = (JfxTable<StatsLine>) rootPane.lookup(".homePane .jfxTable");
 //        display("border {}", ToStringBuilder.reflectionToString(table.getBorder(), ToStringStyle.MULTI_LINE_STYLE));
 

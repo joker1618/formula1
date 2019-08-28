@@ -1,11 +1,10 @@
-.rootBox > .hbox {
-    -fx-padding: 20;
+.infoPane > .hbox {
+    -fx-padding: 15;
     -fx-border-color: -darkBlue;
     -fx-alignment: TOP-CENTER;
 }
 
 .boxTop {
-    -fx-border-width: 2;
     -fx-font-family: "Tahoma";
     -fx-font-size: 22;
     -fx-text-fill: -darkBlue;
@@ -13,7 +12,7 @@
     -fx-border-width: 2 2 0 2;
 }
 
-.hbox.boxCenter {
+.boxCenter {
     -fx-border-width: 2;
     -fx-padding: 10;
 }

@@ -3,7 +3,7 @@ package xxx.joker.apps.formula1.fxgui.fxview.panes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xxx.joker.apps.formula1.fxgui.fxview.CentralPane;
-import xxx.joker.apps.formula1.fxgui.fxview.box.TableBoxCaption;
+import xxx.joker.apps.formula1.fxgui.fxview.box.JfxBorderPane;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTable;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTableCol;
 import xxx.joker.apps.formula1.model.entities.F1Team;
@@ -14,7 +14,7 @@ public class TeamsPane extends CentralPane {
 
     private static final Logger LOG = LoggerFactory.getLogger(TeamsPane.class);
 
-    private TableBoxCaption<F1Team> leftBox;
+    private JfxBorderPane<F1Team> leftBox;
 
     public TeamsPane() {
         getStyleClass().add("teamsPane");
@@ -23,7 +23,7 @@ public class TeamsPane extends CentralPane {
         setLeft(leftBox);
     }
 
-    private TableBoxCaption<F1Team> createTableTeams() {
+    private JfxBorderPane<F1Team> createTableTeams() {
         JfxTableCol<F1Team, String> colName = JfxTableCol.createCol("TEAM", "teamName");
         JfxTableCol<F1Team, String> colNation = JfxTableCol.createCol("NATION", "country");
 
@@ -32,6 +32,6 @@ public class TeamsPane extends CentralPane {
         tableTeams.add(colNation);
         tableTeams.update(model.getTeams());
 
-        return new TableBoxCaption<>(strf("TEAMS   ({})", model.getTeams().size()), tableTeams);
+        return new JfxBorderPane<>(strf("TEAMS   ({})", model.getTeams().size()), tableTeams);
     }
 }

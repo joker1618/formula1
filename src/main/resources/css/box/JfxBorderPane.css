@@ -1,0 +1,22 @@
+.jkBorderPane > .hbox {
+    -fx-padding: 20;
+    -fx-border-color: -darkBlue;
+    -fx-alignment: TOP-CENTER;
+}
+
+.boxTop {
+    -fx-border-width: 2;
+    -fx-font-family: "Tahoma";
+    -fx-font-size: 22;
+    -fx-text-fill: -darkBlue;
+    -fx-font-weight: BOLD;
+    -fx-border-width: 2 2 0 2;
+}
+
+.hbox.boxCenter {
+    -fx-border-width: 2;
+    -fx-padding: 10;
+}
+.boxBottom {
+    -fx-border-width: 0 2 2 2;
+}

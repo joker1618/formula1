@@ -37,6 +37,7 @@
 .bgBlue     { -fx-background-color: BLUE }
 .bgBlack    { -fx-background-color: BLACK }
 
+.borderBlack1   { -fx-border-width: 1; -fx-border-color: BLACK }
 .borderBlack    { -fx-border-width: 2; -fx-border-color: BLACK }
 .borderRed      { -fx-border-width: 2; -fx-border-color: RED }
 .borderBlue     { -fx-border-width: 2; -fx-border-color: BLUE }

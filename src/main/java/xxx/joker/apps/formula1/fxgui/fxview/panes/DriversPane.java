@@ -10,15 +10,14 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import xxx.joker.apps.formula1.fxgui.fxmodel.FxCountry;
 import xxx.joker.apps.formula1.fxgui.fxview.CentralPane;
-import xxx.joker.apps.formula1.fxgui.fxview.box.TableBoxCaption;
+import xxx.joker.apps.formula1.fxgui.fxview.box.JfxBorderPane;
 import xxx.joker.apps.formula1.fxgui.fxview.control.GridPaneBuilder;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTable;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTableCol;
 import xxx.joker.apps.formula1.model.entities.F1Driver;
 import xxx.joker.libs.core.datetime.JkDates;
-import xxx.joker.libs.core.javafx.JfxUtil;
+import xxx.joker.libs.core.javafx.JfxUtil2;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -44,7 +43,7 @@ public class DriversPane extends CentralPane {
 
     }
 
-    private TableBoxCaption<F1Driver> createListPane() {
+    private JfxBorderPane<F1Driver> createListPane() {
         JfxTableCol<F1Driver, String> colName = JfxTableCol.createCol("NAME", "fullName");
         JfxTableCol<F1Driver, String> colNation = JfxTableCol.createCol("NATION", "country");
         JfxTableCol<F1Driver, LocalDate> colBirth = JfxTableCol.createCol("BIRTH", "birthDay", bd -> JkDates.format(bd, "dd/MM/yyyy"), "centered");
@@ -54,7 +53,7 @@ public class DriversPane extends CentralPane {
         tableDrivers.add(colName, colNation, colBirth, colAge);
         Set<F1Driver> drivers = model.getDrivers();
 
-        TableBoxCaption<F1Driver> toRet = new TableBoxCaption<>(strf("DRIVERS   ({})", drivers.size()), tableDrivers);
+        JfxBorderPane<F1Driver> toRet = new JfxBorderPane<>(strf("DRIVERS   ({})", drivers.size()), tableDrivers);
 
         tableDrivers.getSelectionModel().selectedItemProperty().addListener((obs,o,n) -> selectedDriver.set(n));
         tableDrivers.update(drivers);
@@ -67,7 +66,7 @@ public class DriversPane extends CentralPane {
         bp.getStyleClass().addAll("infoPane", "driversPane");
 
         int fieldSize = 300;
-        ImageView ivCover = JfxUtil.createImageView(fieldSize, fieldSize);
+        ImageView ivCover = JfxUtil2.createImageView(fieldSize, fieldSize);
 
         int row = 0;
 

@@ -8,25 +8,25 @@ import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTable;
 
 import java.util.Collection;
 
-public class TableBoxCaption<T> extends BorderPane {
+public class JfxBorderPane<T> extends BorderPane {
 
-    private static final String CSS_FILEPATH = "/css/box/TableBoxCaption.css";
+    private static final String CSS_FILEPATH = "/css/box/JfxBorderPane.css";
 
     private HBox boxCaption;
     private Label lblCaption;
     private JfxTable<T> tableView;
     private HBox boxBottom;
 
-    public TableBoxCaption(JfxTable<T> tableView) {
+    public JfxBorderPane(JfxTable<T> tableView) {
         this("", tableView);
     }
-    public TableBoxCaption(String caption, JfxTable<T> tableView) {
-        getStyleClass().add("rootBox");
+    public JfxBorderPane(String caption, JfxTable<T> tableView) {
+        getStyleClass().add("jkBorderPane");
 
         this.tableView = tableView;
 
         HBox container = new HBox(tableView);
-        container.getStyleClass().addAll("borderBlack");
+        container.getStyleClass().addAll("borderBlack1");
         HBox tbox = new HBox(container);
 //        HBox tbox = new HBox(tableView);
         tbox.getStyleClass().addAll("boxCenter", "hbox");
@@ -43,7 +43,7 @@ public class TableBoxCaption<T> extends BorderPane {
 
         getStylesheets().add(getClass().getResource(CSS_FILEPATH).toExternalForm());
 
-        tableView.resizeWidth(true);
+//        tableView.resizeWidth(true);
     }
 
     public void selectFirstTableElem() {

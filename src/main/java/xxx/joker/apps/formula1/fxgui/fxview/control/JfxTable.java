@@ -1,68 +1,62 @@
 package xxx.joker.apps.formula1.fxgui.fxview.control;
 
+import javafx.scene.control.ScrollBar;
 import javafx.scene.control.TableView;
 import javafx.scene.text.Text;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 public class JfxTable<T> extends TableView<T> {
+
+    public static final String CSS_CLASS_FIXED_WIDTH = "fixedWidth";
 
     private static final String CSS_FILEPATH = "/css/control/JfxTable.css";
     private static final double EXTRA_COL_WIDTH = 30d;
 
-    private List<JfxTableCol<T, ?>> columns;
-    private double fixedPrefWidth = -1;
-
-    @SafeVarargs
-    public JfxTable(JfxTableCol<T, ?>... cols) {
+    public JfxTable() {
         setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
-        this.columns = new ArrayList<>();
-        add(cols);
         getStyleClass().addAll("jkTable");
         getStylesheets().add(getClass().getResource(CSS_FILEPATH).toExternalForm());
     }
 
     public void add(JfxTableCol... cols) {
         Arrays.stream(cols).forEach(c -> {
-            columns.add(c);
             getColumns().add(c);
         });
 
-        if(!columns.isEmpty()){
-            for(int i = 0; i < columns.size(); i++) {
-                JfxTableCol col = columns.get(i);
-                col.getStyleClass().addAll("col", "col" + i);
+        if(!getColumns().isEmpty()){
+            for(int i = 0; i < getColumns().size(); i++) {
+                JfxTableCol<T, ?> col = getJfxCol(i);
+                col.getStyleClass().removeIf(s -> s.startsWith("col") || s.equals("jkTableCol"));
+                col.getStyleClass().addAll("jkTableCol", "col", "col" + i);
                 col.getStyleClass().add(i % 2 == 0 ? "col-odd" : "col-even");
-                col.getStyleClass().add(i == 0 ? "col-first" : i == columns.size() - 1 ? "col-last" : "col-middle");
+                col.getStyleClass().add(i == 0 ? "col-first" : i == getColumns().size() - 1 ? "col-last" : "col-middle");
             }
         }
     }
 
     public void update(Collection<T> items) {
         getItems().setAll(items);
-        resizeWidth(true);
-//        resizeHeight();
+        resizeWidth();
     }
 
-    public void resizeWidth(boolean reserveScrollSpace) {
-        double tablePrefWidth = 2d + (reserveScrollSpace ? 22d : 0d);
+    private void resizeWidth() {
+        double tablePrefWidth = 2d + 20d;
 
         //Set the right policy
-        for (JfxTableCol<T, ?> col : columns) {
+        for(int idx = 0; idx < getColumns().size(); idx++) {
+            JfxTableCol<T, ?> col = getJfxCol(idx);
+
             if(col.isVisible()) {
-                double max;
                 double wcol;
-                if (col.getFixedPrefWidth() != -1) {
-                    max = col.getFixedPrefWidth();
-                    wcol = max;
+                if (col.getStyleClass().contains(CSS_CLASS_FIXED_WIDTH)) {
+                    wcol = col.getPrefWidth();
                 } else {
                     //Minimal width = columnheader
                     Text t = new Text(col.getText());
-                    max = t.getLayoutBounds().getWidth();
-                    for (int i = 0; i < getItems().size(); i++) {
+                    double max = t.getLayoutBounds().getWidth();
+                    for (int i = 1; i < getItems().size(); i++) {
                         //cell must not be empty
                         if (col.getCellData(i) != null) {
                             t = new Text(col.formatCellData(i));
@@ -80,16 +74,10 @@ public class JfxTable<T> extends TableView<T> {
             }
         }
 
-//        if(fixedPrefWidth != -1) {
-        if(fixedPrefWidth != -1) {
-            setPrefWidth(fixedPrefWidth);
-        } else {
-            setPrefWidth(tablePrefWidth);
-        }
+        setPrefWidth(tablePrefWidth);
     }
 
-    public void setFixedPrefWidth(double fixedPrefWidth) {
-        this.fixedPrefWidth = fixedPrefWidth;
-        setPrefWidth(fixedPrefWidth);
+    private JfxTableCol<T,?> getJfxCol(int index) {
+        return (JfxTableCol<T,?>) getColumns().get(index);
     }
 }

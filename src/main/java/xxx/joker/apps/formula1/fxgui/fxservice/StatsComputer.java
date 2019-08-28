@@ -6,10 +6,13 @@ import org.slf4j.LoggerFactory;
 import xxx.joker.apps.formula1.fxgui.fxmodel.StatsLine;
 import static xxx.joker.apps.formula1.fxgui.fxmodel.StatsLine.StatKind.*;
 import static xxx.joker.apps.formula1.fxgui.fxmodel.StatsLine.StatKind;
+import static xxx.joker.libs.core.utils.JkConsole.display;
+
 import xxx.joker.apps.formula1.fxgui.fxmodel.StatsLine.StatsCell;
 import xxx.joker.apps.formula1.model.F1Model;
 import xxx.joker.apps.formula1.model.F1ModelImpl;
 import xxx.joker.apps.formula1.model.entities.*;
+import xxx.joker.libs.core.datetime.JkTimer;
 import xxx.joker.libs.core.lambdas.JkStreams;
 import xxx.joker.libs.datalayer.design.RepoEntity;
 

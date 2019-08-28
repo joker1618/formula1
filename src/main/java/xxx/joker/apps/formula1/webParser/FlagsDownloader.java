@@ -5,11 +5,14 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xxx.joker.apps.formula1.model.entities.F1Country;
+import xxx.joker.libs.core.lambdas.JkStreams;
 import xxx.joker.libs.core.scanners.JkScanners;
 import xxx.joker.libs.core.scanners.JkTag;
+import xxx.joker.libs.core.utils.JkStrings;
 import xxx.joker.libs.datalayer.entities.RepoResource;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
 import static xxx.joker.libs.core.utils.JkStrings.strf;
@@ -39,6 +42,7 @@ public class FlagsDownloader extends AWebParser {
 
                 LOG.info("Added new country {}", country);
 
+                List<String> imageUrls = getImageUrls(img);
                 String iconUrl = getImageUrl(img);
                 String code = tr.getChild(4).findFirstTag("span", "class=monospaced").getText();
                 country.setCode(code);
@@ -71,5 +75,13 @@ public class FlagsDownloader extends AWebParser {
 
     protected String getImageUrl(JkTag img) {
         return strf("https:{}", img.getAttribute("srcset").replaceAll(" [^ ]+$", "").replaceAll(".*,", "").trim());
+    }
+
+    protected List<String> getImageUrls(JkTag img) {
+        List<String> list = new ArrayList<>();
+        list.add(img.getAttribute("src"));
+        List<String> srcset = JkStrings.splitList(img.getAttribute("srcset"), ",", true);
+        list.addAll(JkStreams.map(srcset, s -> s.substring(0, s.indexOf(" "))));
+        return list;
     }
 }

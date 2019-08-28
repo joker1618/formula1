@@ -1,5 +1,7 @@
 package xxx.joker.apps.formula1.fxgui.fxview;
 
+import com.madhukaraphatak.sizeof.SizeEstimator;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -28,10 +30,18 @@ import xxx.joker.apps.formula1.model.F1Model;
 import xxx.joker.apps.formula1.model.F1ModelImpl;
 import xxx.joker.apps.formula1.model.entities.F1GranPrix;
 import xxx.joker.libs.core.cache.JkCache;
-import xxx.joker.libs.core.javafx.JfxUtil;
+import xxx.joker.libs.core.debug.JkDebug;
+import xxx.joker.libs.core.format.JkOutput;
+import xxx.joker.libs.core.javafx.JfxUtil2;
 
+import java.lang.instrument.Instrumentation;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
+import static xxx.joker.libs.core.javafx.JfxUtil2.createHBox;
+import static xxx.joker.libs.core.javafx.JfxUtil2.createImageView;
+import static xxx.joker.libs.core.utils.JkConsole.display;
+import static xxx.joker.libs.core.utils.JkConsole.displayColl;
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 public class RootPane extends BorderPane {
@@ -40,6 +50,7 @@ public class RootPane extends BorderPane {
 
     private F1Model model = F1ModelImpl.getInstance();
     protected F1GuiModel guiModel = F1GuiModelImpl.getInstance();
+    private ComboBox<Integer> comboSelYear;
 
     private JkCache<PaneType, CentralPane> cachePanes = new JkCache<>();
     private SimpleObjectProperty<PaneType> showedPane = new SimpleObjectProperty<>();
@@ -51,7 +62,7 @@ public class RootPane extends BorderPane {
         setLeft(createLeftMenu());
 
         getStyleClass().add("rootPane");
-        
+
         showedPane.addListener((obs,o,n) -> setCenter(cachePanes.get(n)));
 
         showedPane.set(PaneType.HOME);
@@ -93,7 +104,7 @@ public class RootPane extends BorderPane {
         yearBox.getStyleClass().addAll("yearBox");
         menuBox.getChildren().add(yearBox);
 
-        ComboBox<Integer> comboSelYear = new ComboBox<>();
+        this.comboSelYear = new ComboBox<>();
         comboSelYear.getItems().setAll(model.getAvailableYears());
         comboSelYear.getSelectionModel().selectedItemProperty().addListener((obs,o,n) -> guiModel.setSelectedYear(n));
         Button btnPrev = new Button("<");
@@ -125,6 +136,7 @@ public class RootPane extends BorderPane {
             @Override
             protected void updateItem(F1GranPrix item, boolean empty) {
                 super.updateItem(item, empty);
+                JkDebug.startTimer("List cell factory");
                 if(item == null || empty) {
                     setGraphic(null);
                     setText(null);
@@ -132,10 +144,8 @@ public class RootPane extends BorderPane {
                     FxCountry fnat = guiModel.getNation(item.getCircuit().getCountry());
                     Image flagIcon = fnat.getFlagIcon();
                     if(getGraphic() == null) {
-                        ImageView ivIcon = JfxUtil.createImageView(flagIcon, 45, 28);
-                        ivIcon.setPreserveRatio(false);
-                        HBox hbox = new HBox(ivIcon);
-                        hbox.getStyleClass().addAll("borderBlack", "centered");
+                        ImageView ivIcon = createImageView(flagIcon, 45, 28, false);
+                        HBox hbox = createHBox("borderBlack1 centered", ivIcon);
                         HBox iconBox = new HBox(hbox);
                         iconBox.getStyleClass().addAll("iconBox");
                         setGraphic(iconBox);
@@ -145,25 +155,22 @@ public class RootPane extends BorderPane {
                     }
                     setText(strf("%2d  -  %s", item.getNum(), fnat.getCode()));
                 }
+                JkDebug.stopTimer("List cell factory");
             }
         });
+        gpListView.setOnMouseClicked(e -> showedPane.set(PaneType.YEAR_GRAN_PRIX));
         gpListView.getSelectionModel().selectedItemProperty().addListener((obs,o,n) -> {
-            if(n != null && n != o) {
-                guiModel.setSelectedGranPrix(n);
-                showedPane.set(PaneType.YEAR_GRAN_PRIX);
-            } else if(n == null && o != null) {
-                gpListView.getSelectionModel().select(o);
-            }
+            guiModel.setSelectedGranPrix(n);
+            showedPane.set(PaneType.YEAR_GRAN_PRIX);
         });
+
         guiModel.addChangeActionYear(n -> {
             PaneType spane = this.showedPane.get();
             List<F1GranPrix> gps = model.getGranPrixs(n);
             gpListView.getItems().setAll(gps);
-            guiModel.setSelectedGranPrix(gps.get(0));
+            gpListView.getSelectionModel().selectFirst();
             showedPane.set(spane);
         });
-
-//        comboSelYear.getSelectionModel().selectFirst();
 
         return menuBox;
     }
@@ -177,6 +184,35 @@ public class RootPane extends BorderPane {
         cachePanes.add(PaneType.YEAR_ENTRANTS, new YearEntrantsPane());
         cachePanes.add(PaneType.YEAR_RESULTS, new YearResultsPane());
         cachePanes.add(PaneType.YEAR_GRAN_PRIX, new YearGpPane());
+    }
+
+    public void selectFirstYear() {
+        comboSelYear.getSelectionModel().selectFirst();
+        AtomicLong sumSize = new AtomicLong(0L);
+//        model.getCountries().forEach(c -> {
+//            long size = SizeEstimator.estimate(guiModel.getNation(c.getName()));
+//            display("{}: {}", c.getName(), JkOutput.humanSize(size));
+//            sumSize.getAndAdd(size);
+//        });
+//       model.getGranPrixs().forEach(c -> {
+//            long size = SizeEstimator.estimate(guiModel.getGpTrackMap(c));
+//            display("{}: {}", c.getPrimaryKey(), JkOutput.humanSize(size));
+//            sumSize.getAndAdd(size);
+//        });
+//        display("Image tot: {}", JkOutput.humanSize(sumSize.get()));
+        display("Model:     {}", JkOutput.humanSize(SizeEstimator.estimate(model)));
+        display("GUI Model: {}", JkOutput.humanSize(SizeEstimator.estimate(guiModel)));
+
+    }
+
+   public void closse() {
+//       for (PaneType pt : PaneType.values()) {
+//           display("PT  {}     {}", pt, JkOutput.humanSize(SizeEstimator.estimate(cachePanes.get(pt))));
+//
+//       }
+       display("Model:     {}", JkOutput.humanSize(SizeEstimator.estimate(model)));
+       display("GUI Model: {}", JkOutput.humanSize(SizeEstimator.estimate(guiModel)));
+
     }
 
 }

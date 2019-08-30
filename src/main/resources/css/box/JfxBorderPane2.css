@@ -1,13 +1,12 @@
-.infoPane > .hbox {
-    -fx-padding: 15;
+.jfxBorderPane > .hbox {
     -fx-border-color: -darkBlue;
-    -fx-alignment: TOP-CENTER;
+    -fx-alignment: CENTER;
 }
 
 .boxTop {
+    -fx-pref-height: 55;
     -fx-font-family: "Tahoma";
     -fx-font-size: 22;
-    -fx-text-fill: -darkBlue;
     -fx-font-weight: BOLD;
     -fx-border-width: 2 2 0 2;
 }
@@ -18,4 +17,10 @@
 }
 .boxBottom {
     -fx-border-width: 0 2 2 2;
+}
+.boxLeft {
+    -fx-border-width: 2 0 2 2;
+}
+.boxRight {
+    -fx-border-width: 2 2 2 0;
 }

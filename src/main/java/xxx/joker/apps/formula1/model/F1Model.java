@@ -12,6 +12,11 @@ import java.util.Set;
 
 public interface F1Model extends JkRepo {
 
+    RepoResource getFlagIcon(Country country);
+    RepoResource saveFlagIcon(Path imgPath, Country country);
+    RepoResource getFlagImage(Country country);
+    RepoResource saveFlagImage(Path imgPath, Country country);
+
     RepoResource getDriverCover(F1Driver driver);
     RepoResource saveDriverCover(Path imgPath, F1Driver driver);
 
@@ -21,8 +26,8 @@ public interface F1Model extends JkRepo {
     RepoResource getImageUnavailable();
     RepoResource saveImageUnavailable(Path imgPath);
 
-    F1Country getCountry(String name);
-    Set<F1Country> getCountries();
+    Country getCountry(String name);
+    Set<Country> getCountries();
 
     F1Team getTeam(String teamName);
     Set<F1Team> getTeams();

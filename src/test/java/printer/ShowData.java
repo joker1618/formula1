@@ -5,7 +5,6 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import xxx.joker.apps.formula1.model.entities.*;
-import xxx.joker.libs.core.format.JkFormatter;
 import xxx.joker.libs.core.format.JkOutput;
 import xxx.joker.libs.core.lambdas.JkStreams;
 import xxx.joker.libs.core.utils.JkStrings;
@@ -59,7 +58,7 @@ public class ShowData extends CommonTest {
 
     @Test
     public void printCountries() {
-        printRepo(F1Country.class);
+        printRepo(Country.class);
     }
 
     @Test

@@ -1,6 +1,9 @@
-.cell:empty {
-    -fx-opacity: 0;
+* {
+    -darkBlue: #000033;
+    -lightBlue: #ccf2ff;
 }
+
+.cell:empty { -fx-opacity: 0 }
 
 .centered   { -fx-alignment: CENTER }
 .topCenter  { -fx-alignment: TOP-CENTER }
@@ -24,7 +27,6 @@
 .vgap10 { -fx-vgap: 10 }
 
 .bold { -fx-font-weight: BOLD; }
-
 
 .bgWhite    { -fx-background-color: WHITE }
 .bgPurple   { -fx-background-color: PURPLE }

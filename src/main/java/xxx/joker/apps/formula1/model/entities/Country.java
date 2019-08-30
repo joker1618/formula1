@@ -4,21 +4,17 @@ import xxx.joker.libs.datalayer.design.RepoEntity;
 import xxx.joker.libs.datalayer.design.RepoField;
 import xxx.joker.libs.datalayer.entities.RepoResource;
 
-public class F1Country extends RepoEntity {
+public class Country extends RepoEntity {
 
     @RepoField
     private String name;
     @RepoField
     private String code;
-    @RepoField
-    private RepoResource flagIcon;
-    @RepoField
-    private RepoResource flagImage;
 
-    public F1Country() {
+    public Country() {
     }
 
-    public F1Country(String name) {
+    public Country(String name) {
         this.name = name;
     }
 
@@ -42,22 +38,5 @@ public class F1Country extends RepoEntity {
     public void setCode(String code) {
         this.code = code;
     }
-
-    public RepoResource getFlagIcon() {
-        return flagIcon;
-    }
-
-    public void setFlagIcon(RepoResource flagIcon) {
-        this.flagIcon = flagIcon;
-    }
-
-    public RepoResource getFlagImage() {
-        return flagImage;
-    }
-
-    public void setFlagImage(RepoResource flagImage) {
-        this.flagImage = flagImage;
-    }
-
 
 }

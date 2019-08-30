@@ -21,7 +21,7 @@ public class F1FxLauncher extends Application {
 
     private static final Logger LOG = LoggerFactory.getLogger(F1FxLauncher.class);
     private static boolean scenicView;
-    private RootPane rootPane = new RootPane();
+    private RootPane rootPane;
 
 
     @Override
@@ -34,12 +34,13 @@ public class F1FxLauncher extends Application {
         scene.setRoot(rootPane);
         scene.getStylesheets().add(getClass().getResource("/css/common.css").toExternalForm());
 
+//        initScene();
+
         // Show stage
         primaryStage.setScene(scene);
         primaryStage.setMaximized(true);
         primaryStage.show();
 
-        rootPane.selectFirstYear();
 
         if(scenicView) {
             ScenicView.show(scene);
@@ -51,7 +52,6 @@ public class F1FxLauncher extends Application {
     public void stop() throws Exception {
         LOG.debug("STOP APP");
         JkDebug.displayTimes();
-        rootPane.closse();
 //        JfxTable<StatsLine> table = (JfxTable<StatsLine>) rootPane.lookup(".homePane .jfxTable");
 //        display("border {}", ToStringBuilder.reflectionToString(table.getBorder(), ToStringStyle.MULTI_LINE_STYLE));
 

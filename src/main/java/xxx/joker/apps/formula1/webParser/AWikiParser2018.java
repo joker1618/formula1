@@ -241,7 +241,7 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
         F1Team team = model.getTeam(tn);
         if(team == null && createIfMissing) {
             team = new F1Team(tn);
-            if(model.getTeams().add(team));
+            model.getTeams().add(team);
         }
         return team;
     }
@@ -297,7 +297,7 @@ public abstract class AWikiParser2018 extends AWebParser implements WikiParser {
     }
 
     protected void checkNation(RepoEntity e, String nation) {
-        F1Country n = model.getCountry(nation);
+        Country n = model.getCountry(nation);
         if(n == null) {
             throw new JkRuntimeException("Nation [{}] not exists. Entity: {}", nation, e);
         }

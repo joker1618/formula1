@@ -30,10 +30,10 @@ public class F1GuiModelImpl implements F1GuiModel {
 
     private F1Model model = F1ModelImpl.getInstance();
 
-    private JkCache<String, FxCountry> cacheNation = new JkCache<>();
+    private JkCache<Country, Image> cacheFlagIcon = new JkCache<>();
     private final Image imageUnavailable;
-    private JkCache<F1GranPrix, Image> cacheGpTrackMap = new JkCache<>();
-    private JkCache<F1Driver, Image> cacheDriverCoverMap = new JkCache<>();
+//    private JkCache<F1GranPrix, Image> cacheGpTrackMap = new JkCache<>();
+//    private JkCache<F1Driver, Image> cacheDriverCoverMap = new JkCache<>();
     private JkCache<Integer, SeasonView> cacheYears = new JkCache<>();
 
     private SimpleIntegerProperty selectedYear = new SimpleIntegerProperty();
@@ -44,6 +44,8 @@ public class F1GuiModelImpl implements F1GuiModel {
         RepoResource res = model.getImageUnavailable();
         Path uriPath = model.getUriPath(res);
         this.imageUnavailable = new Image(JkFiles.toURL(uriPath));
+        // preload and cache all flag icons
+        model.getCircuits().forEach(c -> getFlagIcon(c.getCountry()));
     }
 
     public static F1GuiModel getInstance() {
@@ -51,45 +53,46 @@ public class F1GuiModelImpl implements F1GuiModel {
     }
 
     @Override
-    public FxCountry getNation(String nationName) {
-        return cacheNation.get(nationName, () -> {
-            F1Country country = model.getCountry(nationName);
+    public Image getFlagIcon(String countryName) {
+        return getFlagIcon(model.getCountry(countryName));
+    }
 
-            Image icon;
-            if(country.getFlagIcon() == null)  {
-                icon = null;
-            } else {
-                Path iconPath = model.getUriPath(country.getFlagIcon());
-                icon = new Image(JkFiles.toURL(iconPath));
-            }
-
-            Image image;
-            if(country.getFlagImage() == null)  {
-                image = null;
-            } else {
-                Path imagePath = model.getUriPath(country.getFlagImage());
-                image = new Image(JkFiles.toURL(imagePath));
-            }
-
-            return new FxCountry(country, icon, image);
+    @Override
+    public Image getFlagIcon(Country country) {
+        return cacheFlagIcon.get(country, () -> {
+            RepoResource flagIcon = model.getFlagIcon(country);
+            String url = JkFiles.toURL(model.getUriPath(flagIcon));
+            return new Image(url);
         });
     }
 
     @Override
+    public Image getFlagImage(String countryName) {
+        return getFlagImage(model.getCountry(countryName));
+    }
+
+    @Override
+    public Image getFlagImage(Country country) {
+        RepoResource flagLarge = model.getFlagImage(country);
+        String url = JkFiles.toURL(model.getUriPath(flagLarge));
+        return new Image(url);
+    }
+
+    @Override
     public Image getGpTrackMap(F1GranPrix gp) {
-        return cacheGpTrackMap.get(gp, () -> {
+//        return cacheGpTrackMap.get(gp, () -> {
             Path uriPath = model.getUriPath(model.getGpTrackMap(gp));
             if(Files.exists(uriPath)) {
                 return new Image(JkFiles.toURL(uriPath));
             } else {
                 return imageUnavailable;
             }
-        });
+//        });
     }
 
     @Override
     public Image getDriverCover(F1Driver driver) {
-        return cacheDriverCoverMap.get(driver, () -> {
+//        return cacheDriverCoverMap.get(driver, () -> {
             RepoResource res = model.getDriverCover(driver);
             if (res != null) {
                 Path uriPath = model.getUriPath(res);
@@ -98,7 +101,7 @@ public class F1GuiModelImpl implements F1GuiModel {
                 }
             }
             return imageUnavailable;
-        });
+//        });
     }
 
     @Override

@@ -4,13 +4,13 @@ import javafx.geometry.Side;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import xxx.joker.apps.formula1.fxgui.fxmodel.FxCountry;
 import xxx.joker.apps.formula1.fxgui.fxview.CentralPane;
 import xxx.joker.apps.formula1.fxgui.fxview.box.JfxBorderPane;
 import xxx.joker.apps.formula1.fxgui.fxview.control.GridPaneBuilder;
@@ -54,7 +54,7 @@ public class YearGpPane extends CentralPane {
         tabPane.getTabs().addAll(tab1, tab2);
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
-        tabPane.setSide(Side.LEFT);
+//        tabPane.setSide(Side.LEFT);
 
         setCenter(tabPane);
     }
@@ -193,8 +193,8 @@ public class YearGpPane extends CentralPane {
 
         guiModel.addChangeActionGranPrix(gp -> {
             if(gp != null) {
-                FxCountry fxCountry = guiModel.getNation(gp.getCircuit().getCountry());
-                ivFlag.setImage(fxCountry.getFlagImage());
+                Image countryImage = guiModel.getFlagImage(gp.getCircuit().getCountry());
+                ivFlag.setImage(countryImage);
                 lblGpNum.setText(strf("{}/{}", gp.getNum(), model.getGranPrixs(gp.getYear()).size()));
                 lblDate.setText(strf("{}", JkDates.format(gp.getDate(), "dd/MM/yyyy")));
                 lblLocation.setText(strf("{}, {}", gp.getCircuit().getCountry(), gp.getCircuit().getCity()));

@@ -23,38 +23,40 @@ public class ExportImages extends CommonTest {
     public void exportImages() {
         Path imgFolder = outFolder.resolve("img");
 
-        F1Model model = F1ModelImpl.getInstance();
-        model.getCountries().forEach(c -> {
-            display("Exporting flag {}", c.getName());
+        model.exportResources(imgFolder);
 
-            Path source = model.getUriPath(c.getFlagImage());
-            Path target = imgFolder.resolve(strf("large/{}.{}", c.getName(), JkFiles.getExtension(source)));
-            JkFiles.copy(source, target);
-
-            source = model.getUriPath(c.getFlagIcon());
-            target = imgFolder.resolve(strf("icon/{}.{}", c.getName(), JkFiles.getExtension(source)));
-            JkFiles.copy(source, target);
-        });
-
-        model.getDrivers().forEach(d -> {
-            RepoResource cover = model.getDriverCover(d);
-            if(cover != null) {
-                display("Exporting cover for {}", d.getFullName());
-                Path source = model.getUriPath(cover);
-                Path target = imgFolder.resolve(strf("cover/{}.{}", d.getFullName(), JkFiles.getExtension(source)));
-                JkFiles.copy(source, target);
-            }
-        });
-
-        model.getGranPrixs().forEach(gp -> {
-            RepoResource gpTrackMap = model.getGpTrackMap(gp);
-            if(gpTrackMap != null) {
-                display("Exporting track map for {}", gp.getPrimaryKey());
-                Path source = model.getUriPath(gpTrackMap);
-                Path target = imgFolder.resolve(strf("trackMap/{}_{}.{}", gp.getPrimaryKey(), gp.getCircuit().getCountry(), JkFiles.getExtension(source)));
-                JkFiles.copy(source, target);
-            }
-        });
+//        F1Model model = F1ModelImpl.getInstance();
+//        model.getCountries().forEach(c -> {
+//            display("Exporting flag {}", c.getName());
+//
+//            Path source = model.getUriPath(c.getFlagImage());
+//            Path target = imgFolder.resolve(strf("large/{}.{}", c.getName(), JkFiles.getExtension(source)));
+//            JkFiles.copy(source, target);
+//
+//            source = model.getUriPath(c.getFlagIcon());
+//            target = imgFolder.resolve(strf("icon/{}.{}", c.getName(), JkFiles.getExtension(source)));
+//            JkFiles.copy(source, target);
+//        });
+//
+//        model.getDrivers().forEach(d -> {
+//            RepoResource cover = model.getDriverCover(d);
+//            if(cover != null) {
+//                display("Exporting cover for {}", d.getFullName());
+//                Path source = model.getUriPath(cover);
+//                Path target = imgFolder.resolve(strf("cover/{}.{}", d.getFullName(), JkFiles.getExtension(source)));
+//                JkFiles.copy(source, target);
+//            }
+//        });
+//
+//        model.getGranPrixs().forEach(gp -> {
+//            RepoResource gpTrackMap = model.getGpTrackMap(gp);
+//            if(gpTrackMap != null) {
+//                display("Exporting track map for {}", gp.getPrimaryKey());
+//                Path source = model.getUriPath(gpTrackMap);
+//                Path target = imgFolder.resolve(strf("trackMap/{}_{}.{}", gp.getPrimaryKey(), gp.getCircuit().getCountry(), JkFiles.getExtension(source)));
+//                JkFiles.copy(source, target);
+//            }
+//        });
     }
 
 }

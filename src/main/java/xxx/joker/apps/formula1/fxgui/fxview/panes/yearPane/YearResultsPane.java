@@ -1,6 +1,5 @@
 package xxx.joker.apps.formula1.fxgui.fxview.panes.yearPane;
 
-import com.madhukaraphatak.sizeof.SizeEstimator;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.ToggleGroup;
@@ -19,7 +18,6 @@ import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTable;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTableCol;
 import xxx.joker.apps.formula1.model.entities.F1GranPrix;
 import xxx.joker.libs.core.debug.JkDebug;
-import xxx.joker.libs.core.format.JkOutput;
 import xxx.joker.libs.core.javafx.JfxUtil2;
 
 import java.util.List;
@@ -89,7 +87,7 @@ public class YearResultsPane extends CentralPane {
         table.add(colDriver);
         List<F1GranPrix> gps = model.getGranPrixs(year);
         for (F1GranPrix gp : gps) {
-            Image img = guiModel.getNation(gp.getCircuit().getCountry()).getFlagIcon();
+            Image img = guiModel.getFlagIcon(gp.getCircuit().getCountry());
             JfxTableCol<ResultView, ResultCellPoints>  col = JfxTableCol.createCol("", rv -> rv.getCellMap().get(gp), race -> safePrint0(showPoints.get() ? race.getValue() : race.getPos()), "centered");
 //            col.setComparator(Comparator.comparing(ResultCellPoints::getPos));
             ImageView iv = JfxUtil2.createImageView(img, 35, 24, false);

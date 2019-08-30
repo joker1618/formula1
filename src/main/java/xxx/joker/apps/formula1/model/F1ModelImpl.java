@@ -36,6 +36,26 @@ public class F1ModelImpl extends JkRepoFile implements F1Model {
     }
 
     @Override
+    public RepoResource getFlagIcon(Country country) {
+        return getResource(country.getPrimaryKey(), "flag icon");
+    }
+
+    @Override
+    public RepoResource saveFlagIcon(Path imgPath, Country country) {
+        return addResource(imgPath, country.getPrimaryKey(), "flag icon");
+    }
+
+    @Override
+    public RepoResource getFlagImage(Country country) {
+        return getResource(country.getPrimaryKey(), "flag large");
+    }
+
+    @Override
+    public RepoResource saveFlagImage(Path imgPath, Country country) {
+        return addResource(imgPath, country.getPrimaryKey(), "flag large");
+    }
+
+    @Override
     public RepoResource getDriverCover(F1Driver driver) {
         return getResource(driver.getPrimaryKey(), "driver cover");
     }
@@ -57,22 +77,22 @@ public class F1ModelImpl extends JkRepoFile implements F1Model {
 
     @Override
     public RepoResource getImageUnavailable() {
-        return getResource("imageUnavailable", "misc");
+        return getResource("no-image", "misc");
     }
 
     @Override
     public RepoResource saveImageUnavailable(Path imgPath) {
-        return addResource(imgPath, "imageUnavailable", "misc");
+        return addResource(imgPath, "no-image", "misc");
     }
 
     @Override
-    public F1Country getCountry(String countryName) {
-        return get(F1Country.class, c -> c.getName().equalsIgnoreCase(countryName));
+    public Country getCountry(String countryName) {
+        return get(Country.class, c -> c.getName().equalsIgnoreCase(countryName));
     }
 
     @Override
-    public Set<F1Country> getCountries() {
-        return getDataSet(F1Country.class);
+    public Set<Country> getCountries() {
+        return getDataSet(Country.class);
     }
 
     @Override

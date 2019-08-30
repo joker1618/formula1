@@ -3,6 +3,8 @@ package xxx.joker.apps.formula1.fxgui.fxview.panes;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -10,14 +12,22 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import xxx.joker.apps.formula1.fxgui.fxmodel.FxCountry;
 import xxx.joker.apps.formula1.fxgui.fxview.CentralPane;
 import xxx.joker.apps.formula1.fxgui.fxview.box.JfxBorderPane;
 import xxx.joker.apps.formula1.fxgui.fxview.control.GridPaneBuilder;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTable;
 import xxx.joker.apps.formula1.fxgui.fxview.control.JfxTableCol;
 import xxx.joker.apps.formula1.model.entities.F1Circuit;
+import xxx.joker.apps.formula1.model.entities.F1GranPrix;
 import xxx.joker.libs.core.javafx.JfxUtil2;
+import xxx.joker.libs.core.lambdas.JkStreams;
+import xxx.joker.libs.core.utils.JkStrings;
+import xxx.joker.libs.datalayer.entities.RepoResource;
+import xxx.joker.libs.datalayer.entities.RepoUri;
+
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
@@ -32,6 +42,7 @@ public class CircuitsPane extends CentralPane {
         setLeft(circuitsBox);
 
         setCenter(createInfoPane());
+        setRight(createTrackMapsPane());
 
         getStyleClass().add("circuitsPane");
         getStylesheets().add(getClass().getResource("/css/InfoPane.css").toExternalForm());
@@ -81,8 +92,7 @@ public class CircuitsPane extends CentralPane {
 
         selectedCircuit.addListener((obs,o,n) -> {
             if(n != null) {
-                FxCountry fxCountry = guiModel.getNation(n.getCountry());
-                ivFlag.setImage(fxCountry.getFlagImage());
+                ivFlag.setImage(guiModel.getFlagImage(n.getCountry()));
                 nat.setText(n.getCountry());
                 city.setText(n.getCity());
             }
@@ -91,5 +101,37 @@ public class CircuitsPane extends CentralPane {
         BorderPane.setMargin(bp, new Insets(0d, 0d, 0d, 20d));
 
         return bp;
+    }
+
+    private ScrollPane createTrackMapsPane() {
+        GridPane gridPane = new GridPane();
+        ScrollPane sp = new ScrollPane(gridPane);
+        selectedCircuit.addListener((obs,o,n) -> {
+            List<F1GranPrix> gpList = model.getList(F1GranPrix.class, gp -> gp.getCircuit().equals(n));
+            Map<RepoUri, List<F1GranPrix>> resMap = JkStreams.toMap(gpList, gp -> model.getGpTrackMap(gp).getUri());
+            GridPaneBuilder gpBuilder = new GridPaneBuilder();
+            AtomicInteger row = new AtomicInteger(0);
+            resMap.forEach((ruri,gplist) -> {
+                gpBuilder.add(row.get(), 0, JfxUtil2.createImageView(guiModel.getGpTrackMap(gplist.get(0)), 400, 400));
+                String join = JkStreams.join(gplist, "\n", gp -> ""+gp.getYear());
+                gpBuilder.add(row.get(), 1, join);
+                row.incrementAndGet();
+            });
+
+            AtomicInteger row2 = new AtomicInteger(0);
+            Map<Double, List<F1GranPrix>> resMap2 = JkStreams.toMap(gpList, F1GranPrix::getLapLength);
+            resMap2.forEach((ruri,gplist) -> {
+                gpBuilder.add(row2.get(), 2, ruri+"");
+                String join = JkStreams.join(gplist, "\n", gp -> ""+gp.getYear());
+                gpBuilder.add(row2.get(), 3, join);
+                row2.incrementAndGet();
+            });
+            gridPane.getChildren().forEach(ch -> ch.getStyleClass().addAll("borderBlack1"));
+
+            gpBuilder.createGridPane(gridPane);
+        });
+        gridPane.getStyleClass().addAll("pad10", "vgap10");
+
+        return sp;
     }
 }

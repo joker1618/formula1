@@ -241,8 +241,8 @@ public class Year1989 extends AWikiParser2018 {
                 Integer index = posMap.containsKey("Constructor") ? posMap.get("Constructor") : posMap.get("Team");
                 JkTag ttag = tr.getChild(index).walkFirstChild("a", "span a", "b a");
                 F1Team team = retrieveTeam(ttag.getText().replaceAll("-$", ""), false);
-                if(StringUtils.equalsAny(q.getPrimaryKey(), "qualify-[gp-1989-15]-29", "qualify-[gp-1989-16]-30")) carNo = 39;
-                if(StringUtils.equalsAny(q.getPrimaryKey(), "qualify-[gp-1989-15]-30", "qualify-[gp-1989-16]-29")) carNo = 38;
+                if(StringUtils.equalsAny(q.getPrimaryKey(), "gp-1989-15-qual-29", "gp-1989-16-qual-30")) carNo = 39;
+                if(StringUtils.equalsAny(q.getPrimaryKey(), "gp-1989-15-qual-30", "gp-1989-16-qual-29")) carNo = 38;
 
                 q.setEntrant(getEntrant(year, d, carNo, team));
                 if(q.getEntrant() == null) {

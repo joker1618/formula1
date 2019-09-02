@@ -279,9 +279,9 @@ public class Year1981 extends AWikiParser2018 {
                 q.setPos(pos++);
                 gp.getQualifies().add(q);
                 int carNo = Integer.parseInt(tr.getChild(posMap.get("No")).getText().replace("‡", ""));
-                if(q.getPrimaryKey().equals("qualify-[gp-1981-10]-09")) {
+                if(q.getPrimaryKey().equals("gp-1981-10-qual-09")) {
                     carNo = 7;
-                } else if(q.getPrimaryKey().equals("qualify-[gp-1981-10]-10")) {
+                } else if(q.getPrimaryKey().equals("gp-1981-10-qual-10")) {
                     carNo = 8;
                 }
 

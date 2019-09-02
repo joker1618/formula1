@@ -32,19 +32,19 @@ public class YearWebParser extends CommonTest {
     }
     @Test
     public void runYear() {
-        int y = 2006;
+        int y = 1991;
 
 //        JkDebug.startTimer("@#@");
 ////        JkDebug.startTimer("1111");
-        List<F1GranPrix> gpList = model.getGranPrixs(y);
-        model.removeAll(model.getEntrants(y));
-        model.removeAll(model.getSeasonPointsMap(y).values());
-//        JkDebug.stopAndStartTimer("1111", "2222");
-        gpList.forEach(gp -> model.removeAll(gp.getRaces()));
-//        JkDebug.stopAndStartTimer("2222", "3333");
-        gpList.forEach(gp -> model.removeAll(gp.getQualifies()));
-//        JkDebug.stopAndStartTimer("3333", "4444");
-        model.removeAll(gpList);
+//        List<F1GranPrix> gpList = model.getGranPrixs(y);
+//        model.removeAll(model.getEntrants(y));
+//        model.removeAll(model.getSeasonPointsMap(y).values());
+////        JkDebug.stopAndStartTimer("1111", "2222");
+//        gpList.forEach(gp -> model.removeAll(gp.getRaces()));
+////        JkDebug.stopAndStartTimer("2222", "3333");
+//        gpList.forEach(gp -> model.removeAll(gp.getQualifies()));
+////        JkDebug.stopAndStartTimer("3333", "4444");
+//        model.removeAll(gpList);
 ////        JkDebug.stopTimer("4444");
 //        JkDebug.stopTimer("@#@");
 
@@ -54,7 +54,7 @@ public class YearWebParser extends CommonTest {
 //        display(model.toStringEntities(model.getGranPrixs(y)));
 
         runYear(y);
-        model.commit();
+//        model.commit();
 
 //        JkDebug.startTimer("1111");
 //        gpList = model.getGranPrixs(y);

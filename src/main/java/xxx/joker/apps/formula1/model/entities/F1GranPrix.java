@@ -2,7 +2,7 @@ package xxx.joker.apps.formula1.model.entities;
 
 import xxx.joker.apps.formula1.model.fields.F1FastLap;
 import xxx.joker.libs.datalayer.design.RepoEntity;
-import xxx.joker.libs.datalayer.design.RepoField;
+import xxx.joker.libs.datalayer.design.EntityField;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -11,23 +11,23 @@ import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 public class F1GranPrix extends RepoEntity {
 
-    @RepoField
+    @EntityField
     private Integer year;
-    @RepoField
+    @EntityField
     private Integer num;
-    @RepoField
+    @EntityField
     private LocalDate date;
-    @RepoField
+    @EntityField
     private F1Circuit circuit;
-    @RepoField
+    @EntityField
     private Double lapLength;
-    @RepoField
+    @EntityField
     private Integer numLapsRace;
-    @RepoField
+    @EntityField
     private F1FastLap fastLap;
-    @RepoField
+    @EntityField
     private List<F1Qualify> qualifies;
-    @RepoField
+    @EntityField
     private List<F1Race> races;
 
     public F1GranPrix() {

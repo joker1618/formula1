@@ -1,7 +1,7 @@
 package unitTests;
 
 import xxx.joker.libs.datalayer.design.RepoEntity;
-import xxx.joker.libs.datalayer.design.RepoField;
+import xxx.joker.libs.datalayer.design.EntityField;
 
 import java.util.List;
 
@@ -9,11 +9,11 @@ import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 public class Season extends RepoEntity {
 
-    @RepoField
+    @EntityField
     private Driver winner;
-    @RepoField
+    @EntityField
     private List<Driver> drivers;
-    @RepoField
+    @EntityField
     private Country country;
 
     public Season() {

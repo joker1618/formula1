@@ -1,14 +1,14 @@
 package xxx.joker.apps.formula1.model.entities;
 
 import xxx.joker.libs.datalayer.design.RepoEntity;
-import xxx.joker.libs.datalayer.design.RepoField;
+import xxx.joker.libs.datalayer.design.EntityField;
 import xxx.joker.libs.datalayer.entities.RepoResource;
 
 public class Country extends RepoEntity {
 
-    @RepoField
+    @EntityField
     private String name;
-    @RepoField
+    @EntityField
     private String code;
 
     public Country() {

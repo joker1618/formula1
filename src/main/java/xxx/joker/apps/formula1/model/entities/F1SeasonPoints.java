@@ -1,20 +1,20 @@
 package xxx.joker.apps.formula1.model.entities;
 
 import xxx.joker.libs.datalayer.design.RepoEntity;
-import xxx.joker.libs.datalayer.design.RepoField;
+import xxx.joker.libs.datalayer.design.EntityField;
 
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 public class F1SeasonPoints extends RepoEntity {
 
-    @RepoField
+    @EntityField
     private int year;
-    @RepoField
+    @EntityField
     private String name;
-    @RepoField
+    @EntityField
     private int finalPos;
     // Final points: some years this value differ from the computed one
-    @RepoField
+    @EntityField
     private double finalPoints;
 
     public F1SeasonPoints() {

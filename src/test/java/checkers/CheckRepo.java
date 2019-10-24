@@ -16,7 +16,7 @@ import xxx.joker.libs.core.lambdas.JkStreams;
 import xxx.joker.libs.core.runtimes.JkReflection;
 import xxx.joker.libs.core.tests.JkTests;
 import xxx.joker.libs.datalayer.design.RepoEntity;
-import xxx.joker.libs.datalayer.design.RepoField;
+import xxx.joker.libs.datalayer.design.EntityField;
 
 import java.lang.reflect.Field;
 import java.util.*;
@@ -254,7 +254,7 @@ public class CheckRepo extends CommonTest {
             List<String> nullFields = new ArrayList<>();
 
             if(fields == null) {
-                fields = JkReflection.getFieldsByAnnotation(e.getClass(), RepoField.class);
+                fields = JkReflection.getFieldsByAnnotation(e.getClass(), EntityField.class);
             }
 
             for (Field field : fields) {

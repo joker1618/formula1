@@ -42,7 +42,7 @@ public class F1GuiModelImpl implements F1GuiModel {
 
     private F1GuiModelImpl() {
         RepoResource res = model.getImageUnavailable();
-        Path uriPath = model.getUriPath(res);
+        Path uriPath = res.getPath();
         this.imageUnavailable = new Image(JkFiles.toURL(uriPath));
         // preload and cache all flag icons
         model.getCircuits().forEach(c -> getFlagIcon(c.getCountry()));
@@ -61,7 +61,7 @@ public class F1GuiModelImpl implements F1GuiModel {
     public Image getFlagIcon(Country country) {
         return cacheFlagIcon.get(country, () -> {
             RepoResource flagIcon = model.getFlagIcon(country);
-            String url = JkFiles.toURL(model.getUriPath(flagIcon));
+            String url = JkFiles.toURL(flagIcon.getPath());
             return new Image(url);
         });
     }
@@ -74,14 +74,14 @@ public class F1GuiModelImpl implements F1GuiModel {
     @Override
     public Image getFlagImage(Country country) {
         RepoResource flagLarge = model.getFlagImage(country);
-        String url = JkFiles.toURL(model.getUriPath(flagLarge));
+        String url = JkFiles.toURL(flagLarge.getPath());
         return new Image(url);
     }
 
     @Override
     public Image getGpTrackMap(F1GranPrix gp) {
 //        return cacheGpTrackMap.get(gp, () -> {
-            Path uriPath = model.getUriPath(model.getGpTrackMap(gp));
+            Path uriPath = model.getGpTrackMap(gp).getPath();
             if(Files.exists(uriPath)) {
                 return new Image(JkFiles.toURL(uriPath));
             } else {
@@ -95,7 +95,7 @@ public class F1GuiModelImpl implements F1GuiModel {
 //        return cacheDriverCoverMap.get(driver, () -> {
             RepoResource res = model.getDriverCover(driver);
             if (res != null) {
-                Path uriPath = model.getUriPath(res);
+                Path uriPath = res.getPath();
                 if (Files.exists(uriPath)) {
                     return new Image(JkFiles.toURL(uriPath));
                 }

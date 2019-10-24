@@ -4,7 +4,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -21,9 +20,7 @@ import xxx.joker.apps.formula1.model.entities.F1Circuit;
 import xxx.joker.apps.formula1.model.entities.F1GranPrix;
 import xxx.joker.libs.core.javafx.JfxUtil2;
 import xxx.joker.libs.core.lambdas.JkStreams;
-import xxx.joker.libs.core.utils.JkStrings;
 import xxx.joker.libs.datalayer.entities.RepoResource;
-import xxx.joker.libs.datalayer.entities.RepoUri;
 
 import java.util.List;
 import java.util.Map;
@@ -108,11 +105,11 @@ public class CircuitsPane extends CentralPane {
         ScrollPane sp = new ScrollPane(gridPane);
         selectedCircuit.addListener((obs,o,n) -> {
             List<F1GranPrix> gpList = model.getList(F1GranPrix.class, gp -> gp.getCircuit().equals(n));
-            Map<RepoUri, List<F1GranPrix>> resMap = JkStreams.toMap(gpList, gp -> model.getGpTrackMap(gp).getUri());
+            Map<RepoResource, List<F1GranPrix>> resMap = JkStreams.toMap(gpList, gp -> model.getGpTrackMap(gp));
             GridPaneBuilder gpBuilder = new GridPaneBuilder();
             AtomicInteger row = new AtomicInteger(0);
             resMap.forEach((ruri,gplist) -> {
-                gpBuilder.add(row.get(), 0, JfxUtil2.createImageView(guiModel.getGpTrackMap(gplist.get(0)), 400, 400));
+                gpBuilder.add(row.get(), 0, JfxUtil2.createImageView(ruri.getPath(), 400, 400));
                 String join = JkStreams.join(gplist, "\n", gp -> ""+gp.getYear());
                 gpBuilder.add(row.get(), 1, join);
                 row.incrementAndGet();

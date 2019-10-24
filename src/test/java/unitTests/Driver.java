@@ -1,17 +1,17 @@
 package unitTests;
 
 import xxx.joker.libs.datalayer.design.RepoEntity;
-import xxx.joker.libs.datalayer.design.RepoField;
+import xxx.joker.libs.datalayer.design.EntityField;
 
 import java.util.Set;
 
 public class Driver extends RepoEntity {
 
-    @RepoField
+    @EntityField
     private String fullName;
-    @RepoField
+    @EntityField
     private Country country;
-    @RepoField
+    @EntityField
     private Set<Country> countries;
 
     public Driver() {

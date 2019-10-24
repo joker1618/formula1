@@ -1,13 +1,13 @@
 package xxx.joker.apps.formula1.model.entities;
 
 import xxx.joker.libs.datalayer.design.RepoEntity;
-import xxx.joker.libs.datalayer.design.RepoField;
+import xxx.joker.libs.datalayer.design.EntityField;
 
 public class F1Team extends RepoEntity {
 
-    @RepoField
+    @EntityField
     private String teamName;
-    @RepoField
+    @EntityField
     private String country;
 
     public F1Team() {

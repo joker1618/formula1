@@ -1,11 +1,11 @@
 package unitTests;
 
 import xxx.joker.libs.datalayer.design.RepoEntity;
-import xxx.joker.libs.datalayer.design.RepoField;
+import xxx.joker.libs.datalayer.design.EntityField;
 
 public class Country extends RepoEntity {
 
-    @RepoField
+    @EntityField
     private String name;
 
     public Country() {

@@ -1,15 +1,15 @@
 package xxx.joker.apps.formula1.model.entities;
 
 import xxx.joker.libs.datalayer.design.RepoEntity;
-import xxx.joker.libs.datalayer.design.RepoField;
+import xxx.joker.libs.datalayer.design.EntityField;
 
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 public class F1Circuit extends RepoEntity {
 
-    @RepoField
+    @EntityField
     private String country;
-    @RepoField
+    @EntityField
     private String city;
 
     public F1Circuit() {

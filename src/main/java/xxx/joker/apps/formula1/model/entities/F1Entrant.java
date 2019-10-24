@@ -1,19 +1,19 @@
 package xxx.joker.apps.formula1.model.entities;
 
 import xxx.joker.libs.datalayer.design.RepoEntity;
-import xxx.joker.libs.datalayer.design.RepoField;
+import xxx.joker.libs.datalayer.design.EntityField;
 
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 public class F1Entrant extends RepoEntity {
 
-    @RepoField
+    @EntityField
     private Integer year;
-    @RepoField
+    @EntityField
     private F1Team team;
-    @RepoField
+    @EntityField
     private Integer carNo;
-    @RepoField
+    @EntityField
     private F1Driver driver;
 
     @Override

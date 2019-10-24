@@ -1,19 +1,19 @@
 package xxx.joker.apps.formula1.model.entities;
 
 import xxx.joker.libs.datalayer.design.RepoEntity;
-import xxx.joker.libs.datalayer.design.RepoField;
+import xxx.joker.libs.datalayer.design.EntityField;
 
 import java.time.LocalDate;
 
 public class F1Driver extends RepoEntity {
 
-    @RepoField
+    @EntityField
     private String fullName;
-    @RepoField
+    @EntityField
     private String country;
-    @RepoField
+    @EntityField
     private String city;
-    @RepoField
+    @EntityField
     private LocalDate birthDay;
 
     public F1Driver() {

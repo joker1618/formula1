@@ -2,7 +2,7 @@ package xxx.joker.apps.formula1.model.entities;
 
 import xxx.joker.libs.core.datetime.JkDuration;
 import xxx.joker.libs.datalayer.design.RepoEntity;
-import xxx.joker.libs.datalayer.design.RepoField;
+import xxx.joker.libs.datalayer.design.EntityField;
 
 import java.util.List;
 
@@ -10,15 +10,15 @@ import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 public class F1Qualify extends RepoEntity {
 
-    @RepoField
+    @EntityField
     private String gpPK;
-    @RepoField
+    @EntityField
     private Integer pos;
-    @RepoField
+    @EntityField
     private F1Entrant entrant;
-    @RepoField
+    @EntityField
     private Integer finalGrid;
-    @RepoField
+    @EntityField
     private List<JkDuration> times;
 
     public F1Qualify() {

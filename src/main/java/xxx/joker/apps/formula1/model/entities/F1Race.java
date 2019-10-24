@@ -3,27 +3,27 @@ package xxx.joker.apps.formula1.model.entities;
 import xxx.joker.libs.core.datetime.JkDuration;
 import xxx.joker.libs.core.tests.JkTests;
 import xxx.joker.libs.datalayer.design.RepoEntity;
-import xxx.joker.libs.datalayer.design.RepoField;
+import xxx.joker.libs.datalayer.design.EntityField;
 
 import static xxx.joker.libs.core.utils.JkStrings.strf;
 
 public class F1Race extends RepoEntity {
 
-    @RepoField
+    @EntityField
     private String gpPK;
-    @RepoField
+    @EntityField
     private Integer pos;
-    @RepoField
+    @EntityField
     private Integer startGrid;
-    @RepoField
+    @EntityField
     private F1Entrant entrant;
-    @RepoField
+    @EntityField
     private Integer laps;
-    @RepoField
+    @EntityField
     private F1RaceOutcome outcome;
-    @RepoField
+    @EntityField
     private JkDuration time;
-    @RepoField
+    @EntityField
     private Double points;
 
     public F1Race() {
